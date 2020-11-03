@@ -1,0 +1,165 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.greenback</groupId>
+    <artifactId>greenback-java</artifactId>
+    <name>greenback-java</name>
+    <packaging>pom</packaging>
+    <version>0.0.1-SNAPSHOT</version>
+
+    <organization>
+        <name>Greenback, Inc</name>
+        <url>https://www.greenback.com</url>
+    </organization>
+
+    <parent>
+        <groupId>com.fizzed</groupId>
+        <artifactId>maven-parent</artifactId>
+        <version>2.1.0</version>
+    </parent>
+
+    <scm>
+        <url>https://github.com/greenback-inc/greenback-java</url>
+        <connection>scm:git:git@github.com:greenback-inc/greenback-java.git</connection>
+        <tag>master</tag>
+    </scm>
+
+    <properties>
+        <main.java.package />
+        <slf4j.version>1.7.25</slf4j.version>
+        <jackson.version>2.10.5</jackson.version>
+        <okhttp.version>3.14.9</okhttp.version>
+        <crux.version>1.0.33</crux.version>
+    </properties>
+
+    <modules>
+        <module>greenback-kit-core</module>
+        <module>greenback-kit-jackson</module>
+        <module>greenback-kit-okhttp</module>
+    </modules>
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>3.8.1</version>
+                    <configuration>
+                        <source>1.8</source>
+                        <target>1.8</target>
+                        <compilerArgs>
+                            <arg>-parameters</arg>
+                            <arg>-Xlint:all</arg>
+                            <!--<arg>-Werror</arg>-->
+                        </compilerArgs>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
+
+    <dependencyManagement>
+        <dependencies>
+
+            <dependency>
+                <groupId>com.greenback</groupId>
+                <artifactId>greenback-kit-core</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.greenback</groupId>
+                <artifactId>greenback-kit-jackson</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.greenback</groupId>
+                <artifactId>greenback-kit-okhttp</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.fizzed</groupId>
+                <artifactId>crux-uri</artifactId>
+                <version>${crux.version}</version>
+            </dependency>
+
+            <!-- okhttp bindings -->
+
+            <dependency>
+                <groupId>com.squareup.okhttp3</groupId>
+                <artifactId>okhttp</artifactId>
+                <version>${okhttp.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>${slf4j.version}</version>
+            </dependency>
+
+            <!-- jackson bindings -->
+
+            <dependency>
+                <groupId>com.fizzed</groupId>
+                <artifactId>crux-jackson</artifactId>
+                <version>${crux.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-core</artifactId>
+                <version>${jackson.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-databind</artifactId>
+                <version>${jackson.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-annotations</artifactId>
+                <version>${jackson.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.fasterxml.jackson.datatype</groupId>
+                <artifactId>jackson-datatype-jsr310</artifactId>
+                <version>${jackson.version}</version>
+            </dependency>
+
+            <!-- only used for testing!!!! -->
+
+            <dependency>
+                <groupId>org.hamcrest</groupId>
+                <artifactId>java-hamcrest</artifactId>
+                <version>2.0.0.0</version>
+            </dependency>
+
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>4.12</version>
+            </dependency>
+
+            <dependency>
+                <groupId>ch.qos.logback</groupId>
+                <artifactId>logback-classic</artifactId>
+                <version>1.2.3</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.fizzed</groupId>
+                <artifactId>crux-okhttp</artifactId>
+                <version>${crux.version}</version>
+            </dependency>
+
+        </dependencies>
+        
+    </dependencyManagement>
+    
+</project>

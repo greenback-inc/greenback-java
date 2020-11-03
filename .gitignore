@@ -1,0 +1,7 @@
+/target/
+/greenback-api/target/
+/greenback-api-okhttp/target/
+/greenback-api-jackson/target/
+/greenback-kit-core/target/
+/greenback-kit-jackson/target/
+/greenback-kit-okhttp/target/
