@@ -4,3 +4,7 @@ jdk:
   - oraclejdk8
 env:
  - TRAVIS=true
+branches:
+  only:
+  - master
+  - /^v.*$/
