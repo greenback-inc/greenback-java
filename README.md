@@ -1,5 +1,8 @@
 # Greenback Kit for Java
 
+[![Maven Central](https://img.shields.io/maven-central/v/com.greenback/greenback-java)](https://mvnrepository.com/artifact/com.greenback/greenback-java)
+[![Build Status](https://travis-ci.org/greenback-inc/greenback-java.svg?branch=master)](https://travis-ci.org/greenback-inc/greenback-java)
+
 ![Greenback Logo](https://www.greenback.com/assets/f/blogs/github-greenback-java/greenback-logo-badge.png)
 
 The official [Greenback](https://www.greenback.com) open source Kit for Java! Quickly build your JVM or Android application by leveraging our modular implementation in Java. Compatible with Java 8+, Android, and other JVM languages such as Scala, Kotlin, Groovy, and more.
