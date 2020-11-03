@@ -106,6 +106,8 @@ while (!vision.getStatus().isTerminal()) {
 }
 ```
 
+You may also want to check out our sample [Android application for Vision](https://github.com/greenback-inc/greenback-android-demo).
+
 
 ### Mailbox
 
