@@ -1,5 +1,6 @@
 package com.greenback.kit.okhttp.impl;
 
+import com.greenback.kit.client.impl.ClientDeserializeHandler;
 import com.greenback.kit.model.GreenbackException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -15,7 +16,7 @@ public interface BaseOkHttpClient {
         
     default public <T> T execute(
             Request.Builder requestBuilder,
-            OkHttpResponseHandler<T> responseHandler) throws IOException {
+            ClientDeserializeHandler<T> deserializeHandler) throws IOException {
         
         if (this.getAccessToken() != null) {
             requestBuilder.addHeader("Authorization", "Bearer " + this.getAccessToken());
@@ -43,7 +44,7 @@ public interface BaseOkHttpClient {
                 
                 try {
                     // run the deserializer (it also checks for json-based errors
-                    return responseHandler.deserialize(input);
+                    return deserializeHandler.apply(input);
                 } catch (GreenbackException e) {
                     throw e; // rethrow it
                 }

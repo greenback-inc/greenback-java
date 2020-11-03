@@ -3,7 +3,6 @@ package com.greenback.kit.model;
 import static java.util.Arrays.asList;
 import java.util.HashSet;
 import java.util.Set;
-import static java.util.stream.Collectors.joining;
 
 public class Query<T> {
  
@@ -49,14 +48,6 @@ public class Query<T> {
             }
         }
         return (T)this;
-    }
-    
-    public String toParameter() {
-        if (this.expands == null || this.expands.isEmpty()) {
-            return null;
-        }
-        return this.expands.stream()
-            .collect(joining(","));
     }
     
 }
