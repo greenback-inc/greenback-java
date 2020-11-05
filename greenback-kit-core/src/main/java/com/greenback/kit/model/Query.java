@@ -19,13 +19,19 @@ public class Query<T> {
         return (T)this;
     }
     
-    public Set<String> getExpands() {
+    public Iterable<String> getExpands() {
         return expands;
     }
 
     @SuppressWarnings("unchecked")
-    public T setExpands(Set<String> expands) {
-        this.expands = expands;
+    public T setExpands(Iterable<String> expands) {
+        if (expands == null) {
+            this.expands = null;
+        }
+        else {
+            this.expands = new HashSet<>();
+            expands.forEach(v -> this.expands.add(v));
+        }
         return (T)this;
     }
 

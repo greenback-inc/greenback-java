@@ -1,5 +1,7 @@
 package com.greenback.kit.model;
 
+import static java.util.Optional.ofNullable;
+
 public class SyncSummary {
     
     private SyncDocumentTotals transactions;
@@ -41,22 +43,22 @@ public class SyncSummary {
 
     // helpers
     
-//    public boolean hasWarnings() {
-//        return this.computeWarningCount() > 0;
-//    }
-//    
-//    public boolean hasErrors() {
-//        return this.computeErrorCount() > 0;
-//    }
+    public boolean hasWarnings() {
+        return this.computeWarningCount() > 0;
+    }
     
-//    public int computeWarningCount() {
-//        return maybe(this.transactions).map(v -> v.getWarnings()).orElse(0)
-//            + maybe(this.messages).map(v -> v.getWarnings()).orElse(0);
-//    }
-//    
-//    public int computeErrorCount() {
-//        return maybe(this.transactions).map(v -> v.getErrors()).orElse(0)
-//            + maybe(this.messages).map(v -> v.getErrors()).orElse(0);
-//    }
+    public boolean hasErrors() {
+        return this.computeErrorCount() > 0;
+    }
+    
+    public int computeWarningCount() {
+        return ofNullable(this.transactions).map(v -> v.getWarnings()).orElse(0)
+            + ofNullable(this.messages).map(v -> v.getWarnings()).orElse(0);
+    }
+    
+    public int computeErrorCount() {
+        return ofNullable(this.transactions).map(v -> v.getErrors()).orElse(0)
+            + ofNullable(this.messages).map(v -> v.getErrors()).orElse(0);
+    }
     
 }
