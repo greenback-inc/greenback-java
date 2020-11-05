@@ -20,7 +20,7 @@ public class Account {
     // expandable
     
     private Connect connect;
-    private Map<String,Sync> syncs;
+    public Map<String,Sync> syncs;
     
     public String getId() {
         return id;
@@ -68,14 +68,6 @@ public class Account {
 
     public void setOverlayName(String overlayName) {
         this.overlayName = overlayName;
-    }
-
-    public Map<String,Sync> getSyncs() {
-        return syncs;
-    }
-
-    public void setSyncs(Map<String,Sync> syncs) {
-        this.syncs = syncs;
     }
 
     public String getState() {
@@ -168,6 +160,14 @@ public class Account {
 
     public void setConnect(Connect connect) {
         this.connect = connect;
+    }
+    
+    public Map<String,Sync> getSyncs() {
+        return syncs;
+    }
+
+    public void setSyncs(Map<String,Sync> syncs) {
+        this.syncs = syncs;
     }
 
 }

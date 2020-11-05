@@ -15,6 +15,8 @@ import com.greenback.kit.model.Message;
 import com.greenback.kit.model.MessageQuery;
 import com.greenback.kit.model.MessageRequest;
 import com.greenback.kit.model.Paginated;
+import com.greenback.kit.model.Transaction;
+import com.greenback.kit.model.TransactionQuery;
 import com.greenback.kit.model.User;
 import com.greenback.kit.model.Vision;
 import com.greenback.kit.model.VisionRequest;
@@ -97,7 +99,7 @@ abstract public class AbstractGreenbackClient implements GreenbackClient {
             .queryIfPresent("limit", toLimitQueryParameter(connectQuery))
             .toString();
         
-        return this.getConnectsByUrl(url);
+        return toStreamingPaginated(url, v -> this.getConnectsByUrl(v));
     }
     
     @Override
@@ -259,5 +261,176 @@ abstract public class AbstractGreenbackClient implements GreenbackClient {
     
     abstract protected Message getMessageByUrl(
             String url) throws IOException;
+    
+    
+    //
+    // Transactions
+    //
+    
+    @Override
+    public Paginated<Transaction> getTransactions(
+            TransactionQuery transactionQuery) throws IOException {
+        
+        final String url = this.buildBaseUri()
+            .path("v2/transactions")
+            .queryIfPresent("expand", toExpandQueryParameter(transactionQuery))
+            .queryIfPresent("limit", toLimitQueryParameter(transactionQuery))
+            .toString();
+        
+        return toStreamingPaginated(url, v -> this.getTransactionsByUrl(v));
+    }
+    
+    @Override
+    public Transaction getTransactionById(
+            String transactionId,
+            Iterable<String> expands) throws IOException {
+
+        Objects.requireNonNull(transactionId, "transactionId was null");
+        
+        final String url = this.buildBaseUri()
+            .path("v2/transactions")
+            .rel(transactionId)
+            .queryIfPresent("expand", toExpandQueryParameter(expands))
+            .toString();
+        
+        return toValue(() -> this.getTransactionByUrl(url));
+    }
+
+    abstract protected Paginated<Transaction> getTransactionsByUrl(
+            String url) throws IOException;
+    
+    abstract protected Transaction getTransactionByUrl(
+            String url) throws IOException;
+    
+    
+    
+    
+//    public GBPaginatedResponse<GBTransaction> getTransactions(
+//            String accessToken,
+//            String flag,
+//            Boolean descending,
+//            String expand,
+//            Long limit) throws IOException {
+//        
+//        return this.getTransactions(accessToken, flag, descending, expand, limit, null);
+//    }
+//    
+//    //@Override
+//    public GBPaginatedResponse<GBTransaction> getTransactionsNext(
+//            String accessToken,
+//            String flag,
+//            Boolean descending,
+//            GBPaginatedResponse<GBTransaction> previous) throws IOException {
+//        
+//        if (!previous.hasNext()) {
+//            return null;
+//        }
+//        
+//        return this.getTransactions(
+//            accessToken,
+//            flag,
+//            descending,
+//            previous.getExpand(),
+//            previous.getPagination().getLimit(),
+//            previous.getPagination().getNext());
+//    }
+//    
+//    private GBPaginatedResponse<GBTransaction> getTransactions(
+//            String accessToken,
+//            String flag,
+//            Boolean descending,
+//            String expand,
+//            Long limit,
+//            String cursor) throws IOException {
+//
+//        String url = this.buildBaseUri()
+//            .path("api/v2/transactions")
+//            .queryIfPresent("flag", ofNullable(flag))
+//            .queryIfPresent("descending", ofNullable(descending))
+//            .queryIfPresent("expand", ofNullable(expand))
+//            .queryIfPresent("limit", ofNullable(limit))
+//            .queryIfPresent("cursor", ofNullable(cursor))
+//            .toString();
+//        
+//        Request.Builder requestBuilder = new Request.Builder()
+//            .url(url)
+//            .addHeader("Authorization", "Bearer " + accessToken);
+//        
+//        GBPaginatedResponse<GBTransaction> response
+//            = this.execute(requestBuilder, this.codec::deserializePaginatedTransactions);
+//        
+//        response.setNextMethod(v -> this.getTransactionsNext(accessToken, flag, descending, v));
+//        response.setExpand(expand);
+//        maybe(response.getPagination())
+//            .ifPresent(v -> v.setLimit(limit));
+//        
+//        return response;
+//    }
+//    
+//    public GBTransactionExporter getTransactionExporter(
+//            String accessToken,
+//            String transactionId,
+//            String accountId,
+//            DateTime verifiedBy,
+//            String expand) throws IOException {
+//
+//        String url = this.buildBaseUri()
+//            .path("api/v2/transactions").rel(transactionId, "exporters", accountId)
+//            .queryIfPresent("verified_by", ofNullable(verifiedBy))
+//            .queryIfPresent("expand", ofNullable(expand))
+//            .toString();
+//        
+//        Request.Builder requestBuilder = new Request.Builder()
+//            .url(url)
+//            .addHeader("Authorization", "Bearer " + accessToken);
+//        
+//        return this.execute(requestBuilder, this.codec::deserializeTransactionExporter);
+//    }
+//    
+//    public GBTransactionExport saveTransactionExport(
+//            String accessToken,
+//            String transactionId,
+//            String accountId,
+//            String targetId,
+//            DateTime verifiedBy,
+//            Map<String,String> parameters) throws IOException {
+//
+//        String url = this.buildBaseUri()
+//            .path("api/v2/transactions").rel(transactionId, "exporters", accountId)
+//            .relIfPresent(ofNullable(targetId))
+//            .queryIfPresent("verified_by", ofNullable(verifiedBy))
+////            .queryIfPresent("expand", ofNullable(expand))
+//            .toString();
+//        
+//        Map<String,Object> data = new LinkedHashMap<>();
+//        data.put("parameters", parameters);
+//        
+//        Request.Builder requestBuilder = new Request.Builder()
+//            .url(url)
+//            .addHeader("Authorization", "Bearer " + accessToken)
+//            .post(RequestBody.create(MediaType.parse("application/json"),
+//                this.codec.getObjectMapper().writeValueAsBytes(data)));
+//
+//        return this.execute(requestBuilder, this.codec::deserializeTransactionExport);
+//    }
+//    
+//    public void deleteTransactionExport(
+//            String accessToken,
+//            String transactionId) throws IOException {
+//
+//        final String url = this.buildBaseUri()
+//            .path("api/v2/transaction_exports").rel(transactionId)
+////            .queryIfPresent("verified_by", ofNullable(verifiedBy))
+////            .queryIfPresent("expand", ofNullable(expand))
+//            .toString();
+//
+//        final Request.Builder requestBuilder = new Request.Builder()
+//            .url(url)
+//            .addHeader("Authorization", "Bearer " + accessToken)
+//            .delete();
+//
+//        this.execute(requestBuilder, this.codec::deserializeMap);
+//    }
+    
     
 }

@@ -93,10 +93,14 @@ public class JacksonGreenbackCodec implements GreenbackCodec {
         = new TypeReference<Paginated<Message>>() {};
     static private final TypeReference<Value<Message>> TYPEREF_MESSAGE
         = new TypeReference<Value<Message>>() {};
+    static private final TypeReference<Paginated<Sync>> TYPEREF_SYNCS
+        = new TypeReference<Paginated<Sync>>() {};
     static private final TypeReference<Value<Sync>> TYPEREF_SYNC
         = new TypeReference<Value<Sync>>() {};
     static private final TypeReference<Paginated<Transaction>> TYPEREF_TRANSACTIONS
         = new TypeReference<Paginated<Transaction>>() {};
+    static private final TypeReference<Value<Transaction>> TYPEREF_TRANSACTION
+        = new TypeReference<Value<Transaction>>() {};
     static private final TypeReference<Value<TransactionExporter>> TYPEREF_TRANSACTION_EXPORTER
         = new TypeReference<Value<TransactionExporter>>() {};
     static private final TypeReference<Value<TransactionExport>> TYPEREF_TRANSACTION_EXPORT
@@ -108,10 +112,11 @@ public class JacksonGreenbackCodec implements GreenbackCodec {
     }
     
     @Override
-    public User readUser(
-            InputStream input) throws IOException {
-        
-        return this.read(input, TYPEREF_USER).getValue();
+    public byte[] writeBytes(Object value) throws IOException {
+        if (value == null) {
+            return new byte[0];
+        }
+        return this.objectMapper.writeValueAsBytes(value);
     }
     
     @Override
@@ -119,6 +124,13 @@ public class JacksonGreenbackCodec implements GreenbackCodec {
             InputStream input) throws IOException {
         
         return this.read(input, TYPEREF_USERS);
+    }
+    
+    @Override
+    public User readUser(
+            InputStream input) throws IOException {
+        
+        return this.read(input, TYPEREF_USER).getValue();
     }
     
     @Override
@@ -150,6 +162,13 @@ public class JacksonGreenbackCodec implements GreenbackCodec {
     }
     
     @Override
+    public Paginated<Vision> readVisions(
+            InputStream input) throws IOException {
+        
+        return this.read(input, TYPEREF_VISIONS);
+    }
+    
+    @Override
     public Vision readVision(
             InputStream input) throws IOException {
         
@@ -157,10 +176,10 @@ public class JacksonGreenbackCodec implements GreenbackCodec {
     }
     
     @Override
-    public Paginated<Vision> readVisions(
+    public Paginated<Message> readMessages(
             InputStream input) throws IOException {
         
-        return this.read(input, TYPEREF_VISIONS);
+        return this.read(input, TYPEREF_MESSAGES);
     }
     
     @Override
@@ -171,10 +190,10 @@ public class JacksonGreenbackCodec implements GreenbackCodec {
     }
     
     @Override
-    public Paginated<Message> readMessages(
+    public Paginated<Sync> readSyncs(
             InputStream input) throws IOException {
         
-        return this.read(input, TYPEREF_MESSAGES);
+        return this.read(input, TYPEREF_SYNCS);
     }
     
     @Override
@@ -189,6 +208,13 @@ public class JacksonGreenbackCodec implements GreenbackCodec {
             InputStream input) throws IOException {
         
         return this.read(input, TYPEREF_TRANSACTIONS);
+    }
+    
+    @Override
+    public Transaction readTransaction(
+            InputStream input) throws IOException {
+        
+        return this.read(input, TYPEREF_TRANSACTION).getValue();
     }
     
     @Override

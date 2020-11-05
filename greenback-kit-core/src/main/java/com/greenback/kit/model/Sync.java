@@ -15,6 +15,7 @@ public class Sync {
     private Error error;
     private Instant createdAt;
     private Instant updatedAt;
+    private SyncRequest request;
     private SyncSummary summary;
 
     public String getId() {
@@ -111,6 +112,14 @@ public class Sync {
 
     public void setSummary(SyncSummary summary) {
         this.summary = summary;
+    }
+
+    public SyncRequest getRequest() {
+        return request;
+    }
+
+    public void setRequest(SyncRequest request) {
+        this.request = request;
     }
 
 }

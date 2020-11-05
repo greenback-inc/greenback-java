@@ -8,6 +8,8 @@ import com.greenback.kit.model.Message;
 import com.greenback.kit.model.MessageQuery;
 import com.greenback.kit.model.MessageRequest;
 import com.greenback.kit.model.Paginated;
+import com.greenback.kit.model.Transaction;
+import com.greenback.kit.model.TransactionQuery;
 import com.greenback.kit.model.User;
 import com.greenback.kit.model.Vision;
 import com.greenback.kit.model.VisionRequest;
@@ -58,5 +60,13 @@ public interface GreenbackClient {
     }
     
     Message getMessageById(String messageId, Iterable<String> expands) throws IOException;
+    
+    default Transaction getTransactionById(String transactionId) throws IOException {
+        return this.getTransactionById(transactionId, null);
+    }
+    
+    Transaction getTransactionById(String transactionId, Iterable<String> expands) throws IOException;
+
+    Paginated<Transaction> getTransactions(TransactionQuery messageQuery) throws IOException;
     
 }
