@@ -5,7 +5,6 @@ import java.util.List;
 
 public class Transaction extends Document {
  
-    private String id;
     private TransactionType type;
     private String currencyCode;
     private String accountId;
@@ -15,21 +14,10 @@ public class Transaction extends Document {
     private TransactionTotals totals;
     private Instant transactedAt;
     private Instant dueAt;
-    private Instant createdAt;
-    private Instant updatedAt;
     
-    // expand
-    
+    // expandable
     private Account account;
     private Contact contact;
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
 
     public TransactionType getType() {
         return type;
@@ -101,22 +89,6 @@ public class Transaction extends Document {
 
     public void setDueAt(Instant dueAt) {
         this.dueAt = dueAt;
-    }
-
-    public Instant getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(Instant createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public Instant getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(Instant updatedAt) {
-        this.updatedAt = updatedAt;
     }
 
     public Account getAccount() {

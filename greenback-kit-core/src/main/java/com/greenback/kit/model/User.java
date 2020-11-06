@@ -1,10 +1,7 @@
 package com.greenback.kit.model;
 
-import java.time.Instant;
-
-public class User {
+public class User extends GreenbackObject {
  
-    private String id;
     private UserType type;
     private UserState state;
     private String name;
@@ -12,18 +9,6 @@ public class User {
     private UserEmailState emailState;
     private UserPasswordState passwordState;
     private Integer memberCount;
-    private Instant createdAt;
-    private Instant updatedAt;
-    
-    // expand
-    
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
 
     public UserType getType() {
         return type;
@@ -79,22 +64,6 @@ public class User {
 
     public void setMemberCount(Integer memberCount) {
         this.memberCount = memberCount;
-    }
-
-    public Instant getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(Instant createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public Instant getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(Instant updatedAt) {
-        this.updatedAt = updatedAt;
     }
 
 }

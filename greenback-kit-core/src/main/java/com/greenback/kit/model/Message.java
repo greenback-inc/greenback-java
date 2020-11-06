@@ -5,8 +5,6 @@ import java.util.List;
 
 public class Message extends Document {
     
-    private String id;
-    private String referenceId;
     private ProcessingStatus status;
     private Integer size;
     private String subject;
@@ -20,20 +18,9 @@ public class Message extends Document {
     private List<QuotedMessage> quoted;
     private String fullText;
     private Instant postedAt;
-    private Instant createdAt;
-    private Instant updatedAt;
     
-    // expand
-    
+    // expandable
     private List<Transaction> transactions;
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
 
     public String getName() {
         return referenceId;
@@ -57,14 +44,6 @@ public class Message extends Document {
 
     public void setAttachments(List<Attachment> attachments) {
         this.attachments = attachments;
-    }
-
-    public String getReferenceId() {
-        return referenceId;
-    }
-
-    public void setReferenceId(String referenceId) {
-        this.referenceId = referenceId;
     }
 
     public Integer getSize() {
@@ -153,22 +132,6 @@ public class Message extends Document {
 
     public void setPostedAt(Instant postedAt) {
         this.postedAt = postedAt;
-    }
-
-    public Instant getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(Instant createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public Instant getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(Instant updatedAt) {
-        this.updatedAt = updatedAt;
     }
 
     public List<Transaction> getTransactions() {

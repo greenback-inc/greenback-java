@@ -2,9 +2,8 @@ package com.greenback.kit.model;
 
 import java.util.Set;
 
-public class Connect {
+public class Connect extends GreenbackObject {
  
-    private String id;
     private String label;
     private ConnectType type;
     private String name;
@@ -12,14 +11,6 @@ public class Connect {
     private Set<String> tags;
     private String logoUrl;
     private String contactId;
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
 
     public ConnectType getType() {
         return type;
