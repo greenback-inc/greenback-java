@@ -17,6 +17,8 @@ public interface GreenbackCodec {
 
     String prettyPrint(Object value) throws IOException;
     
+    byte[] writeBytes(Object value) throws IOException;
+    
     User readUser(InputStream input) throws IOException;
     
     Paginated<User> readUsers(InputStream input) throws IOException;
@@ -37,9 +39,13 @@ public interface GreenbackCodec {
     
     Paginated<Message> readMessages(InputStream input) throws IOException;
     
+    Transaction readTransaction(InputStream input) throws IOException;
+    
     Paginated<Transaction> readTransactions(InputStream input) throws IOException;
 
     Sync readSync(InputStream input) throws IOException;
+    
+    Paginated<Sync> readSyncs(InputStream input) throws IOException;
 
     TransactionExport readTransactionExport(InputStream input) throws IOException;
 

@@ -15,6 +15,8 @@ import com.greenback.kit.model.Message;
 import com.greenback.kit.model.MessageQuery;
 import com.greenback.kit.model.MessageRequest;
 import com.greenback.kit.model.Paginated;
+import com.greenback.kit.model.Transaction;
+import com.greenback.kit.model.TransactionQuery;
 import com.greenback.kit.model.User;
 import com.greenback.kit.model.Vision;
 import com.greenback.kit.model.VisionRequest;
@@ -53,11 +55,12 @@ abstract public class AbstractGreenbackClient implements GreenbackClient {
         return this.codec;
     }
     
-    private MutableUri buildBaseUri() {
-        
-        MutableUri uri = new MutableUri(this.baseUrl);
-        
-        return uri;
+    protected MutableUri buildBaseUrl() {
+        final MutableUri url = new MutableUri(this.baseUrl);
+        // protect against someone include params on the base url that get included
+        url.setQuery(null);
+        url.fragment(null);
+        return url;
     }
 
     //
@@ -71,7 +74,7 @@ abstract public class AbstractGreenbackClient implements GreenbackClient {
 
         Objects.requireNonNull(userId, "userId was null");
         
-        final String url = this.buildBaseUri()
+        final String url = this.buildBaseUrl()
             .path("v2/users")
             .rel(userId)
             .queryIfPresent("expand", toExpandQueryParameter(expands))
@@ -91,13 +94,13 @@ abstract public class AbstractGreenbackClient implements GreenbackClient {
     public Paginated<Connect> getConnects(
             ConnectQuery connectQuery) throws IOException {
 
-        final String url = this.buildBaseUri()
+        final String url = this.buildBaseUrl()
             .path("v2/connects")
             .queryIfPresent("expand", toExpandQueryParameter(connectQuery))
             .queryIfPresent("limit", toLimitQueryParameter(connectQuery))
             .toString();
         
-        return this.getConnectsByUrl(url);
+        return toStreamingPaginated(url, v -> this.getConnectsByUrl(v));
     }
     
     @Override
@@ -107,7 +110,7 @@ abstract public class AbstractGreenbackClient implements GreenbackClient {
 
         Objects.requireNonNull(connectLabel, "connectLabel was null");
         
-        final String url = this.buildBaseUri()
+        final String url = this.buildBaseUrl()
             .path("v2/connects")
             .rel(connectLabel)
             .queryIfPresent("expand", toExpandQueryParameter(expands))
@@ -130,7 +133,7 @@ abstract public class AbstractGreenbackClient implements GreenbackClient {
     public Paginated<Account> getAccounts(
             AccountQuery accountQuery) throws IOException {
 
-        final String url = this.buildBaseUri()
+        final String url = this.buildBaseUrl()
             .path("v2/accounts")
             .queryIfPresent("expand", toExpandQueryParameter(accountQuery))
             .queryIfPresent("limit", toLimitQueryParameter(accountQuery))
@@ -146,7 +149,7 @@ abstract public class AbstractGreenbackClient implements GreenbackClient {
 
         Objects.requireNonNull(accountId, "accountId was null");
         
-        final String url = this.buildBaseUri()
+        final String url = this.buildBaseUrl()
             .path("v2/accounts")
             .rel(accountId)
             .queryIfPresent("expand", toExpandQueryParameter(expands))
@@ -171,7 +174,7 @@ abstract public class AbstractGreenbackClient implements GreenbackClient {
         
         Objects.requireNonNull(visionRequest, "visionRequest was null");
         
-        final String url = this.buildBaseUri()
+        final String url = this.buildBaseUrl()
             .path("v2/visions")
             .queryIfPresent("async", ofNullable(visionRequest.getAsync()))
             .toString();
@@ -191,7 +194,7 @@ abstract public class AbstractGreenbackClient implements GreenbackClient {
 
         Objects.requireNonNull(visionId, "visionId was null");
         
-        final String url = this.buildBaseUri()
+        final String url = this.buildBaseUrl()
             .path("v2/visions")
             .rel(visionId)
             .queryIfPresent("expand", toExpandQueryParameter(expands))
@@ -212,7 +215,7 @@ abstract public class AbstractGreenbackClient implements GreenbackClient {
     public Paginated<Message> getMessages(
             MessageQuery messageQuery) throws IOException {
         
-        final String url = this.buildBaseUri()
+        final String url = this.buildBaseUrl()
             .path("v2/messages")
             .queryIfPresent("expand", toExpandQueryParameter(messageQuery))
             .queryIfPresent("limit", toLimitQueryParameter(messageQuery))
@@ -225,7 +228,7 @@ abstract public class AbstractGreenbackClient implements GreenbackClient {
     public Message createMessage(
             MessageRequest messageRequest) throws IOException {
         
-        final String url = this.buildBaseUri()
+        final String url = this.buildBaseUrl()
             .path("v2/messages")
             .queryIfPresent("async", ofNullable(messageRequest.getAsync()))
             .toString();
@@ -241,7 +244,7 @@ abstract public class AbstractGreenbackClient implements GreenbackClient {
 
         Objects.requireNonNull(messageId, "messageId was null");
         
-        final String url = this.buildBaseUri()
+        final String url = this.buildBaseUrl()
             .path("v2/messages")
             .rel(messageId)
             .queryIfPresent("expand", toExpandQueryParameter(expands))
@@ -259,5 +262,111 @@ abstract public class AbstractGreenbackClient implements GreenbackClient {
     
     abstract protected Message getMessageByUrl(
             String url) throws IOException;
+    
+    
+    //
+    // Transactions
+    //
+    
+    @Override
+    public Paginated<Transaction> getTransactions(
+            TransactionQuery transactionQuery) throws IOException {
+        
+        final String url = this.buildBaseUrl()
+            .path("v2/transactions")
+            .queryIfPresent("expand", toExpandQueryParameter(transactionQuery))
+            .queryIfPresent("limit", toLimitQueryParameter(transactionQuery))
+            .toString();
+        
+        return toStreamingPaginated(url, v -> this.getTransactionsByUrl(v));
+    }
+    
+    @Override
+    public Transaction getTransactionById(
+            String transactionId,
+            Iterable<String> expands) throws IOException {
+
+        Objects.requireNonNull(transactionId, "transactionId was null");
+        
+        final String url = this.buildBaseUrl()
+            .path("v2/transactions")
+            .rel(transactionId)
+            .queryIfPresent("expand", toExpandQueryParameter(expands))
+            .toString();
+        
+        return toValue(() -> this.getTransactionByUrl(url));
+    }
+
+    abstract protected Paginated<Transaction> getTransactionsByUrl(
+            String url) throws IOException;
+    
+    abstract protected Transaction getTransactionByUrl(
+            String url) throws IOException;
+    
+//    public GBTransactionExporter getTransactionExporter(
+//            String accessToken,
+//            String transactionId,
+//            String accountId,
+//            DateTime verifiedBy,
+//            String expand) throws IOException {
+//
+//        String url = this.buildBaseUri()
+//            .path("api/v2/transactions").rel(transactionId, "exporters", accountId)
+//            .queryIfPresent("verified_by", ofNullable(verifiedBy))
+//            .queryIfPresent("expand", ofNullable(expand))
+//            .toString();
+//        
+//        Request.Builder requestBuilder = new Request.Builder()
+//            .url(url)
+//            .addHeader("Authorization", "Bearer " + accessToken);
+//        
+//        return this.execute(requestBuilder, this.codec::deserializeTransactionExporter);
+//    }
+//    
+//    public GBTransactionExport saveTransactionExport(
+//            String accessToken,
+//            String transactionId,
+//            String accountId,
+//            String targetId,
+//            DateTime verifiedBy,
+//            Map<String,String> parameters) throws IOException {
+//
+//        String url = this.buildBaseUri()
+//            .path("api/v2/transactions").rel(transactionId, "exporters", accountId)
+//            .relIfPresent(ofNullable(targetId))
+//            .queryIfPresent("verified_by", ofNullable(verifiedBy))
+////            .queryIfPresent("expand", ofNullable(expand))
+//            .toString();
+//        
+//        Map<String,Object> data = new LinkedHashMap<>();
+//        data.put("parameters", parameters);
+//        
+//        Request.Builder requestBuilder = new Request.Builder()
+//            .url(url)
+//            .addHeader("Authorization", "Bearer " + accessToken)
+//            .post(RequestBody.create(MediaType.parse("application/json"),
+//                this.codec.getObjectMapper().writeValueAsBytes(data)));
+//
+//        return this.execute(requestBuilder, this.codec::deserializeTransactionExport);
+//    }
+//    
+//    public void deleteTransactionExport(
+//            String accessToken,
+//            String transactionId) throws IOException {
+//
+//        final String url = this.buildBaseUri()
+//            .path("api/v2/transaction_exports").rel(transactionId)
+////            .queryIfPresent("verified_by", ofNullable(verifiedBy))
+////            .queryIfPresent("expand", ofNullable(expand))
+//            .toString();
+//
+//        final Request.Builder requestBuilder = new Request.Builder()
+//            .url(url)
+//            .addHeader("Authorization", "Bearer " + accessToken)
+//            .delete();
+//
+//        this.execute(requestBuilder, this.codec::deserializeMap);
+//    }
+    
     
 }

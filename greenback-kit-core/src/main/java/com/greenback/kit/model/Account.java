@@ -1,34 +1,21 @@
 package com.greenback.kit.model;
 
-import java.time.Instant;
 import java.util.Map;
 
-public class Account {
+public class Account extends GreenbackObject {
  
-    private String id;
     private String userId;
     private String connectId;
-    private String type;
-    private String state;
-    private String connectionState;
+    private AccountType type;
+    private AccountState state;
+    private AccountConnectionState connectionState;
     private Integer consecutiveErrors;
     private String defaultName;
     private String overlayName;
-    private Instant createdAt;
-    private Instant updatedAt;
     
     // expandable
-    
     private Connect connect;
     private Map<String,Sync> syncs;
-    
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
 
     public String getUserId() {
         return userId;
@@ -46,11 +33,11 @@ public class Account {
         this.connectId = connectId;
     }
     
-    public String getType() {
+    public AccountType getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(AccountType type) {
         this.type = type;
     }
     
@@ -70,27 +57,19 @@ public class Account {
         this.overlayName = overlayName;
     }
 
-    public Map<String,Sync> getSyncs() {
-        return syncs;
-    }
-
-    public void setSyncs(Map<String,Sync> syncs) {
-        this.syncs = syncs;
-    }
-
-    public String getState() {
+    public AccountState getState() {
         return state;
     }
 
-    public void setState(String state) {
+    public void setState(AccountState state) {
         this.state = state;
     }
 
-    public String getConnectionState() {
+    public AccountConnectionState getConnectionState() {
         return connectionState;
     }
 
-    public void setConnectionState(String connectionState) {
+    public void setConnectionState(AccountConnectionState connectionState) {
         this.connectionState = connectionState;
     }
 
@@ -100,22 +79,6 @@ public class Account {
 
     public void setConsecutiveErrors(Integer consecutiveErrors) {
         this.consecutiveErrors = consecutiveErrors;
-    }
-
-    public Instant getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(Instant createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public Instant getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(Instant updatedAt) {
-        this.updatedAt = updatedAt;
     }
 
     // helpers
@@ -168,6 +131,14 @@ public class Account {
 
     public void setConnect(Connect connect) {
         this.connect = connect;
+    }
+    
+    public Map<String,Sync> getSyncs() {
+        return syncs;
+    }
+
+    public void setSyncs(Map<String,Sync> syncs) {
+        this.syncs = syncs;
     }
 
 }

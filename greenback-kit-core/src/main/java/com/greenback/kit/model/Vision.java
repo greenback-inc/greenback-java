@@ -2,29 +2,18 @@ package com.greenback.kit.model;
 
 import com.greenback.kit.vision.VisionAnnotations;
 import com.greenback.kit.vision.VisionTransactionMatcher;
-import java.time.Instant;
 import java.util.List;
 
-public class Vision {
- 
-    private String id;
+public class Vision extends GreenbackObject {
+
     private String name;
     private ProcessingStatus status;
     private VisionAnnotations annotations;
     private VisionTransactionMatcher transactionMatcher;
     private List<Attachment> attachments;
-    private Instant createdAt;
-    private Instant updatedAt;
     
+    // expandable
     private List<Transaction> transactions;
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
 
     public String getName() {
         return name;
@@ -64,22 +53,6 @@ public class Vision {
 
     public void setTransactionMatcher(VisionTransactionMatcher transactionMatcher) {
         this.transactionMatcher = transactionMatcher;
-    }
-
-    public Instant getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(Instant createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public Instant getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(Instant updatedAt) {
-        this.updatedAt = updatedAt;
     }
 
     public List<Transaction> getTransactions() {

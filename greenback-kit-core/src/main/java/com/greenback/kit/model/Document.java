@@ -2,7 +2,7 @@ package com.greenback.kit.model;
 
 import java.util.Map;
 
-public class Document {
+public class Document extends GreenbackObject {
  
     protected String referenceId;
     protected Map<String,String> attributes;

@@ -10,7 +10,9 @@ public class SyncRequest {
     private Integer limit;
     private Boolean reuseProfile;
     private Map<String,String> attributes;
-
+    // for previewing what the sync would do
+    private Boolean preview;
+    
     public Instant getFrom() {
         return from;
     }
@@ -56,4 +58,13 @@ public class SyncRequest {
         return this;
     }
 
+    public Boolean getPreview() {
+        return preview;
+    }
+
+    public SyncRequest setPreview(Boolean preview) {
+        this.preview = preview;
+        return this;
+    }
+    
 }

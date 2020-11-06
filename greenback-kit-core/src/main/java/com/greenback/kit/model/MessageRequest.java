@@ -2,7 +2,6 @@ package com.greenback.kit.model;
 
 import com.greenback.kit.util.Bytes;
 import java.io.File;
-import java.nio.file.Path;
 import java.util.Objects;
 
 public class MessageRequest {
@@ -33,12 +32,6 @@ public class MessageRequest {
         this.document = Bytes.of(file);
         return this;
     }
-    
-//    public MessageRequest setDocument(Path file) {
-//        Objects.requireNonNull(file, "file was null");
-//        this.document = Bytes.of(file);
-//        return this;
-//    }
     
     public MessageRequest setDocument(byte[] bytes) {
         Objects.requireNonNull(bytes, "bytes was null");
