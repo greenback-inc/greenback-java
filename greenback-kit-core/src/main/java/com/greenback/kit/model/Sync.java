@@ -4,7 +4,7 @@ public class Sync extends GreenbackObject {
  
     private String referenceId;
     private String accountId;
-    private String type;
+    private SyncType type;
     private String triggeredBy;
     private String message;
     private Double progress;
@@ -37,11 +37,11 @@ public class Sync extends GreenbackObject {
         this.accountId = accountId;
     }
 
-    public String getType() {
+    public SyncType getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(SyncType type) {
         this.type = type;
     }
 
