@@ -4,6 +4,7 @@ import com.fizzed.crux.uri.MutableUri;
 import com.greenback.kit.client.GreenbackClient;
 import com.greenback.kit.client.GreenbackCodec;
 import static com.greenback.kit.client.impl.ClientHelper.toExpandQueryParameter;
+import static com.greenback.kit.client.impl.ClientHelper.toInstantParameter;
 import static com.greenback.kit.client.impl.ClientHelper.toLimitQueryParameter;
 import static com.greenback.kit.client.impl.ClientHelper.toStreamingPaginated;
 import static com.greenback.kit.client.impl.ClientHelper.toValue;
@@ -325,7 +326,8 @@ abstract public class AbstractGreenbackClient implements GreenbackClient {
             .relIfPresent(ofNullable(targetId))
             .queryIfPresent("payment", ofNullable(transactionExportQuery).map(v -> v.getPayment()))
             .queryIfPresent("itemized", ofNullable(transactionExportQuery).map(v -> v.getItemized()))
-            .queryIfPresent("verified_by", ofNullable(transactionExportQuery).map(v -> v.getVerifiedBy()))
+            .queryIfPresent("verified_by", ofNullable(transactionExportQuery)
+                .map(v -> toInstantParameter(v.getVerifiedBy())))
             .queryIfPresent("expand", toExpandQueryParameter(transactionExportQuery))
             .toString();
         
@@ -346,7 +348,8 @@ abstract public class AbstractGreenbackClient implements GreenbackClient {
             .rel(transactionId, "exporters", accountId)
             .queryIfPresent("payment", ofNullable(transactionExporterRequest).map(v -> v.getPayment()))
             .queryIfPresent("itemized", ofNullable(transactionExporterRequest).map(v -> v.getItemized()))
-            .queryIfPresent("verified_by", ofNullable(transactionExporterRequest).map(v -> v.getVerifiedBy()))
+            .queryIfPresent("verified_by", ofNullable(transactionExporterRequest)
+                .map(v -> toInstantParameter(v.getVerifiedBy())))
             .toString();
         
         // we have to have a clean exporter w/ only parameters, so create new object
