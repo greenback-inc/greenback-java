@@ -28,7 +28,6 @@ import com.greenback.kit.model.Vision;
 import com.greenback.kit.model.VisionRequest;
 import com.greenback.kit.util.Bytes;
 import java.io.IOException;
-import java.time.Instant;
 import java.util.Objects;
 import static java.util.Optional.ofNullable;
 
@@ -274,6 +273,23 @@ abstract public class AbstractGreenbackClient implements GreenbackClient {
     //
     // Transactions
     //
+    
+    @Override
+    public Transaction saveTransaction(
+            Transaction transaction) throws IOException {
+        
+        Objects.requireNonNull(transaction, "transaction was null");
+        
+        final String url = this.buildBaseUrl()
+            .path("v2/transactions")
+            .relIfPresent(ofNullable(transaction.getId()))
+            .toString();
+        
+        return toValue(() -> this.saveTransactionByUrl(url, transaction));
+    }
+    
+    abstract protected Transaction saveTransactionByUrl(
+            String url, Transaction transaction) throws IOException;
     
     @Override
     public Paginated<Transaction> getTransactions(

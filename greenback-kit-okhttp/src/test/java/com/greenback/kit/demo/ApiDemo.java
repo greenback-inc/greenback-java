@@ -8,6 +8,7 @@ import com.greenback.kit.client.GreenbackConstants;
 import com.greenback.kit.jackson.JacksonGreenbackCodec;
 import com.greenback.kit.model.Connect;
 import com.greenback.kit.model.ConnectQuery;
+import com.greenback.kit.model.Item;
 import com.greenback.kit.model.Message;
 import com.greenback.kit.model.MessageQuery;
 import com.greenback.kit.model.Paginated;
@@ -16,8 +17,12 @@ import com.greenback.kit.model.TransactionQuery;
 import com.greenback.kit.model.User;
 import com.greenback.kit.okhttp.OkHttpGreenbackClient;
 import com.greenback.kit.okhttp.OkHttpHelper;
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 import static java.util.Optional.ofNullable;
 import java.util.Properties;
+import java.util.UUID;
 import okhttp3.OkHttpClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,12 +47,12 @@ public class ApiDemo {
                 new JacksonGreenbackCodec(),
                 accessToken);
 
-            final Paginated<Connect> connects = client.getConnects(new ConnectQuery()
-                .setLimit(10));
-            
-            for (Connect connect : connects) {
-                log.debug("Connect: id={}, name={}, type={}, state={}", connect.getId(), connect.getName(), connect.getType(), connect.getState());
-            }
+//            final Paginated<Connect> connects = client.getConnects(new ConnectQuery()
+//                .setLimit(10));
+//            
+//            for (Connect connect : connects) {
+//                log.debug("Connect: id={}, name={}, type={}, state={}", connect.getId(), connect.getName(), connect.getType(), connect.getState());
+//            }
 
 //            User user = client.getUserById("me");
 //            
@@ -114,6 +119,24 @@ public class ApiDemo {
 //            
 //            log.debug("Connect: id={}, name={}, type={}, state={}", connect.getId(), connect.getName(), connect.getType(), connect.getState());
             
+            List<Item> items = new ArrayList<>();
+            Item item1 = new Item();
+            item1.setName("Test");
+            item1.setAmount(1.0d);
+            items.add(item1);
+
+            Transaction transaction = new Transaction();
+            transaction.setAccountId("zYP7Lv9Ea9");
+            transaction.setReferenceId(UUID.randomUUID().toString());
+            transaction.setItems(items);
+            transaction.setTransactedAt(Instant.now());
+            
+            Transaction savedTransaction = client.saveTransaction(transaction);
+            
+            
+
+
+
         }
         catch (Exception e) {
             log.error("Uh oh!", e);

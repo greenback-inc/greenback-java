@@ -174,6 +174,20 @@ public class OkHttpGreenbackClient extends AbstractGreenbackClient implements Ba
     //
     
     @Override
+    protected Transaction saveTransactionByUrl(String url, Transaction transaction) throws IOException {
+        
+        final byte[] body = this.codec.writeBytes(transaction);
+
+        final RequestBody requestBody = this.jsonRequestBody(body);
+
+        final Request.Builder requestBuilder = new Request.Builder()
+            .url(url)
+            .post(requestBody);
+        
+        return this.execute(requestBuilder, this.codec::readTransaction);
+    }
+    
+    @Override
     protected Paginated<Transaction> getTransactionsByUrl(String url) throws IOException {
         
         final Request.Builder requestBuilder = new Request.Builder()

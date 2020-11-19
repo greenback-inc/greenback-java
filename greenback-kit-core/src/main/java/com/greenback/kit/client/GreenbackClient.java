@@ -65,6 +65,8 @@ public interface GreenbackClient {
     }
     
     Message getMessageById(String messageId, Iterable<String> expands) throws IOException;
+
+    Transaction saveTransaction(Transaction transaction) throws IOException;
     
     default Transaction getTransactionById(String transactionId) throws IOException {
         return this.getTransactionById(transactionId, null);
@@ -95,6 +97,12 @@ public interface GreenbackClient {
     
     TransactionExport getTransactionExportById(
             String transactionExportId) throws IOException;
+    
+    default TransactionExport deleteTransactionExportById(
+            String transactionExportId) throws IOException {
+        
+        return this.deleteTransactionExportById(transactionExportId, null);
+    }
     
     TransactionExport deleteTransactionExportById(
             String transactionExportId,
