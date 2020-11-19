@@ -4,6 +4,7 @@ import com.fizzed.crux.uri.MutableUri;
 import com.greenback.kit.client.GreenbackClient;
 import com.greenback.kit.client.GreenbackCodec;
 import static com.greenback.kit.client.impl.ClientHelper.toExpandQueryParameter;
+import static com.greenback.kit.client.impl.ClientHelper.toInstantParameter;
 import static com.greenback.kit.client.impl.ClientHelper.toLimitQueryParameter;
 import static com.greenback.kit.client.impl.ClientHelper.toStreamingPaginated;
 import static com.greenback.kit.client.impl.ClientHelper.toValue;
@@ -16,12 +17,18 @@ import com.greenback.kit.model.MessageQuery;
 import com.greenback.kit.model.MessageRequest;
 import com.greenback.kit.model.Paginated;
 import com.greenback.kit.model.Transaction;
+import com.greenback.kit.model.TransactionExport;
+import com.greenback.kit.model.TransactionExportDeleteMode;
+import com.greenback.kit.model.TransactionExporterQuery;
+import com.greenback.kit.model.TransactionExporter;
+import com.greenback.kit.model.TransactionExporterRequest;
 import com.greenback.kit.model.TransactionQuery;
 import com.greenback.kit.model.User;
 import com.greenback.kit.model.Vision;
 import com.greenback.kit.model.VisionRequest;
 import com.greenback.kit.util.Bytes;
 import java.io.IOException;
+import java.time.Instant;
 import java.util.Objects;
 import static java.util.Optional.ofNullable;
 
@@ -303,70 +310,94 @@ abstract public class AbstractGreenbackClient implements GreenbackClient {
     abstract protected Transaction getTransactionByUrl(
             String url) throws IOException;
     
-//    public GBTransactionExporter getTransactionExporter(
-//            String accessToken,
-//            String transactionId,
-//            String accountId,
-//            DateTime verifiedBy,
-//            String expand) throws IOException {
-//
-//        String url = this.buildBaseUri()
-//            .path("api/v2/transactions").rel(transactionId, "exporters", accountId)
-//            .queryIfPresent("verified_by", ofNullable(verifiedBy))
-//            .queryIfPresent("expand", ofNullable(expand))
-//            .toString();
-//        
-//        Request.Builder requestBuilder = new Request.Builder()
-//            .url(url)
-//            .addHeader("Authorization", "Bearer " + accessToken);
-//        
-//        return this.execute(requestBuilder, this.codec::deserializeTransactionExporter);
-//    }
-//    
-//    public GBTransactionExport saveTransactionExport(
-//            String accessToken,
-//            String transactionId,
-//            String accountId,
-//            String targetId,
-//            DateTime verifiedBy,
-//            Map<String,String> parameters) throws IOException {
-//
-//        String url = this.buildBaseUri()
-//            .path("api/v2/transactions").rel(transactionId, "exporters", accountId)
-//            .relIfPresent(ofNullable(targetId))
-//            .queryIfPresent("verified_by", ofNullable(verifiedBy))
-////            .queryIfPresent("expand", ofNullable(expand))
-//            .toString();
-//        
-//        Map<String,Object> data = new LinkedHashMap<>();
-//        data.put("parameters", parameters);
-//        
-//        Request.Builder requestBuilder = new Request.Builder()
-//            .url(url)
-//            .addHeader("Authorization", "Bearer " + accessToken)
-//            .post(RequestBody.create(MediaType.parse("application/json"),
-//                this.codec.getObjectMapper().writeValueAsBytes(data)));
-//
-//        return this.execute(requestBuilder, this.codec::deserializeTransactionExport);
-//    }
-//    
-//    public void deleteTransactionExport(
-//            String accessToken,
-//            String transactionId) throws IOException {
-//
-//        final String url = this.buildBaseUri()
-//            .path("api/v2/transaction_exports").rel(transactionId)
-////            .queryIfPresent("verified_by", ofNullable(verifiedBy))
-////            .queryIfPresent("expand", ofNullable(expand))
-//            .toString();
-//
-//        final Request.Builder requestBuilder = new Request.Builder()
-//            .url(url)
-//            .addHeader("Authorization", "Bearer " + accessToken)
-//            .delete();
-//
-//        this.execute(requestBuilder, this.codec::deserializeMap);
-//    }
+    @Override
+    public TransactionExporter getTransactionExporterById(
+            String transactionId,
+            String accountId,
+            String targetId,
+            TransactionExporterQuery transactionExportQuery) throws IOException {
+
+        Objects.requireNonNull(transactionId, "transactionId was null");
+        Objects.requireNonNull(accountId, "accountId was null");
+        
+        final String url = this.buildBaseUrl()
+            .path("v2/transactions")
+            .rel(transactionId, "exporters", accountId)
+            .relIfPresent(ofNullable(targetId))
+            .queryIfPresent("payment", ofNullable(transactionExportQuery).map(v -> v.getPayment()))
+            .queryIfPresent("itemized", ofNullable(transactionExportQuery).map(v -> v.getItemized()))
+            .queryIfPresent("verified_by", ofNullable(transactionExportQuery)
+                .map(v -> toInstantParameter(v.getVerifiedBy())))
+            .queryIfPresent("expand", toExpandQueryParameter(transactionExportQuery))
+            .toString();
+        
+        return toValue(() -> this.getTransactionExporterByUrl(url));
+    }
     
+    abstract protected TransactionExporter getTransactionExporterByUrl(
+            String url) throws IOException;
+    
+    @Override
+    public TransactionExport saveTransactionExport(
+            String transactionId,
+            String accountId,
+            TransactionExporterRequest transactionExporterRequest) throws IOException {
+
+        final String url = this.buildBaseUrl()
+            .path("v2/transactions")
+            .rel(transactionId, "exporters", accountId)
+            .queryIfPresent("payment", ofNullable(transactionExporterRequest).map(v -> v.getPayment()))
+            .queryIfPresent("itemized", ofNullable(transactionExporterRequest).map(v -> v.getItemized()))
+            .queryIfPresent("verified_by", ofNullable(transactionExporterRequest)
+                .map(v -> toInstantParameter(v.getVerifiedBy())))
+            .toString();
+        
+        // we have to have a clean exporter w/ only parameters, so create new object
+        final TransactionExporterRequest request = new TransactionExporterRequest();
+        
+        if (transactionExporterRequest != null) {
+            request.setParameters(transactionExporterRequest.getParameters());
+        }
+        
+        return toValue(() -> this.saveTransactionExportByUrl(url, request));
+    }
+    
+    abstract protected TransactionExport saveTransactionExportByUrl(
+            String url,
+            TransactionExporterRequest transactionExporterRequest) throws IOException;
+    
+    public TransactionExport getTransactionExportById(
+            String transactionExportId) throws IOException {
+        
+        Objects.requireNonNull(transactionExportId, "transactionExportId was null");
+        
+        final String url = this.buildBaseUrl()
+            .path("v2/transaction_exports")
+            .rel(transactionExportId)
+            .toString();
+
+        return toValue(() -> this.getTransactionExportByUrl(url));
+    }
+    
+    abstract protected TransactionExport getTransactionExportByUrl(
+            String url) throws IOException;
+    
+    public TransactionExport deleteTransactionExportById(
+            String transactionExportId,
+            TransactionExportDeleteMode deleteMode) throws IOException {
+
+        Objects.requireNonNull(transactionExportId, "transactionExportId was null");
+        
+        final String url = this.buildBaseUrl()
+            .path("v2/transaction_exports")
+            .rel(transactionExportId)
+            .queryIfPresent("mode", ofNullable(deleteMode))
+            .toString();
+
+        return toValue(() -> this.deleteTransactionExportByUrl(url));
+    }
+    
+    abstract protected TransactionExport deleteTransactionExportByUrl(
+            String url) throws IOException;
     
 }

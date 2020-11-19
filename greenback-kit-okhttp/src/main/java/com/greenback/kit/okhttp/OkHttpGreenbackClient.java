@@ -7,6 +7,9 @@ import com.greenback.kit.model.Connect;
 import com.greenback.kit.model.Paginated;
 import com.greenback.kit.model.Message;
 import com.greenback.kit.model.Transaction;
+import com.greenback.kit.model.TransactionExport;
+import com.greenback.kit.model.TransactionExporter;
+import com.greenback.kit.model.TransactionExporterRequest;
 import com.greenback.kit.model.User;
 import com.greenback.kit.model.Vision;
 import com.greenback.kit.okhttp.impl.BaseOkHttpClient;
@@ -186,6 +189,48 @@ public class OkHttpGreenbackClient extends AbstractGreenbackClient implements Ba
             .url(url);
         
         return this.execute(requestBuilder, this.codec::readTransaction);
+    }
+
+    @Override
+    protected TransactionExporter getTransactionExporterByUrl(String url) throws IOException {
+        
+        final Request.Builder requestBuilder = new Request.Builder()
+            .url(url);
+        
+        return this.execute(requestBuilder, this.codec::readTransactionExporter);
+    }
+
+    @Override
+    protected TransactionExport saveTransactionExportByUrl(String url, TransactionExporterRequest transactionExporterRequest) throws IOException {
+        
+        final byte[] body = this.codec.writeBytes(transactionExporterRequest);
+
+        final RequestBody requestBody = this.jsonRequestBody(body);
+
+        final Request.Builder requestBuilder = new Request.Builder()
+            .url(url)
+            .post(requestBody);
+        
+        return this.execute(requestBuilder, this.codec::readTransactionExport);
+    }
+
+    @Override
+    protected TransactionExport getTransactionExportByUrl(String url) throws IOException {
+        
+        final Request.Builder requestBuilder = new Request.Builder()
+            .url(url);
+        
+        return this.execute(requestBuilder, this.codec::readTransactionExport);
+    }
+
+    @Override
+    protected TransactionExport deleteTransactionExportByUrl(String url) throws IOException {
+        
+        final Request.Builder requestBuilder = new Request.Builder()
+            .url(url)
+            .delete();
+        
+        return this.execute(requestBuilder, this.codec::readTransactionExport);
     }
     
 }

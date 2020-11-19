@@ -7,6 +7,9 @@ import com.greenback.kit.model.Query;
 import com.greenback.kit.util.IoFunction;
 import com.greenback.kit.util.StreamingPaginated;
 import java.io.IOException;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 import static java.util.Optional.ofNullable;
 import static java.util.stream.Collectors.joining;
@@ -14,6 +17,19 @@ import java.util.stream.StreamSupport;
 
 public class ClientHelper {
  
+    static private DateTimeFormatter DTF_ISO_WITH_MILLIS = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+        .withZone(ZoneId.of("UTC"));
+    
+    static public String toInstantParameter(
+            Instant instant) {
+        
+        if (instant != null) {
+            return DTF_ISO_WITH_MILLIS.format(instant);
+        }
+        
+        return null;
+    }
+    
     static public Optional<Integer> toLimitQueryParameter(
             Query<?> query) {
         

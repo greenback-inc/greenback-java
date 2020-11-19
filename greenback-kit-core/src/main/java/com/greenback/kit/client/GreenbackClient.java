@@ -9,6 +9,11 @@ import com.greenback.kit.model.MessageQuery;
 import com.greenback.kit.model.MessageRequest;
 import com.greenback.kit.model.Paginated;
 import com.greenback.kit.model.Transaction;
+import com.greenback.kit.model.TransactionExport;
+import com.greenback.kit.model.TransactionExportDeleteMode;
+import com.greenback.kit.model.TransactionExporterQuery;
+import com.greenback.kit.model.TransactionExporterRequest;
+import com.greenback.kit.model.TransactionExporter;
 import com.greenback.kit.model.TransactionQuery;
 import com.greenback.kit.model.User;
 import com.greenback.kit.model.Vision;
@@ -68,5 +73,31 @@ public interface GreenbackClient {
     Transaction getTransactionById(String transactionId, Iterable<String> expands) throws IOException;
 
     Paginated<Transaction> getTransactions(TransactionQuery messageQuery) throws IOException;
+    
+    default TransactionExporter getTransactionExporterById(
+            String transactionId,
+            String accountId,
+            TransactionExporterQuery transactionExporterQuery) throws IOException {
+        
+        return this.getTransactionExporterById(transactionId, accountId, null, transactionExporterQuery);
+    }
+    
+    TransactionExporter getTransactionExporterById(
+            String transactionId,
+            String accountId,
+            String targetId,
+            TransactionExporterQuery transactionExporterQuery) throws IOException;
+    
+    TransactionExport saveTransactionExport(
+            String transactionId,
+            String accountId,
+            TransactionExporterRequest transactionExporterRequest) throws IOException;
+    
+    TransactionExport getTransactionExportById(
+            String transactionExportId) throws IOException;
+    
+    TransactionExport deleteTransactionExportById(
+            String transactionExportId,
+            TransactionExportDeleteMode deleteMode) throws IOException;
     
 }

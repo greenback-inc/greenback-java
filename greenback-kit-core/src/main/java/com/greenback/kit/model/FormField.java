@@ -1,6 +1,7 @@
 package com.greenback.kit.model;
 
 import java.util.List;
+import static java.util.Optional.ofNullable;
 
 public class FormField {
  
@@ -10,27 +11,6 @@ public class FormField {
     private String value;
     private Boolean required;
     private List<FormSelectOption> options;
-
-    // helpers
-    
-//    public String selectedValue() {
-//        if (this.type == null) {
-//            return null;
-//        }
-//        switch (this.type.toLowerCase()) {
-//            case "hidden":
-//                return this.value;
-//            case "select":
-//                return maybeStream(this.options)
-//                    .jvmStream()
-//                    .filter(v -> v.getSelected() != null && v.getSelected())
-//                    .findFirst()
-//                    .map(v -> v.getValue())
-//                    .orElse(null);
-//            default:
-//                throw new RuntimeException("Unsupported field type " + this.type);
-//        }
-//    }
     
     public String getType() {
         return type;
@@ -78,6 +58,27 @@ public class FormField {
 
     public void setOptions(List<FormSelectOption> options) {
         this.options = options;
+    }
+ 
+    // helpers
+
+    public String computeValue() {
+        if (this.type == null) {
+            return null;
+        }
+        switch (this.type.toLowerCase()) {
+            case "select":
+                if (this.options == null || this.options.isEmpty()) {
+                    return null;
+                }
+                return this.options.stream()
+                    .filter(v -> v.getSelected() != null && v.getSelected())
+                    .findFirst()
+                    .map(v -> v.getValue())
+                    .orElse(null);
+            default:
+                return this.value;
+        }
     }
     
 }
