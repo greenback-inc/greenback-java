@@ -8,12 +8,14 @@ import com.greenback.kit.client.GreenbackConstants;
 import com.greenback.kit.jackson.JacksonGreenbackCodec;
 import com.greenback.kit.model.Connect;
 import com.greenback.kit.model.ConnectQuery;
+import com.greenback.kit.model.Contact;
 import com.greenback.kit.model.Item;
 import com.greenback.kit.model.Message;
 import com.greenback.kit.model.MessageQuery;
 import com.greenback.kit.model.Paginated;
 import com.greenback.kit.model.Transaction;
 import com.greenback.kit.model.TransactionQuery;
+import com.greenback.kit.model.TransactionTotals;
 import com.greenback.kit.model.User;
 import com.greenback.kit.okhttp.OkHttpGreenbackClient;
 import com.greenback.kit.okhttp.OkHttpHelper;
@@ -128,8 +130,18 @@ public class ApiDemo {
             Transaction transaction = new Transaction();
             transaction.setAccountId("zYP7Lv9Ea9");
             transaction.setReferenceId(UUID.randomUUID().toString());
+            
             transaction.setItems(items);
             transaction.setTransactedAt(Instant.now());
+            
+            TransactionTotals totals = new TransactionTotals();
+            totals.setGrand(1.0d);
+            
+            transaction.setTotals(totals);
+            
+            Contact contact = new Contact();
+            contact.setDomain("amazon.com");
+            transaction.setContact(contact);
             
             Transaction savedTransaction = client.saveTransaction(transaction);
             
