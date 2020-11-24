@@ -20,7 +20,7 @@ public class Query<T> {
     }
     
     public Iterable<String> getExpands() {
-        return expands;
+        return this.expands;
     }
 
     @SuppressWarnings("unchecked")
@@ -49,9 +49,7 @@ public class Query<T> {
             this.expands = new HashSet<>();
         }
         if (expand != null) {
-            for (String v : expand) {
-                this.expands.add(v);
-            }
+            this.expands.addAll(asList(expand));
         }
         return (T)this;
     }

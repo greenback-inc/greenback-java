@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.Objects;
 import java.util.Optional;
 import static java.util.Optional.ofNullable;
 import static java.util.stream.Collectors.joining;
@@ -47,24 +48,42 @@ public class ClientHelper {
             return Optional.empty();
         }
         
-        return toExpandQueryParameter(query.getExpands());
+        return toListQueryParameter(query.getExpands());
     }
  
-    static public Optional<String> toExpandQueryParameter(
-            Iterable<String> expands) {
+//    static public Optional<String> toExpandQueryParameter(
+//            Iterable<String> expands) {
+//        
+//        if (expands == null) {
+//            return Optional.empty();
+//        }
+//        
+//        final String expand = StreamSupport.stream(expands.spliterator(), false)
+//            .collect(joining(","));
+//        
+//        if (expand == null || expand.isEmpty()) {
+//            return null;
+//        }
+//        
+//        return ofNullable(expand);
+//    }
+ 
+    static public Optional<String> toListQueryParameter(
+            Iterable<?> expands) {
         
         if (expands == null) {
             return Optional.empty();
         }
         
-        final String expand = StreamSupport.stream(expands.spliterator(), false)
+        final String param = StreamSupport.stream(expands.spliterator(), false)
+            .map(v -> Objects.toString(v))
             .collect(joining(","));
         
-        if (expand == null || expand.isEmpty()) {
+        if (param == null || param.isEmpty()) {
             return null;
         }
         
-        return ofNullable(expand);
+        return ofNullable(param);
     }
     
     static public <T> T toValue(ClientIoConsumeHandler<T> consumer) throws IOException {

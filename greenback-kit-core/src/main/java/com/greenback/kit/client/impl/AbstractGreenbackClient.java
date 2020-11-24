@@ -6,6 +6,7 @@ import com.greenback.kit.client.GreenbackCodec;
 import static com.greenback.kit.client.impl.ClientHelper.toExpandQueryParameter;
 import static com.greenback.kit.client.impl.ClientHelper.toInstantParameter;
 import static com.greenback.kit.client.impl.ClientHelper.toLimitQueryParameter;
+import static com.greenback.kit.client.impl.ClientHelper.toListQueryParameter;
 import static com.greenback.kit.client.impl.ClientHelper.toStreamingPaginated;
 import static com.greenback.kit.client.impl.ClientHelper.toValue;
 import com.greenback.kit.model.Account;
@@ -28,7 +29,6 @@ import com.greenback.kit.model.Vision;
 import com.greenback.kit.model.VisionRequest;
 import com.greenback.kit.util.Bytes;
 import java.io.IOException;
-import java.time.Instant;
 import java.util.Objects;
 import static java.util.Optional.ofNullable;
 
@@ -84,7 +84,7 @@ abstract public class AbstractGreenbackClient implements GreenbackClient {
         final String url = this.buildBaseUrl()
             .path("v2/users")
             .rel(userId)
-            .queryIfPresent("expand", toExpandQueryParameter(expands))
+            .queryIfPresent("expand", toListQueryParameter(expands))
             .toString();
         
         return toValue(() -> this.getUserByUrl(url));
@@ -120,7 +120,7 @@ abstract public class AbstractGreenbackClient implements GreenbackClient {
         final String url = this.buildBaseUrl()
             .path("v2/connects")
             .rel(connectLabel)
-            .queryIfPresent("expand", toExpandQueryParameter(expands))
+            .queryIfPresent("expand", toListQueryParameter(expands))
             .toString();
         
         return toValue(() -> this.getConnectByUrl(url));
@@ -159,7 +159,7 @@ abstract public class AbstractGreenbackClient implements GreenbackClient {
         final String url = this.buildBaseUrl()
             .path("v2/accounts")
             .rel(accountId)
-            .queryIfPresent("expand", toExpandQueryParameter(expands))
+            .queryIfPresent("expand", toListQueryParameter(expands))
             .toString();
         
         return toValue(() -> this.getAccountByUrl(url));
@@ -204,7 +204,7 @@ abstract public class AbstractGreenbackClient implements GreenbackClient {
         final String url = this.buildBaseUrl()
             .path("v2/visions")
             .rel(visionId)
-            .queryIfPresent("expand", toExpandQueryParameter(expands))
+            .queryIfPresent("expand", toListQueryParameter(expands))
             .toString();
         
         return toValue(() -> this.getVisionByUrl(url));
@@ -224,6 +224,11 @@ abstract public class AbstractGreenbackClient implements GreenbackClient {
         
         final String url = this.buildBaseUrl()
             .path("v2/messages")
+            .queryIfPresent("account", ofNullable(messageQuery).map(v -> toListQueryParameter(v.getAccountIds())))
+            .queryIfPresent("flag", ofNullable(messageQuery).map(v -> toListQueryParameter(v.getFlags())))
+            .queryIfPresent("query", ofNullable(messageQuery).map(v -> v.getQuery()))
+            .queryIfPresent("start", ofNullable(messageQuery).map(v -> toInstantParameter(v.getMinPostedAt())))
+            .queryIfPresent("end", ofNullable(messageQuery).map(v -> toInstantParameter(v.getMaxPostedAt())))
             .queryIfPresent("expand", toExpandQueryParameter(messageQuery))
             .queryIfPresent("limit", toLimitQueryParameter(messageQuery))
             .toString();
@@ -254,7 +259,7 @@ abstract public class AbstractGreenbackClient implements GreenbackClient {
         final String url = this.buildBaseUrl()
             .path("v2/messages")
             .rel(messageId)
-            .queryIfPresent("expand", toExpandQueryParameter(expands))
+            .queryIfPresent("expand", toListQueryParameter(expands))
             .toString();
         
         return toValue(() -> this.getMessageByUrl(url));
@@ -281,6 +286,12 @@ abstract public class AbstractGreenbackClient implements GreenbackClient {
         
         final String url = this.buildBaseUrl()
             .path("v2/transactions")
+            .queryIfPresent("account", ofNullable(transactionQuery).map(v -> toListQueryParameter(v.getAccountIds())))
+            .queryIfPresent("type", ofNullable(transactionQuery).map(v -> toListQueryParameter(v.getTypes())))
+            .queryIfPresent("flag", ofNullable(transactionQuery).map(v -> toListQueryParameter(v.getFlags())))
+            .queryIfPresent("query", ofNullable(transactionQuery).map(v -> v.getQuery()))
+            .queryIfPresent("start", ofNullable(transactionQuery).map(v -> toInstantParameter(v.getMinTransactedAt())))
+            .queryIfPresent("end", ofNullable(transactionQuery).map(v -> toInstantParameter(v.getMaxTransactedAt())))
             .queryIfPresent("expand", toExpandQueryParameter(transactionQuery))
             .queryIfPresent("limit", toLimitQueryParameter(transactionQuery))
             .toString();
@@ -298,7 +309,7 @@ abstract public class AbstractGreenbackClient implements GreenbackClient {
         final String url = this.buildBaseUrl()
             .path("v2/transactions")
             .rel(transactionId)
-            .queryIfPresent("expand", toExpandQueryParameter(expands))
+            .queryIfPresent("expand", toListQueryParameter(expands))
             .toString();
         
         return toValue(() -> this.getTransactionByUrl(url));
