@@ -1,5 +1,9 @@
 # Greenback Kit for Java
 
+## v1.0.3 - 2020-11-24
+
+ - Support for additional query paramters for Transactions and Messages
+
 ## v1.0.2 - 2020-11-19
 
  - Support for Transaction Export APIs

@@ -51,8 +51,8 @@ The Greenback Kit for Java was designed to be flexible about what dependencies w
 Add this dependency to your project's build file:
 
 ```groovy
-implementation "com.greenback:greenback-kit-jackson:1.0.2"
-implementation "com.greenback:greenback-kit-okhttp:1.0.2"
+implementation "com.greenback:greenback-kit-jackson:1.0.3"
+implementation "com.greenback:greenback-kit-okhttp:1.0.3"
 ```
 
 ### Maven users
@@ -63,12 +63,12 @@ Add this dependency to your project's POM:
 <dependency>
   <groupId>com.greenback</groupId>
   <artifactId>greenback-kit-jackson</artifactId>
-  <version>1.0.2</version>
+  <version>1.0.3</version>
 </dependency>
 <dependency>
   <groupId>com.greenback</groupId>
   <artifactId>greenback-kit-okhttp</artifactId>
-  <version>1.0.2</version>
+  <version>1.0.3</version>
 </dependency>
 ```
 
