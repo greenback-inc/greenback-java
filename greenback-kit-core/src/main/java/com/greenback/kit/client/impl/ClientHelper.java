@@ -18,7 +18,7 @@ import java.util.stream.StreamSupport;
 
 public class ClientHelper {
  
-    static private DateTimeFormatter DTF_ISO_WITH_MILLIS = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+    private static final DateTimeFormatter DTF_ISO_WITH_MILLIS = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
         .withZone(ZoneId.of("UTC"));
     
     static public String toInstantParameter(
@@ -48,31 +48,20 @@ public class ClientHelper {
             return Optional.empty();
         }
         
-        return toListQueryParameter(query.getExpands());
+        return ofNullable(toListQueryParameter(query.getExpands()));
     }
  
-//    static public Optional<String> toExpandQueryParameter(
-//            Iterable<String> expands) {
-//        
-//        if (expands == null) {
-//            return Optional.empty();
-//        }
-//        
-//        final String expand = StreamSupport.stream(expands.spliterator(), false)
-//            .collect(joining(","));
-//        
-//        if (expand == null || expand.isEmpty()) {
-//            return null;
-//        }
-//        
-//        return ofNullable(expand);
-//    }
+    static public Optional<String> toExpandQueryParameter(
+            Iterable<String> expands) {
+        
+        return ofNullable(toListQueryParameter(expands));
+    }
  
-    static public Optional<String> toListQueryParameter(
+    static public String toListQueryParameter(
             Iterable<?> expands) {
         
         if (expands == null) {
-            return Optional.empty();
+            return null;
         }
         
         final String param = StreamSupport.stream(expands.spliterator(), false)
@@ -83,7 +72,7 @@ public class ClientHelper {
             return null;
         }
         
-        return ofNullable(param);
+        return param;
     }
     
     static public <T> T toValue(ClientIoConsumeHandler<T> consumer) throws IOException {

@@ -11,6 +11,7 @@ public class TransactionQuery extends DocumentQuery<TransactionQuery> {
     protected String query;
     protected Instant minTransactedAt;          // start
     protected Instant maxTransactedAt;          // end
+    protected Boolean descending;
 
     public Iterable<TransactionType> getTypes() {
         return this.types;
@@ -56,6 +57,15 @@ public class TransactionQuery extends DocumentQuery<TransactionQuery> {
 
     public TransactionQuery setMaxTransactedAt(Instant maxTransactedAt) {
         this.maxTransactedAt = maxTransactedAt;
+        return this;
+    }
+
+    public Boolean getDescending() {
+        return descending;
+    }
+
+    public TransactionQuery setDescending(Boolean descending) {
+        this.descending = descending;
         return this;
     }
     
