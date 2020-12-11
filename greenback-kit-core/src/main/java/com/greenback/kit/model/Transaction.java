@@ -9,8 +9,15 @@ public class Transaction extends Document {
     private String currencyCode;
     private String accountId;
     private String contactId;
+    private TransactionStatus status;
     private List<Attachment> attachments;
+    private PostalAddress billingAddress;
+    private PostalAddress shippingAddress;
+    private PostalAddress storeAddress;
     private List<Item> items;
+    private List<Payment> payments;
+    private List<Payment> deposits;
+    private List<ExchangeRate> exchangeRates;
     private TransactionTotals totals;
     private Instant transactedAt;
     private Instant dueAt;
@@ -59,12 +66,52 @@ public class Transaction extends Document {
         this.attachments = attachments;
     }
 
+    public PostalAddress getBillingAddress() {
+        return billingAddress;
+    }
+
+    public void setBillingAddress(PostalAddress billingAddress) {
+        this.billingAddress = billingAddress;
+    }
+
+    public PostalAddress getShippingAddress() {
+        return shippingAddress;
+    }
+
+    public void setShippingAddress(PostalAddress shippingAddress) {
+        this.shippingAddress = shippingAddress;
+    }
+
+    public PostalAddress getStoreAddress() {
+        return storeAddress;
+    }
+
+    public void setStoreAddress(PostalAddress storeAddress) {
+        this.storeAddress = storeAddress;
+    }
+
     public List<Item> getItems() {
         return items;
     }
 
     public void setItems(List<Item> items) {
         this.items = items;
+    }
+
+    public List<Payment> getPayments() {
+        return payments;
+    }
+
+    public void setPayments(List<Payment> payments) {
+        this.payments = payments;
+    }
+
+    public List<Payment> getDeposits() {
+        return deposits;
+    }
+
+    public void setDeposits(List<Payment> deposits) {
+        this.deposits = deposits;
     }
 
     public TransactionTotals getTotals() {
