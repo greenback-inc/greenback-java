@@ -7,6 +7,7 @@ public class Transaction extends Document {
  
     private TransactionType type;
     private String currencyCode;
+    private String displayReferenceId;
     private String accountId;
     private String contactId;
     private TransactionStatus status;
@@ -40,6 +41,14 @@ public class Transaction extends Document {
 
     public void setCurrencyCode(String currencyCode) {
         this.currencyCode = currencyCode;
+    }
+
+    public String getDisplayReferenceId() {
+        return displayReferenceId;
+    }
+
+    public void setDisplayReferenceId(String displayReferenceId) {
+        this.displayReferenceId = displayReferenceId;
     }
 
     public String getAccountId() {
@@ -88,6 +97,22 @@ public class Transaction extends Document {
 
     public void setStoreAddress(PostalAddress storeAddress) {
         this.storeAddress = storeAddress;
+    }
+
+    public TransactionStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(TransactionStatus status) {
+        this.status = status;
+    }
+
+    public List<ExchangeRate> getExchangeRates() {
+        return exchangeRates;
+    }
+
+    public void setExchangeRates(List<ExchangeRate> exchangeRates) {
+        this.exchangeRates = exchangeRates;
     }
 
     public List<Item> getItems() {
