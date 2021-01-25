@@ -1,5 +1,9 @@
 # Greenback Kit for Java
 
+## v1.0.5 - 2021-01-25
+
+ - Support for additional properties in Transaction
+
 ## v1.0.4 - 2020-12-11
 
  - Support for additional properties in Transaction
