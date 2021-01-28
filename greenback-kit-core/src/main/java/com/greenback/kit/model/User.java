@@ -9,6 +9,7 @@ public class User extends GreenbackObject {
     private UserEmailState emailState;
     private UserPasswordState passwordState;
     private Integer memberCount;
+    private UserPrefs prefs;
 
     public UserType getType() {
         return type;
@@ -64,6 +65,14 @@ public class User extends GreenbackObject {
 
     public void setMemberCount(Integer memberCount) {
         this.memberCount = memberCount;
+    }
+
+    public UserPrefs getPrefs() {
+        return prefs;
+    }
+
+    public void setPrefs(UserPrefs prefs) {
+        this.prefs = prefs;
     }
 
 }
