@@ -18,6 +18,7 @@ public class Transaction extends Document {
     // expandable
     private Account account;
     private Contact contact;
+    private TransactionExport export;
 
     public TransactionType getType() {
         return type;
@@ -105,6 +106,14 @@ public class Transaction extends Document {
 
     public void setContact(Contact contact) {
         this.contact = contact;
+    }
+
+    public TransactionExport getExport() {
+        return export;
+    }
+
+    public void setExport(TransactionExport export) {
+        this.export = export;
     }
 
 }
