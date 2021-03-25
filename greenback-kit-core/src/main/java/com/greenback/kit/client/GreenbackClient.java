@@ -4,6 +4,7 @@ import com.greenback.kit.model.Account;
 import com.greenback.kit.model.AccountQuery;
 import com.greenback.kit.model.Connect;
 import com.greenback.kit.model.ConnectQuery;
+import com.greenback.kit.model.ConnectRequest;
 import com.greenback.kit.model.Message;
 import com.greenback.kit.model.MessageQuery;
 import com.greenback.kit.model.MessageRequest;
@@ -26,19 +27,31 @@ public interface GreenbackClient {
     
     GreenbackCodec getCodec();
     
+    // Users
+    
     default User getUserById(String userId) throws IOException {
         return this.getUserById(userId, null);
     }
     
     User getUserById(String userId, Iterable<String> expands) throws IOException;
     
+    // Connects
+    
     Paginated<Connect> getConnects(ConnectQuery connectQuery) throws IOException;
     
-    default Connect getConnectByLabel(String connectLabel) throws IOException {
-        return this.getConnectByLabel(connectLabel, null);
-    }
+    Connect beginConnect(
+        String connectLabel,
+        String accountId) throws IOException;
     
-    Connect getConnectByLabel(String connectLabel, Iterable<String> expands) throws IOException;
+    Connect authorizeConnect(
+        String connectLabel,
+        ConnectRequest connectRequest) throws IOException;
+    
+    Connect completeConnect(
+        String connectLabel,
+        ConnectRequest connectRequest) throws IOException;
+    
+    // Accounts
     
     Paginated<Account> getAccounts(AccountQuery accountQuery) throws IOException;
     
@@ -48,6 +61,8 @@ public interface GreenbackClient {
     
     Account getAccountById(String accountId, Iterable<String> expands) throws IOException;
 
+    // Visions
+    
     Vision createVision(VisionRequest visionRequest) throws IOException;
     
     default Vision getVisionById(String visionId) throws IOException {
@@ -56,6 +71,8 @@ public interface GreenbackClient {
     
     Vision getVisionById(String visionId, Iterable<String> expands) throws IOException;
 
+    // Messages
+    
     Paginated<Message> getMessages(MessageQuery messageQuery) throws IOException;
     
     Message createMessage(MessageRequest messageRequest) throws IOException;
@@ -66,13 +83,17 @@ public interface GreenbackClient {
     
     Message getMessageById(String messageId, Iterable<String> expands) throws IOException;
     
+    // Transactions
+    
     default Transaction getTransactionById(String transactionId) throws IOException {
         return this.getTransactionById(transactionId, null);
     }
     
     Transaction getTransactionById(String transactionId, Iterable<String> expands) throws IOException;
 
-    Paginated<Transaction> getTransactions(TransactionQuery messageQuery) throws IOException;
+    Paginated<Transaction> getTransactions(TransactionQuery transactionQuery) throws IOException;
+    
+    // Transaction Exports
     
     default TransactionExporter getTransactionExporterById(
             String transactionId,
