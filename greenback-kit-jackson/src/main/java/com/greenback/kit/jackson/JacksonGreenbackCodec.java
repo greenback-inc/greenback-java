@@ -14,7 +14,8 @@ import com.fizzed.crux.jackson.EnumStrategyModule;
 import com.greenback.kit.client.GreenbackCodec;
 import com.greenback.kit.model.Account;
 import com.greenback.kit.model.Connect;
-import com.greenback.kit.model.Error;
+import com.greenback.kit.model.ConnectIntent;
+import com.greenback.kit.model.GreenbackError;
 import com.greenback.kit.model.Paginated;
 import com.greenback.kit.model.Sync;
 import com.greenback.kit.model.Transaction;
@@ -57,7 +58,8 @@ public class JacksonGreenbackCodec implements GreenbackCodec {
     protected void verifySuccess(JsonNode rootNode) throws IOException, GreenbackException {
         // has error?
         if (rootNode.has("error")) {
-            Error error = this.objectMapper.treeToValue(rootNode.get("error"), Error.class);
+            GreenbackError error = this.objectMapper.treeToValue(rootNode.get("error"), GreenbackError.class);
+            
             throw new GreenbackException(error);
         }
     }
@@ -81,6 +83,8 @@ public class JacksonGreenbackCodec implements GreenbackCodec {
         = new TypeReference<Paginated<Connect>>() {};
     static private final TypeReference<Value<Connect>> TYPEREF_CONNECT
         = new TypeReference<Value<Connect>>() {};
+    static private final TypeReference<Value<ConnectIntent>> TYPEREF_CONNECT_INTENT
+        = new TypeReference<Value<ConnectIntent>>() {};
     static private final TypeReference<Paginated<Account>> TYPEREF_ACCOUNTS
         = new TypeReference<Paginated<Account>>() {};
     static private final TypeReference<Value<Account>> TYPEREF_ACCOUNT
@@ -145,6 +149,13 @@ public class JacksonGreenbackCodec implements GreenbackCodec {
             InputStream input) throws IOException {
         
         return this.read(input, TYPEREF_CONNECT).getValue();
+    }
+    
+    @Override
+    public ConnectIntent readConnectIntent(
+            InputStream input) throws IOException {
+        
+        return this.read(input, TYPEREF_CONNECT_INTENT).getValue();
     }
     
     @Override

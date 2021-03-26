@@ -4,17 +4,16 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Objects;
 
-public class ConnectRequest {
+public class ConnectAuthorizeRequest {
  
     private Map<String,String> parameters;
     private String completeUrl;
-    private ConnectAction action;
 
     public Map<String, String> getParameters() {
         return parameters;
     }
 
-    public ConnectRequest setParameters(Map<String, String> parameters) {
+    public ConnectAuthorizeRequest setParameters(Map<String, String> parameters) {
         this.parameters = parameters;
         return this;
     }
@@ -23,23 +22,14 @@ public class ConnectRequest {
         return completeUrl;
     }
 
-    public ConnectRequest setCompleteUrl(String completeUrl) {
+    public ConnectAuthorizeRequest setCompleteUrl(String completeUrl) {
         this.completeUrl = completeUrl;
-        return this;
-    }
-
-    public ConnectAction getAction() {
-        return action;
-    }
-
-    public ConnectRequest setAction(ConnectAction action) {
-        this.action = action;
         return this;
     }
     
     // helpers
     
-    public ConnectRequest addParameter(String name, String value) {
+    public ConnectAuthorizeRequest addParameter(String name, String value) {
         Objects.requireNonNull(name, "name was null");
         
         if (this.parameters == null) {

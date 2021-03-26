@@ -2,6 +2,7 @@ package com.greenback.kit.client;
 
 import com.greenback.kit.model.Account;
 import com.greenback.kit.model.Connect;
+import com.greenback.kit.model.ConnectIntent;
 import com.greenback.kit.model.Message;
 import com.greenback.kit.model.Paginated;
 import com.greenback.kit.model.Sync;
@@ -27,6 +28,8 @@ public interface GreenbackCodec {
     
     Paginated<Connect> readConnects(InputStream input) throws IOException;
 
+    ConnectIntent readConnectIntent(InputStream input) throws IOException;
+    
     Account readAccount(InputStream input) throws IOException;
 
     Paginated<Account> readAccounts(InputStream input) throws IOException;

@@ -12,6 +12,9 @@ import static com.greenback.kit.client.impl.ClientHelper.toValue;
 import com.greenback.kit.model.Account;
 import com.greenback.kit.model.AccountQuery;
 import com.greenback.kit.model.Connect;
+import com.greenback.kit.model.ConnectAuthorizeRequest;
+import com.greenback.kit.model.ConnectCompleteRequest;
+import com.greenback.kit.model.ConnectIntent;
 import com.greenback.kit.model.ConnectQuery;
 import com.greenback.kit.model.Message;
 import com.greenback.kit.model.MessageQuery;
@@ -110,27 +113,82 @@ abstract public class AbstractGreenbackClient implements GreenbackClient {
         return toStreamingPaginated(url, v -> this.getConnectsByUrl(v));
     }
     
+    abstract protected Paginated<Connect> getConnectsByUrl(
+            String url) throws IOException;
+    
+    //
+    // Connect Intents
+    //
+    
     @Override
-    public Connect getConnectByLabel(
-            String connectLabel,
-            Iterable<String> expands) throws IOException {
+    public ConnectIntent beginConnectIntent(
+            String connectLabel) throws IOException {
 
         Objects.requireNonNull(connectLabel, "connectLabel was null");
         
         final String url = this.buildBaseUrl()
             .path("v2/connects")
             .rel(connectLabel)
-            .queryIfPresent("expand", toExpandQueryParameter(expands))
+            .rel("begin")
             .toString();
         
-        return toValue(() -> this.getConnectByUrl(url));
+        return toValue(() -> this.getConnectIntentByUrl(url));
     }
     
-    abstract protected Paginated<Connect> getConnectsByUrl(
+    @Override
+    public ConnectIntent reconnectConnectIntent(
+            String accountId) throws IOException {
+
+        Objects.requireNonNull(accountId, "accountId was null");
+        
+        final String url = this.buildBaseUrl()
+            .path("v2/accounts")
+            .rel(accountId)
+            .rel("reconnect")
+            .toString();
+        
+        return toValue(() -> this.getConnectIntentByUrl(url));
+    }
+    
+    @Override
+    public ConnectIntent authorizeConnectIntent(
+            String token,
+            ConnectAuthorizeRequest request) throws IOException {
+
+        Objects.requireNonNull(token, "token was null");
+        Objects.requireNonNull(request, "request was null");
+        
+        final String url = this.buildBaseUrl()
+            .path("v2/connect_intents")
+            .rel(token)
+            .toString();
+        
+        return toValue(() -> this.postConnectIntentRequestByUrl(url, request));
+    }
+    
+    @Override
+    public ConnectIntent completeConnectIntent(
+            String token,
+            ConnectCompleteRequest request) throws IOException {
+
+        Objects.requireNonNull(token, "token was null");
+        Objects.requireNonNull(request, "request was null");
+        
+        final String url = this.buildBaseUrl()
+            .path("v2/connect_intents")
+            .rel(token)
+            .rel("complete")
+            .toString();
+        
+        return toValue(() -> this.postConnectIntentRequestByUrl(url, request));
+    }
+    
+    abstract protected ConnectIntent getConnectIntentByUrl(
             String url) throws IOException;
     
-    abstract protected Connect getConnectByUrl(
-            String url) throws IOException;
+    abstract protected ConnectIntent postConnectIntentRequestByUrl(
+            String url,
+            Object request) throws IOException;
     
     //
     // Accounts
@@ -371,10 +429,10 @@ abstract public class AbstractGreenbackClient implements GreenbackClient {
             request.setParameters(transactionExporterRequest.getParameters());
         }
         
-        return toValue(() -> this.saveTransactionExportByUrl(url, request));
+        return toValue(() -> this.postTransactionExportByUrl(url, request));
     }
     
-    abstract protected TransactionExport saveTransactionExportByUrl(
+    abstract protected TransactionExport postTransactionExportByUrl(
             String url,
             TransactionExporterRequest transactionExporterRequest) throws IOException;
     

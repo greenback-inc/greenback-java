@@ -4,6 +4,7 @@ import com.greenback.kit.client.GreenbackCodec;
 import com.greenback.kit.client.impl.AbstractGreenbackClient;
 import com.greenback.kit.model.Account;
 import com.greenback.kit.model.Connect;
+import com.greenback.kit.model.ConnectIntent;
 import com.greenback.kit.model.Paginated;
 import com.greenback.kit.model.Message;
 import com.greenback.kit.model.Transaction;
@@ -65,12 +66,29 @@ public class OkHttpGreenbackClient extends AbstractGreenbackClient implements Ba
     }
     
     @Override
-    protected Connect getConnectByUrl(String url) throws IOException {
+    protected ConnectIntent getConnectIntentByUrl(
+            String url) throws IOException {
         
         final Request.Builder requestBuilder = new Request.Builder()
             .url(url);
         
-        return this.execute(requestBuilder, this.codec::readConnect);
+        return this.execute(requestBuilder, this.codec::readConnectIntent);
+    }
+    
+    @Override
+    protected ConnectIntent postConnectIntentRequestByUrl(
+            String url,
+            Object request) throws IOException {
+        
+        final byte[] body = this.codec.writeBytes(request);
+
+        final RequestBody requestBody = this.jsonRequestBody(body);
+
+        final Request.Builder requestBuilder = new Request.Builder()
+            .url(url)
+            .post(requestBody);
+        
+        return this.execute(requestBuilder, this.codec::readConnectIntent);
     }
     
     @Override
@@ -201,7 +219,9 @@ public class OkHttpGreenbackClient extends AbstractGreenbackClient implements Ba
     }
 
     @Override
-    protected TransactionExport saveTransactionExportByUrl(String url, TransactionExporterRequest transactionExporterRequest) throws IOException {
+    protected TransactionExport postTransactionExportByUrl(
+            String url,
+            TransactionExporterRequest transactionExporterRequest) throws IOException {
         
         final byte[] body = this.codec.writeBytes(transactionExporterRequest);
 

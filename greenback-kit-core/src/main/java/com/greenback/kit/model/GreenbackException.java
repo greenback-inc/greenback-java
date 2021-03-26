@@ -5,19 +5,19 @@ import java.io.IOException;
 public class GreenbackException extends IOException {
     private static final long serialVersionUID = 1L;
     
-    private final Error error;
+    private final GreenbackError error;
 
-    public GreenbackException(Error error) {
+    public GreenbackException(GreenbackError error) {
         super(error.getMessage());
         this.error = error;
     }
 
-    public GreenbackException(Error error, Throwable cause) {
+    public GreenbackException(GreenbackError error, Throwable cause) {
         super(error.getMessage(), cause);
         this.error = error;
     }
 
-    public Error getError() {
+    public GreenbackError getError() {
         return error;
     }
 

@@ -2,13 +2,13 @@ package com.greenback.kit.model;
 
 public class Response {
     
-    private Error error;
+    private GreenbackError error;
 
-    public Error getError() {
+    public GreenbackError getError() {
         return error;
     }
 
-    public void setError(Error error) {
+    public void setError(GreenbackError error) {
         this.error = error;
     }
     

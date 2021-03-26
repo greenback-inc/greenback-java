@@ -9,7 +9,7 @@ public class Sync extends GreenbackObject {
     private String message;
     private Double progress;
     private ProcessingStatus status;
-    private Error error;
+    private GreenbackError error;
     private SyncRequest request;
     private SyncSummary summary;
 
@@ -69,11 +69,11 @@ public class Sync extends GreenbackObject {
         this.progress = progress;
     }
 
-    public Error getError() {
+    public GreenbackError getError() {
         return error;
     }
 
-    public void setError(Error error) {
+    public void setError(GreenbackError error) {
         this.error = error;
     }
 

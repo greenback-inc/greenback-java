@@ -1,6 +1,6 @@
 package com.greenback.kit.model;
 
-public class Error {
+public class GreenbackError {
  
     private String category;
     private Integer code;

@@ -4,7 +4,9 @@ import com.greenback.kit.model.Account;
 import com.greenback.kit.model.AccountQuery;
 import com.greenback.kit.model.Connect;
 import com.greenback.kit.model.ConnectQuery;
-import com.greenback.kit.model.ConnectRequest;
+import com.greenback.kit.model.ConnectAuthorizeRequest;
+import com.greenback.kit.model.ConnectCompleteRequest;
+import com.greenback.kit.model.ConnectIntent;
 import com.greenback.kit.model.Message;
 import com.greenback.kit.model.MessageQuery;
 import com.greenback.kit.model.MessageRequest;
@@ -39,17 +41,19 @@ public interface GreenbackClient {
     
     Paginated<Connect> getConnects(ConnectQuery connectQuery) throws IOException;
     
-    Connect beginConnect(
-        String connectLabel,
-        String accountId) throws IOException;
+    // Connect Intents
     
-    Connect authorizeConnect(
-        String connectLabel,
-        ConnectRequest connectRequest) throws IOException;
+    ConnectIntent beginConnectIntent(String connectLabel) throws IOException;
     
-    Connect completeConnect(
-        String connectLabel,
-        ConnectRequest connectRequest) throws IOException;
+    ConnectIntent reconnectConnectIntent(String accountId) throws IOException;
+    
+    ConnectIntent authorizeConnectIntent(
+        String token,
+        ConnectAuthorizeRequest connectAuthorizeRequest) throws IOException;
+    
+    ConnectIntent completeConnectIntent(
+        String token,
+        ConnectCompleteRequest connectCompleteRequest) throws IOException;
     
     // Accounts
     
