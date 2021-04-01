@@ -41,6 +41,8 @@ public interface GreenbackClient {
     
     Paginated<Connect> getConnects(ConnectQuery connectQuery) throws IOException;
     
+    Connect getConnectByLabel(String connectLabel) throws IOException;
+    
     // Connect Intents
     
     ConnectIntent beginConnectIntent(String connectLabel) throws IOException;
@@ -56,6 +58,10 @@ public interface GreenbackClient {
         ConnectCompleteRequest connectCompleteRequest) throws IOException;
     
     // Accounts
+    
+    Account createAccount(Account account) throws IOException;
+    
+    Account updateAccount(Account account) throws IOException;
     
     Paginated<Account> getAccounts(AccountQuery accountQuery) throws IOException;
     

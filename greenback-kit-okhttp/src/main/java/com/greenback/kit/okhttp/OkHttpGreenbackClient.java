@@ -66,6 +66,15 @@ public class OkHttpGreenbackClient extends AbstractGreenbackClient implements Ba
     }
     
     @Override
+    protected Connect getConnectByUrl(String url) throws IOException {
+        
+        final Request.Builder requestBuilder = new Request.Builder()
+            .url(url);
+        
+        return this.execute(requestBuilder, this.codec::readConnect);
+    }
+    
+    @Override
     protected ConnectIntent getConnectIntentByUrl(
             String url) throws IOException {
         
@@ -105,6 +114,22 @@ public class OkHttpGreenbackClient extends AbstractGreenbackClient implements Ba
         
         final Request.Builder requestBuilder = new Request.Builder()
             .url(url);
+        
+        return this.execute(requestBuilder, this.codec::readAccount);
+    }
+    
+    @Override
+    protected Account postAccountByUrl(
+            String url,
+            Object request) throws IOException {
+        
+        final byte[] body = this.codec.writeBytes(request);
+
+        final RequestBody requestBody = this.jsonRequestBody(body);
+
+        final Request.Builder requestBuilder = new Request.Builder()
+            .url(url)
+            .post(requestBody);
         
         return this.execute(requestBuilder, this.codec::readAccount);
     }

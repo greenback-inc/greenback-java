@@ -113,7 +113,22 @@ abstract public class AbstractGreenbackClient implements GreenbackClient {
         return toStreamingPaginated(url, v -> this.getConnectsByUrl(v));
     }
     
+    @Override
+    public Connect getConnectByLabel(
+            String connectLabel) throws IOException {
+
+        final String url = this.buildBaseUrl()
+            .path("v2/connects")
+            .rel(connectLabel)
+            .toString();
+        
+        return toValue(() -> this.getConnectByUrl(url));
+    }
+    
     abstract protected Paginated<Connect> getConnectsByUrl(
+            String url) throws IOException;
+    
+    abstract protected Connect getConnectByUrl(
             String url) throws IOException;
     
     //
@@ -195,6 +210,34 @@ abstract public class AbstractGreenbackClient implements GreenbackClient {
     //
     
     @Override
+    public Account createAccount(
+            Account account) throws IOException {
+
+        Objects.requireNonNull(account, "account was null");
+        
+        final String url = this.buildBaseUrl()
+            .path("v2/accounts")
+            .toString();
+        
+        return this.postAccountByUrl(url, account);
+    }
+    
+    @Override
+    public Account updateAccount(
+            Account account) throws IOException {
+
+        Objects.requireNonNull(account, "account was null");
+        Objects.requireNonNull(account.getId(), "account id was null");
+        
+        final String url = this.buildBaseUrl()
+            .path("v2/accounts")
+            .rel(account.getId())
+            .toString();
+        
+        return this.postAccountByUrl(url, account);
+    }
+    
+    @Override
     public Paginated<Account> getAccounts(
             AccountQuery accountQuery) throws IOException {
 
@@ -222,6 +265,10 @@ abstract public class AbstractGreenbackClient implements GreenbackClient {
         
         return toValue(() -> this.getAccountByUrl(url));
     }
+    
+    abstract protected Account postAccountByUrl(
+            String url,
+            Object request) throws IOException;
     
     abstract protected Paginated<Account> getAccountsByUrl(
             String url) throws IOException;
