@@ -4,7 +4,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Objects;
 
-public class ConnectAuthorizeRequest {
+public class ConnectIntentAuthorize {
  
     private Map<String,String> parameters;
     private String completeUrl;
@@ -13,7 +13,7 @@ public class ConnectAuthorizeRequest {
         return parameters;
     }
 
-    public ConnectAuthorizeRequest setParameters(Map<String, String> parameters) {
+    public ConnectIntentAuthorize setParameters(Map<String, String> parameters) {
         this.parameters = parameters;
         return this;
     }
@@ -22,19 +22,21 @@ public class ConnectAuthorizeRequest {
         return completeUrl;
     }
 
-    public ConnectAuthorizeRequest setCompleteUrl(String completeUrl) {
+    public ConnectIntentAuthorize setCompleteUrl(String completeUrl) {
         this.completeUrl = completeUrl;
         return this;
     }
     
     // helpers
     
-    public ConnectAuthorizeRequest addParameter(String name, String value) {
+    public ConnectIntentAuthorize addParameter(String name, String value) {
         Objects.requireNonNull(name, "name was null");
         
         if (this.parameters == null) {
             this.parameters = new LinkedHashMap<>();
         }
+        
+        this.parameters.put(name, value);
         
         return this;
     }

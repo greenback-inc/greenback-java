@@ -11,7 +11,14 @@ public class Connect extends GreenbackObject {
     private Set<String> tags;
     private String logoUrl;
     private String contactId;
+    private ConnectAuthStrategy authStrategy;
+    private AccountState accountState;
+    private AccountConnectionState accountConnectionState;
 
+    // expandable
+    
+    private ConnectCard card;
+    
     public ConnectType getType() {
         return type;
     }
@@ -66,6 +73,38 @@ public class Connect extends GreenbackObject {
 
     public void setContactId(String contactId) {
         this.contactId = contactId;
+    }
+
+    public ConnectAuthStrategy getAuthStrategy() {
+        return authStrategy;
+    }
+
+    public void setAuthStrategy(ConnectAuthStrategy authStrategy) {
+        this.authStrategy = authStrategy;
+    }
+
+    public AccountState getAccountState() {
+        return accountState;
+    }
+
+    public void setAccountState(AccountState accountState) {
+        this.accountState = accountState;
+    }
+
+    public AccountConnectionState getAccountConnectionState() {
+        return accountConnectionState;
+    }
+
+    public void setAccountConnectionState(AccountConnectionState accountConnectionState) {
+        this.accountConnectionState = accountConnectionState;
+    }
+
+    public ConnectCard getCard() {
+        return card;
+    }
+
+    public void setCard(ConnectCard card) {
+        this.card = card;
     }
 
 }

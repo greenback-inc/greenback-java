@@ -1,16 +1,14 @@
 package com.greenback.kit.model;
 
+import static com.greenback.kit.util.Utils.toIterable;
 import java.time.Instant;
-import static java.util.Arrays.asList;
-import java.util.HashSet;
-import java.util.Set;
 
 public class TransactionQuery extends DocumentQuery<TransactionQuery> {
     
-    protected Set<TransactionType> types;
+    protected Iterable<TransactionType> types;
     protected String query;
-    protected Instant minTransactedAt;          // start
-    protected Instant maxTransactedAt;          // end
+    protected Instant minTransactedAt;
+    protected Instant maxTransactedAt;
     protected Boolean descending;
 
     public Iterable<TransactionType> getTypes() {
@@ -18,18 +16,12 @@ public class TransactionQuery extends DocumentQuery<TransactionQuery> {
     }
 
     public TransactionQuery setTypes(Iterable<TransactionType> types) {
-        if (types == null) {
-            this.types = null;
-        }
-        else {
-            this.types = new HashSet<>();
-            types.forEach(v -> this.types.add(v));
-        }
+        this.types = types;
         return this;
     }
 
-    public TransactionQuery setTypes(TransactionType... type) {
-        this.types = new HashSet<>(asList(type));
+    public TransactionQuery setTypes(TransactionType... types) {
+        this.types = toIterable(types);
         return this;
     }
     
@@ -68,17 +60,5 @@ public class TransactionQuery extends DocumentQuery<TransactionQuery> {
         this.descending = descending;
         return this;
     }
-    
-    // helpers
-    
-    public TransactionQuery addType(TransactionType... type) {
-        if (this.types == null) {
-            this.types = new HashSet<>();
-        }
-        if (type != null) {
-            this.types.addAll(asList(type));
-        }
-        return this;
-    } 
     
 }

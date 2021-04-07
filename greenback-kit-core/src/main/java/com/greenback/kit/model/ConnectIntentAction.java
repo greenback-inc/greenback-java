@@ -15,6 +15,8 @@ public enum ConnectIntentAction {
     /** A simple 200 OK response is required **/
     OK,
     /** An error occurred with the authorization */
-    ERROR;
+    ERROR,
+    /** Multiple profiles are authorized, user needs to select one to complete process */
+    PROFILE;
     
 }

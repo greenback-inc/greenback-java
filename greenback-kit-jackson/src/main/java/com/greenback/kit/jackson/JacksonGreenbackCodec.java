@@ -20,7 +20,7 @@ import com.greenback.kit.model.Paginated;
 import com.greenback.kit.model.Sync;
 import com.greenback.kit.model.Transaction;
 import com.greenback.kit.model.TransactionExport;
-import com.greenback.kit.model.TransactionExporter;
+import com.greenback.kit.model.TransactionExportIntent;
 import com.greenback.kit.model.User;
 import com.greenback.kit.model.Value;
 import com.greenback.kit.model.GreenbackException;
@@ -29,6 +29,7 @@ import com.greenback.kit.model.Vision;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
+import java.util.Map;
 import java.util.TimeZone;
 
 public class JacksonGreenbackCodec implements GreenbackCodec {
@@ -75,6 +76,8 @@ public class JacksonGreenbackCodec implements GreenbackCodec {
         return this.objectMapper.convertValue(rootNode, typeReference);
     }
     
+    static private final TypeReference<Map<String,Object>> TYPEREF_FLATTENED_MAP
+        = new TypeReference<Map<String,Object>>() {};
     static private final TypeReference<Paginated<User>> TYPEREF_USERS
         = new TypeReference<Paginated<User>>() {};
     static private final TypeReference<Value<User>> TYPEREF_USER
@@ -105,14 +108,22 @@ public class JacksonGreenbackCodec implements GreenbackCodec {
         = new TypeReference<Paginated<Transaction>>() {};
     static private final TypeReference<Value<Transaction>> TYPEREF_TRANSACTION
         = new TypeReference<Value<Transaction>>() {};
-    static private final TypeReference<Value<TransactionExporter>> TYPEREF_TRANSACTION_EXPORTER
-        = new TypeReference<Value<TransactionExporter>>() {};
+    static private final TypeReference<Value<TransactionExportIntent>> TYPEREF_TRANSACTION_EXPORTER
+        = new TypeReference<Value<TransactionExportIntent>>() {};
     static private final TypeReference<Value<TransactionExport>> TYPEREF_TRANSACTION_EXPORT
         = new TypeReference<Value<TransactionExport>>() {};
 
     @Override
     public String prettyPrint(Object value) throws IOException {
         return this.objectMapper.writeValueAsString(value);
+    }
+    
+    @Override
+    public Map<String,Object> toFlattenedMap(Object value) throws IOException {
+        if (value == null) {
+            return null;
+        }
+        return this.objectMapper.convertValue(value, TYPEREF_FLATTENED_MAP);
     }
     
     @Override
@@ -229,7 +240,7 @@ public class JacksonGreenbackCodec implements GreenbackCodec {
     }
     
     @Override
-    public TransactionExporter readTransactionExporter(
+    public TransactionExportIntent readTransactionExporter(
             InputStream input) throws IOException {
         
         return this.read(input, TYPEREF_TRANSACTION_EXPORTER).getValue();

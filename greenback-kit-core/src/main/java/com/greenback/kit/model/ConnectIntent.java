@@ -7,14 +7,12 @@ public class ConnectIntent extends GreenbackObject {
     private String token;
     private String connectId;
     private String accountId;
-    private Instant createdAt;
-    private Instant updatedAt;
-    private Instant completedAt;
     private ConnectIntentAction action;
     private String redirectUrl;
     private Form input;
-    private ConnectCompleteAction confirm;
+    private ConnectIntentConfirm confirm;
     private GreenbackError error;
+    private Instant completedAt;
     
     // expansions
 
@@ -43,22 +41,6 @@ public class ConnectIntent extends GreenbackObject {
 
     public void setAccountId(String accountId) {
         this.accountId = accountId;
-    }
-
-    public Instant getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(Instant createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public Instant getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(Instant updatedAt) {
-        this.updatedAt = updatedAt;
     }
 
     public Instant getCompletedAt() {
@@ -93,11 +75,11 @@ public class ConnectIntent extends GreenbackObject {
         this.input = input;
     }
 
-    public ConnectCompleteAction getConfirm() {
+    public ConnectIntentConfirm getConfirm() {
         return confirm;
     }
 
-    public void setConfirm(ConnectCompleteAction confirm) {
+    public void setConfirm(ConnectIntentConfirm confirm) {
         this.confirm = confirm;
     }
 
@@ -108,7 +90,7 @@ public class ConnectIntent extends GreenbackObject {
     public void setError(GreenbackError error) {
         this.error = error;
     }
-
+    
     public Connect getConnect() {
         return connect;
     }

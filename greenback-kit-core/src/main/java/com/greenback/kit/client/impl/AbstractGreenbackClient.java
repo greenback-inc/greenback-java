@@ -5,15 +5,14 @@ import com.greenback.kit.client.GreenbackClient;
 import com.greenback.kit.client.GreenbackCodec;
 import static com.greenback.kit.client.impl.ClientHelper.toExpandQueryParameter;
 import static com.greenback.kit.client.impl.ClientHelper.toInstantParameter;
-import static com.greenback.kit.client.impl.ClientHelper.toLimitQueryParameter;
 import static com.greenback.kit.client.impl.ClientHelper.toListQueryParameter;
 import static com.greenback.kit.client.impl.ClientHelper.toStreamingPaginated;
 import static com.greenback.kit.client.impl.ClientHelper.toValue;
 import com.greenback.kit.model.Account;
 import com.greenback.kit.model.AccountQuery;
 import com.greenback.kit.model.Connect;
-import com.greenback.kit.model.ConnectAuthorizeRequest;
-import com.greenback.kit.model.ConnectCompleteRequest;
+import com.greenback.kit.model.ConnectIntentAuthorize;
+import com.greenback.kit.model.ConnectIntentComplete;
 import com.greenback.kit.model.ConnectIntent;
 import com.greenback.kit.model.ConnectQuery;
 import com.greenback.kit.model.Message;
@@ -23,15 +22,17 @@ import com.greenback.kit.model.Paginated;
 import com.greenback.kit.model.Transaction;
 import com.greenback.kit.model.TransactionExport;
 import com.greenback.kit.model.TransactionExportDeleteMode;
-import com.greenback.kit.model.TransactionExporterQuery;
-import com.greenback.kit.model.TransactionExporter;
-import com.greenback.kit.model.TransactionExporterRequest;
+import com.greenback.kit.model.TransactionExportIntent;
+import com.greenback.kit.model.TransactionExportIntentRequest;
 import com.greenback.kit.model.TransactionQuery;
 import com.greenback.kit.model.User;
 import com.greenback.kit.model.Vision;
 import com.greenback.kit.model.VisionRequest;
 import com.greenback.kit.util.Bytes;
+import static com.greenback.kit.util.Utils.toStringList;
 import java.io.IOException;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.Objects;
 import static java.util.Optional.ofNullable;
 
@@ -72,6 +73,25 @@ abstract public class AbstractGreenbackClient implements GreenbackClient {
         url.fragment(null);
         return url;
     }
+    
+    protected Map<String,String> toQueryMap(Object value) throws IOException {
+        final Map<String,String> map = new LinkedHashMap<>();
+     
+        if (value != null) {
+            final Map<String,Object> flattenedMap = this.codec.toFlattenedMap(value);
+            if (flattenedMap != null) {
+                flattenedMap.forEach((k,v) -> {
+                    if (v instanceof Iterable) {
+                        map.put(k, toStringList((Iterable)v));
+                    } else {
+                        map.put(k, Objects.toString(v, ""));
+                    }
+                });
+            }
+        }
+        
+        return map;
+    }
 
     //
     // Users
@@ -87,7 +107,7 @@ abstract public class AbstractGreenbackClient implements GreenbackClient {
         final String url = this.buildBaseUrl()
             .path("v2/users")
             .rel(userId)
-            .queryIfPresent("expand", ofNullable(toListQueryParameter(expands)))
+            .queryIfPresent("expands", ofNullable(toListQueryParameter(expands)))
             .toString();
         
         return toValue(() -> this.getUserByUrl(url));
@@ -106,8 +126,7 @@ abstract public class AbstractGreenbackClient implements GreenbackClient {
 
         final String url = this.buildBaseUrl()
             .path("v2/connects")
-            .queryIfPresent("expand", toExpandQueryParameter(connectQuery))
-            .queryIfPresent("limit", toLimitQueryParameter(connectQuery))
+            .query(this.toQueryMap(connectQuery))
             .toString();
         
         return toStreamingPaginated(url, v -> this.getConnectsByUrl(v));
@@ -115,11 +134,13 @@ abstract public class AbstractGreenbackClient implements GreenbackClient {
     
     @Override
     public Connect getConnectByLabel(
-            String connectLabel) throws IOException {
+            String connectLabel,
+            Iterable<String> expands) throws IOException {
 
         final String url = this.buildBaseUrl()
             .path("v2/connects")
             .rel(connectLabel)
+            .queryIfPresent("expands", toExpandQueryParameter(expands))
             .toString();
         
         return toValue(() -> this.getConnectByUrl(url));
@@ -151,7 +172,7 @@ abstract public class AbstractGreenbackClient implements GreenbackClient {
     }
     
     @Override
-    public ConnectIntent reconnectConnectIntent(
+    public ConnectIntent reconnectAccountIntent(
             String accountId) throws IOException {
 
         Objects.requireNonNull(accountId, "accountId was null");
@@ -168,7 +189,7 @@ abstract public class AbstractGreenbackClient implements GreenbackClient {
     @Override
     public ConnectIntent authorizeConnectIntent(
             String token,
-            ConnectAuthorizeRequest request) throws IOException {
+            ConnectIntentAuthorize request) throws IOException {
 
         Objects.requireNonNull(token, "token was null");
         Objects.requireNonNull(request, "request was null");
@@ -184,7 +205,7 @@ abstract public class AbstractGreenbackClient implements GreenbackClient {
     @Override
     public ConnectIntent completeConnectIntent(
             String token,
-            ConnectCompleteRequest request) throws IOException {
+            ConnectIntentComplete request) throws IOException {
 
         Objects.requireNonNull(token, "token was null");
         Objects.requireNonNull(request, "request was null");
@@ -243,8 +264,7 @@ abstract public class AbstractGreenbackClient implements GreenbackClient {
 
         final String url = this.buildBaseUrl()
             .path("v2/accounts")
-            .queryIfPresent("expand", toExpandQueryParameter(accountQuery))
-            .queryIfPresent("limit", toLimitQueryParameter(accountQuery))
+            .query(this.toQueryMap(accountQuery))
             .toString();
         
         return this.getAccountsByUrl(url);
@@ -260,10 +280,24 @@ abstract public class AbstractGreenbackClient implements GreenbackClient {
         final String url = this.buildBaseUrl()
             .path("v2/accounts")
             .rel(accountId)
-            .queryIfPresent("expand", toExpandQueryParameter(expands))
+            .queryIfPresent("expands", toExpandQueryParameter(expands))
             .toString();
         
         return toValue(() -> this.getAccountByUrl(url));
+    }
+    
+    @Override
+    public Account deleteAccountById(
+            String accountId) throws IOException {
+
+        Objects.requireNonNull(accountId, "accountId was null");
+        
+        final String url = this.buildBaseUrl()
+            .path("v2/accounts")
+            .rel(accountId)
+            .toString();
+        
+        return toValue(() -> this.deleteAccountByUrl(url));
     }
     
     abstract protected Account postAccountByUrl(
@@ -274,6 +308,9 @@ abstract public class AbstractGreenbackClient implements GreenbackClient {
             String url) throws IOException;
     
     abstract protected Account getAccountByUrl(
+            String url) throws IOException;
+    
+    abstract protected Account deleteAccountByUrl(
             String url) throws IOException;
 
     //
@@ -309,7 +346,7 @@ abstract public class AbstractGreenbackClient implements GreenbackClient {
         final String url = this.buildBaseUrl()
             .path("v2/visions")
             .rel(visionId)
-            .queryIfPresent("expand", toExpandQueryParameter(expands))
+            .queryIfPresent("expands", toExpandQueryParameter(expands))
             .toString();
         
         return toValue(() -> this.getVisionByUrl(url));
@@ -329,13 +366,7 @@ abstract public class AbstractGreenbackClient implements GreenbackClient {
         
         final String url = this.buildBaseUrl()
             .path("v2/messages")
-            .queryIfPresent("account", ofNullable(messageQuery).map(v -> toListQueryParameter(v.getAccountIds())))
-            .queryIfPresent("flag", ofNullable(messageQuery).map(v -> toListQueryParameter(v.getFlags())))
-            .queryIfPresent("query", ofNullable(messageQuery).map(v -> v.getQuery()))
-            .queryIfPresent("start", ofNullable(messageQuery).map(v -> toInstantParameter(v.getMinPostedAt())))
-            .queryIfPresent("end", ofNullable(messageQuery).map(v -> toInstantParameter(v.getMaxPostedAt())))
-            .queryIfPresent("expand", toExpandQueryParameter(messageQuery))
-            .queryIfPresent("limit", toLimitQueryParameter(messageQuery))
+            .query(this.toQueryMap(messageQuery))
             .toString();
         
         return toStreamingPaginated(url, v -> this.getMessagesByUrl(v));
@@ -364,7 +395,7 @@ abstract public class AbstractGreenbackClient implements GreenbackClient {
         final String url = this.buildBaseUrl()
             .path("v2/messages")
             .rel(messageId)
-            .queryIfPresent("expand", toExpandQueryParameter(expands))
+            .queryIfPresent("expands", toExpandQueryParameter(expands))
             .toString();
         
         return toValue(() -> this.getMessageByUrl(url));
@@ -386,20 +417,40 @@ abstract public class AbstractGreenbackClient implements GreenbackClient {
     //
     
     @Override
+    public Transaction createTransaction(
+            Transaction transaction) throws IOException {
+
+        Objects.requireNonNull(transaction, "transaction was null");
+        
+        final String url = this.buildBaseUrl()
+            .path("v2/transactions")
+            .toString();
+        
+        return this.postTransactionByUrl(url, transaction);
+    }
+    
+    @Override
+    public Transaction updateTransaction(
+            Transaction transaction) throws IOException {
+
+        Objects.requireNonNull(transaction, "transaction was null");
+        Objects.requireNonNull(transaction.getId(), "transaction id was null");
+        
+        final String url = this.buildBaseUrl()
+            .path("v2/transactions")
+            .rel(transaction.getId())
+            .toString();
+        
+        return this.postTransactionByUrl(url, transaction);
+    }
+    
+    @Override
     public Paginated<Transaction> getTransactions(
             TransactionQuery transactionQuery) throws IOException {
         
         final String url = this.buildBaseUrl()
             .path("v2/transactions")
-            .queryIfPresent("account", ofNullable(transactionQuery).map(v -> toListQueryParameter(v.getAccountIds())))
-            .queryIfPresent("type", ofNullable(transactionQuery).map(v -> toListQueryParameter(v.getTypes())))
-            .queryIfPresent("flag", ofNullable(transactionQuery).map(v -> toListQueryParameter(v.getFlags())))
-            .queryIfPresent("query", ofNullable(transactionQuery).map(v -> v.getQuery()))
-            .queryIfPresent("start", ofNullable(transactionQuery).map(v -> toInstantParameter(v.getMinTransactedAt())))
-            .queryIfPresent("end", ofNullable(transactionQuery).map(v -> toInstantParameter(v.getMaxTransactedAt())))
-            .queryIfPresent("descending", ofNullable(transactionQuery).map(v -> v.getDescending()))
-            .queryIfPresent("expand", toExpandQueryParameter(transactionQuery))
-            .queryIfPresent("limit", toLimitQueryParameter(transactionQuery))
+            .query(this.toQueryMap(transactionQuery))
             .toString();
         
         return toStreamingPaginated(url, v -> this.getTransactionsByUrl(v));
@@ -415,7 +466,7 @@ abstract public class AbstractGreenbackClient implements GreenbackClient {
         final String url = this.buildBaseUrl()
             .path("v2/transactions")
             .rel(transactionId)
-            .queryIfPresent("expand", toExpandQueryParameter(expands))
+            .queryIfPresent("expands", toExpandQueryParameter(expands))
             .toString();
         
         return toValue(() -> this.getTransactionByUrl(url));
@@ -427,12 +478,16 @@ abstract public class AbstractGreenbackClient implements GreenbackClient {
     abstract protected Transaction getTransactionByUrl(
             String url) throws IOException;
     
+    abstract protected Transaction postTransactionByUrl(
+            String url,
+            Object request) throws IOException;
+    
     @Override
-    public TransactionExporter getTransactionExporterById(
+    public TransactionExportIntent getTransactionExportIntent(
             String transactionId,
             String accountId,
             String targetId,
-            TransactionExporterQuery transactionExportQuery) throws IOException {
+            TransactionExportIntentRequest transactionExportIntentRequest) throws IOException {
 
         Objects.requireNonNull(transactionId, "transactionId was null");
         Objects.requireNonNull(accountId, "accountId was null");
@@ -441,39 +496,38 @@ abstract public class AbstractGreenbackClient implements GreenbackClient {
             .path("v2/transactions")
             .rel(transactionId, "exporters", accountId)
             .relIfPresent(ofNullable(targetId))
-            .queryIfPresent("payment", ofNullable(transactionExportQuery).map(v -> v.getPayment()))
-            .queryIfPresent("itemized", ofNullable(transactionExportQuery).map(v -> v.getItemized()))
-            .queryIfPresent("verified_by", ofNullable(transactionExportQuery)
-                .map(v -> toInstantParameter(v.getVerifiedBy())))
-            .queryIfPresent("expand", toExpandQueryParameter(transactionExportQuery))
+            .queryIfPresent("payment", ofNullable(transactionExportIntentRequest).map(v -> v.getPayment()))
+            .queryIfPresent("itemized", ofNullable(transactionExportIntentRequest).map(v -> v.getItemized()))
+            .queryIfPresent("verified_by", ofNullable(transactionExportIntentRequest).map(v -> toInstantParameter(v.getVerifiedBy())))
+            .queryIfPresent("expands", toExpandQueryParameter(transactionExportIntentRequest.getExpands()))
             .toString();
         
         return toValue(() -> this.getTransactionExporterByUrl(url));
     }
     
-    abstract protected TransactionExporter getTransactionExporterByUrl(
+    abstract protected TransactionExportIntent getTransactionExporterByUrl(
             String url) throws IOException;
     
     @Override
-    public TransactionExport saveTransactionExport(
+    public TransactionExport applyTransactionExportIntent(
             String transactionId,
             String accountId,
-            TransactionExporterRequest transactionExporterRequest) throws IOException {
+            TransactionExportIntentRequest transactionExportIntentRequest) throws IOException {
 
         final String url = this.buildBaseUrl()
             .path("v2/transactions")
             .rel(transactionId, "exporters", accountId)
-            .queryIfPresent("payment", ofNullable(transactionExporterRequest).map(v -> v.getPayment()))
-            .queryIfPresent("itemized", ofNullable(transactionExporterRequest).map(v -> v.getItemized()))
-            .queryIfPresent("verified_by", ofNullable(transactionExporterRequest)
+            .queryIfPresent("payment", ofNullable(transactionExportIntentRequest).map(v -> v.getPayment()))
+            .queryIfPresent("itemized", ofNullable(transactionExportIntentRequest).map(v -> v.getItemized()))
+            .queryIfPresent("verified_by", ofNullable(transactionExportIntentRequest)
                 .map(v -> toInstantParameter(v.getVerifiedBy())))
             .toString();
         
         // we have to have a clean exporter w/ only parameters, so create new object
-        final TransactionExporterRequest request = new TransactionExporterRequest();
+        final TransactionExportIntentRequest request = new TransactionExportIntentRequest();
         
-        if (transactionExporterRequest != null) {
-            request.setParameters(transactionExporterRequest.getParameters());
+        if (transactionExportIntentRequest != null) {
+            request.setParameters(transactionExportIntentRequest.getParameters());
         }
         
         return toValue(() -> this.postTransactionExportByUrl(url, request));
@@ -481,7 +535,7 @@ abstract public class AbstractGreenbackClient implements GreenbackClient {
     
     abstract protected TransactionExport postTransactionExportByUrl(
             String url,
-            TransactionExporterRequest transactionExporterRequest) throws IOException;
+            TransactionExportIntentRequest transactionExporterRequest) throws IOException;
     
     public TransactionExport getTransactionExportById(
             String transactionExportId) throws IOException {

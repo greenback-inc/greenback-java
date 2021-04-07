@@ -9,8 +9,8 @@ import com.greenback.kit.model.Paginated;
 import com.greenback.kit.model.Message;
 import com.greenback.kit.model.Transaction;
 import com.greenback.kit.model.TransactionExport;
-import com.greenback.kit.model.TransactionExporter;
-import com.greenback.kit.model.TransactionExporterRequest;
+import com.greenback.kit.model.TransactionExportIntent;
+import com.greenback.kit.model.TransactionExportIntentRequest;
 import com.greenback.kit.model.User;
 import com.greenback.kit.model.Vision;
 import com.greenback.kit.okhttp.impl.BaseOkHttpClient;
@@ -114,6 +114,16 @@ public class OkHttpGreenbackClient extends AbstractGreenbackClient implements Ba
         
         final Request.Builder requestBuilder = new Request.Builder()
             .url(url);
+        
+        return this.execute(requestBuilder, this.codec::readAccount);
+    }
+    
+    @Override
+    protected Account deleteAccountByUrl(String url) throws IOException {
+        
+        final Request.Builder requestBuilder = new Request.Builder()
+            .url(url)
+            .delete();
         
         return this.execute(requestBuilder, this.codec::readAccount);
     }
@@ -233,9 +243,29 @@ public class OkHttpGreenbackClient extends AbstractGreenbackClient implements Ba
         
         return this.execute(requestBuilder, this.codec::readTransaction);
     }
-
+    
     @Override
-    protected TransactionExporter getTransactionExporterByUrl(String url) throws IOException {
+    protected Transaction postTransactionByUrl(
+            String url,
+            Object request) throws IOException {
+        
+        final byte[] body = this.codec.writeBytes(request);
+
+        final RequestBody requestBody = this.jsonRequestBody(body);
+
+        final Request.Builder requestBuilder = new Request.Builder()
+            .url(url)
+            .post(requestBody);
+        
+        return this.execute(requestBuilder, this.codec::readTransaction);
+    }
+
+    //
+    // Exports
+    //
+    
+    @Override
+    protected TransactionExportIntent getTransactionExporterByUrl(String url) throws IOException {
         
         final Request.Builder requestBuilder = new Request.Builder()
             .url(url);
@@ -246,7 +276,7 @@ public class OkHttpGreenbackClient extends AbstractGreenbackClient implements Ba
     @Override
     protected TransactionExport postTransactionExportByUrl(
             String url,
-            TransactionExporterRequest transactionExporterRequest) throws IOException {
+            TransactionExportIntentRequest transactionExporterRequest) throws IOException {
         
         final byte[] body = this.codec.writeBytes(transactionExporterRequest);
 

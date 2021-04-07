@@ -7,6 +7,7 @@ public class Transaction extends Document {
  
     private TransactionType type;
     private String currencyCode;
+    private String altReferenceId;
     private String displayReferenceId;
     private String accountId;
     private String contactId;
@@ -42,6 +43,14 @@ public class Transaction extends Document {
 
     public void setCurrencyCode(String currencyCode) {
         this.currencyCode = currencyCode;
+    }
+
+    public String getAltReferenceId() {
+        return altReferenceId;
+    }
+
+    public void setAltReferenceId(String altReferenceId) {
+        this.altReferenceId = altReferenceId;
     }
 
     public String getDisplayReferenceId() {

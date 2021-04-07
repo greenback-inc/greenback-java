@@ -18,72 +18,81 @@ public class TransactionTotals {
         return sub;
     }
 
-    public void setSub(Double sub) {
+    public TransactionTotals setSub(Double sub) {
         this.sub = sub;
+        return this;
     }
 
     public Double getFee() {
         return fee;
     }
 
-    public void setFee(Double fee) {
+    public TransactionTotals setFee(Double fee) {
         this.fee = fee;
+        return this;
     }
 
     public Double getDiscount() {
         return discount;
     }
 
-    public void setDiscount(Double discount) {
+    public TransactionTotals setDiscount(Double discount) {
         this.discount = discount;
+        return this;
     }
 
     public Double getShip() {
         return ship;
     }
 
-    public void setShip(Double ship) {
+    public TransactionTotals setShip(Double ship) {
         this.ship = ship;
+        return this;
     }
 
     public Double getTip() {
         return tip;
     }
 
-    public void setTip(Double tip) {
+    public TransactionTotals setTip(Double tip) {
         this.tip = tip;
+        return this;
     }
 
     public Double getTax() {
         return tax;
     }
 
-    public void setTax(Double tax) {
+    public TransactionTotals setTax(Double tax) {
         this.tax = tax;
+        return this;
     }
 
     public Double getOther() {
         return other;
     }
 
-    public void setOther(Double other) {
+    public TransactionTotals setOther(Double other) {
         this.other = other;
+        return this;
     }
 
     public Double getGrand() {
         return grand;
     }
 
-    public void setGrand(Double grand) {
+    public TransactionTotals setGrand(Double grand) {
         this.grand = grand;
+        return this;
     }
 
     public List<TotalsItem> getItems() {
         return items;
     }
 
-    public void setItems(List<TotalsItem> items) {
+    public TransactionTotals setItems(List<TotalsItem> items) {
         this.items = items;
+        return this;
     }
 
 }

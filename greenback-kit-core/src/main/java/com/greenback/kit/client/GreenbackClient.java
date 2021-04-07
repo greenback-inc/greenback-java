@@ -4,8 +4,8 @@ import com.greenback.kit.model.Account;
 import com.greenback.kit.model.AccountQuery;
 import com.greenback.kit.model.Connect;
 import com.greenback.kit.model.ConnectQuery;
-import com.greenback.kit.model.ConnectAuthorizeRequest;
-import com.greenback.kit.model.ConnectCompleteRequest;
+import com.greenback.kit.model.ConnectIntentAuthorize;
+import com.greenback.kit.model.ConnectIntentComplete;
 import com.greenback.kit.model.ConnectIntent;
 import com.greenback.kit.model.Message;
 import com.greenback.kit.model.MessageQuery;
@@ -14,9 +14,8 @@ import com.greenback.kit.model.Paginated;
 import com.greenback.kit.model.Transaction;
 import com.greenback.kit.model.TransactionExport;
 import com.greenback.kit.model.TransactionExportDeleteMode;
-import com.greenback.kit.model.TransactionExporterQuery;
-import com.greenback.kit.model.TransactionExporterRequest;
-import com.greenback.kit.model.TransactionExporter;
+import com.greenback.kit.model.TransactionExportIntentRequest;
+import com.greenback.kit.model.TransactionExportIntent;
 import com.greenback.kit.model.TransactionQuery;
 import com.greenback.kit.model.User;
 import com.greenback.kit.model.Vision;
@@ -41,21 +40,25 @@ public interface GreenbackClient {
     
     Paginated<Connect> getConnects(ConnectQuery connectQuery) throws IOException;
     
-    Connect getConnectByLabel(String connectLabel) throws IOException;
+    default Connect getConnectByLabel(String connectLabel) throws IOException {
+        return this.getConnectByLabel(connectLabel, null);
+    }
+    
+    Connect getConnectByLabel(String connectLabel, Iterable<String> expands) throws IOException;
     
     // Connect Intents
     
     ConnectIntent beginConnectIntent(String connectLabel) throws IOException;
     
-    ConnectIntent reconnectConnectIntent(String accountId) throws IOException;
+    ConnectIntent reconnectAccountIntent(String accountId) throws IOException;
     
     ConnectIntent authorizeConnectIntent(
         String token,
-        ConnectAuthorizeRequest connectAuthorizeRequest) throws IOException;
+        ConnectIntentAuthorize authorize) throws IOException;
     
     ConnectIntent completeConnectIntent(
         String token,
-        ConnectCompleteRequest connectCompleteRequest) throws IOException;
+        ConnectIntentComplete complete) throws IOException;
     
     // Accounts
     
@@ -71,6 +74,8 @@ public interface GreenbackClient {
     
     Account getAccountById(String accountId, Iterable<String> expands) throws IOException;
 
+    Account deleteAccountById(String accountId) throws IOException;
+    
     // Visions
     
     Vision createVision(VisionRequest visionRequest) throws IOException;
@@ -94,6 +99,10 @@ public interface GreenbackClient {
     Message getMessageById(String messageId, Iterable<String> expands) throws IOException;
     
     // Transactions
+
+    Transaction createTransaction(Transaction transaction) throws IOException;
+    
+    Transaction updateTransaction(Transaction transaction) throws IOException;
     
     default Transaction getTransactionById(String transactionId) throws IOException {
         return this.getTransactionById(transactionId, null);
@@ -103,26 +112,26 @@ public interface GreenbackClient {
 
     Paginated<Transaction> getTransactions(TransactionQuery transactionQuery) throws IOException;
     
-    // Transaction Exports
+    // Exports
     
-    default TransactionExporter getTransactionExporterById(
+    default TransactionExportIntent getTransactionExportIntent(
             String transactionId,
             String accountId,
-            TransactionExporterQuery transactionExporterQuery) throws IOException {
+            TransactionExportIntentRequest transactionExportIntentRequest) throws IOException {
         
-        return this.getTransactionExporterById(transactionId, accountId, null, transactionExporterQuery);
+        return this.getTransactionExportIntent(transactionId, accountId, null, transactionExportIntentRequest);
     }
     
-    TransactionExporter getTransactionExporterById(
+    TransactionExportIntent getTransactionExportIntent(
             String transactionId,
             String accountId,
             String targetId,
-            TransactionExporterQuery transactionExporterQuery) throws IOException;
+            TransactionExportIntentRequest transactionExportIntentRequest) throws IOException;
     
-    TransactionExport saveTransactionExport(
+    TransactionExport applyTransactionExportIntent(
             String transactionId,
             String accountId,
-            TransactionExporterRequest transactionExporterRequest) throws IOException;
+            TransactionExportIntentRequest transactionExportIntentRequest) throws IOException;
     
     TransactionExport getTransactionExportById(
             String transactionExportId) throws IOException;

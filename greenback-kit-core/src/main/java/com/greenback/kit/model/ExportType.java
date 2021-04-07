@@ -1,8 +1,9 @@
 package com.greenback.kit.model;
 
-public enum TransactionExportStepType {
+public enum ExportType {
     
     TRANSACTION,
-    PAYMENT
+    PAYMENT,
+    CONTACT
     
 }

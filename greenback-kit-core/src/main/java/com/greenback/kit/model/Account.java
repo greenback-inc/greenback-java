@@ -6,6 +6,7 @@ public class Account extends GreenbackObject {
  
     private String userId;
     private String connectId;
+    private String referenceId;
     private AccountType type;
     private AccountState state;
     private AccountConnectionState connectionState;
@@ -14,6 +15,7 @@ public class Account extends GreenbackObject {
     private String overlayName;
     
     // expandable
+    
     private Connect connect;
     private Map<String,Sync> syncs;
 
@@ -21,64 +23,81 @@ public class Account extends GreenbackObject {
         return userId;
     }
 
-    public void setUserId(String userId) {
+    public Account setUserId(String userId) {
         this.userId = userId;
+        return this;
     }
 
     public String getConnectId() {
         return connectId;
     }
 
-    public void setConnectId(String connectId) {
+    public Account setConnectId(String connectId) {
         this.connectId = connectId;
+        return this;
+    }
+
+    public String getReferenceId() {
+        return referenceId;
+    }
+
+    public Account setReferenceId(String referenceId) {
+        this.referenceId = referenceId;
+        return this;
     }
     
     public AccountType getType() {
         return type;
     }
 
-    public void setType(AccountType type) {
+    public Account setType(AccountType type) {
         this.type = type;
+        return this;
     }
     
     public String getDefaultName() {
         return defaultName;
     }
 
-    public void setDefaultName(String defaultName) {
+    public Account setDefaultName(String defaultName) {
         this.defaultName = defaultName;
+        return this;
     }
 
     public String getOverlayName() {
         return overlayName;
     }
 
-    public void setOverlayName(String overlayName) {
+    public Account setOverlayName(String overlayName) {
         this.overlayName = overlayName;
+        return this;
     }
 
     public AccountState getState() {
         return state;
     }
 
-    public void setState(AccountState state) {
+    public Account setState(AccountState state) {
         this.state = state;
+        return this;
     }
 
     public AccountConnectionState getConnectionState() {
         return connectionState;
     }
 
-    public void setConnectionState(AccountConnectionState connectionState) {
+    public Account setConnectionState(AccountConnectionState connectionState) {
         this.connectionState = connectionState;
+        return this;
     }
 
     public Integer getConsecutiveErrors() {
         return consecutiveErrors;
     }
 
-    public void setConsecutiveErrors(Integer consecutiveErrors) {
+    public Account setConsecutiveErrors(Integer consecutiveErrors) {
         this.consecutiveErrors = consecutiveErrors;
+        return this;
     }
 
     // helpers
@@ -129,16 +148,18 @@ public class Account extends GreenbackObject {
         return connect;
     }
 
-    public void setConnect(Connect connect) {
+    public Account setConnect(Connect connect) {
         this.connect = connect;
+        return this;
     }
     
     public Map<String,Sync> getSyncs() {
         return syncs;
     }
 
-    public void setSyncs(Map<String,Sync> syncs) {
+    public Account setSyncs(Map<String,Sync> syncs) {
         this.syncs = syncs;
+        return this;
     }
 
 }

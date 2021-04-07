@@ -10,24 +10,27 @@ public class TotalsItem {
         return type;
     }
 
-    public void setType(TotalsItemType type) {
+    public TotalsItem setType(TotalsItemType type) {
         this.type = type;
+        return this;
     }
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
+    public TotalsItem setName(String name) {
         this.name = name;
+        return this;
     }
 
     public Double getAmount() {
         return amount;
     }
 
-    public void setAmount(Double amount) {
+    public TotalsItem setAmount(Double amount) {
         this.amount = amount;
+        return this;
     }
 
 }

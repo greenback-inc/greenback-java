@@ -1,6 +1,6 @@
 package com.greenback.kit.model;
 
-public enum ConnectCompleteAction {
+public enum ConnectIntentConfirm {
  
     CONFIRM,
     CANCEL;

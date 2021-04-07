@@ -2,26 +2,26 @@ package com.greenback.kit.model;
 
 public class TransactionExportStep {
  
-    protected TransactionExportStepType type;
-    protected TransactionExportStepAction action;
+    protected ExportType type;
+    protected ExportAction action;
     protected String sourceId;
     protected Double sourceAmount;
     protected String targetId;
     protected Double targetAmount;
 
-    public TransactionExportStepType getType() {
+    public ExportType getType() {
         return type;
     }
 
-    public void setType(TransactionExportStepType type) {
+    public void setType(ExportType type) {
         this.type = type;
     }
 
-    public TransactionExportStepAction getAction() {
+    public ExportAction getAction() {
         return action;
     }
 
-    public void setAction(TransactionExportStepAction action) {
+    public void setAction(ExportAction action) {
         this.action = action;
     }
 

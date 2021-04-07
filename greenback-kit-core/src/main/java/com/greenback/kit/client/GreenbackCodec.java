@@ -8,15 +8,18 @@ import com.greenback.kit.model.Paginated;
 import com.greenback.kit.model.Sync;
 import com.greenback.kit.model.Transaction;
 import com.greenback.kit.model.TransactionExport;
-import com.greenback.kit.model.TransactionExporter;
+import com.greenback.kit.model.TransactionExportIntent;
 import com.greenback.kit.model.User;
 import com.greenback.kit.model.Vision;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Map;
 
 public interface GreenbackCodec {
 
     String prettyPrint(Object value) throws IOException;
+    
+    Map<String,Object> toFlattenedMap(Object value) throws IOException;
     
     byte[] writeBytes(Object value) throws IOException;
     
@@ -52,6 +55,6 @@ public interface GreenbackCodec {
 
     TransactionExport readTransactionExport(InputStream input) throws IOException;
 
-    TransactionExporter readTransactionExporter(InputStream input) throws IOException;
+    TransactionExportIntent readTransactionExporter(InputStream input) throws IOException;
     
 }

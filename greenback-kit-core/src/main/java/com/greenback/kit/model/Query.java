@@ -1,13 +1,11 @@
 package com.greenback.kit.model;
 
-import static java.util.Arrays.asList;
-import java.util.HashSet;
-import java.util.Set;
+import static com.greenback.kit.util.Utils.toIterable;
 
 public class Query<T> {
  
     protected Integer limit;
-    protected Set<String> expands;
+    protected Iterable<String> expands;
 
     public Integer getLimit() {
         return limit;
@@ -25,32 +23,13 @@ public class Query<T> {
 
     @SuppressWarnings("unchecked")
     public T setExpands(Iterable<String> expands) {
-        if (expands == null) {
-            this.expands = null;
-        }
-        else {
-            this.expands = new HashSet<>();
-            expands.forEach(v -> this.expands.add(v));
-        }
+        this.expands = expands;
         return (T)this;
     }
 
     @SuppressWarnings("unchecked")
-    public T setExpands(String... expand) {
-        this.expands = new HashSet<>(asList(expand));
-        return (T)this;
-    }
-    
-    // helpers
-    
-    @SuppressWarnings("unchecked")
-    public T addExpand(String... expand) {
-        if (this.expands == null) {
-            this.expands = new HashSet<>();
-        }
-        if (expand != null) {
-            this.expands.addAll(asList(expand));
-        }
+    public T setExpands(String... expands) {
+        this.expands = toIterable(expands);
         return (T)this;
     }
     

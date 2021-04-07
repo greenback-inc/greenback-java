@@ -16,56 +16,63 @@ public class Item {
         return grn;
     }
 
-    public void setGrn(String grn) {
+    public Item setGrn(String grn) {
         this.grn = grn;
+        return this;
     }
 
     public List<String> getAltGrns() {
         return altGrns;
     }
 
-    public void setAltGrns(List<String> altGrns) {
+    public Item setAltGrns(List<String> altGrns) {
         this.altGrns = altGrns;
+        return this;
     }
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
+    public Item setName(String name) {
         this.name = name;
+        return this;
     }
 
     public String getDescription() {
         return description;
     }
 
-    public void setDescription(String description) {
+    public Item setDescription(String description) {
         this.description = description;
+        return this;
     }
 
     public Double getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(Double quantity) {
+    public Item setQuantity(Double quantity) {
         this.quantity = quantity;
+        return this;
     }
 
     public Double getUnitPrice() {
         return unitPrice;
     }
 
-    public void setUnitPrice(Double unitPrice) {
+    public Item setUnitPrice(Double unitPrice) {
         this.unitPrice = unitPrice;
+        return this;
     }
 
     public Double getAmount() {
         return amount;
     }
 
-    public void setAmount(Double amount) {
+    public Item setAmount(Double amount) {
         this.amount = amount;
+        return this;
     }
 
 }

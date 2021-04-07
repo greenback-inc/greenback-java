@@ -6,18 +6,29 @@ import com.fizzed.crux.util.MessageLevel;
 import com.greenback.kit.client.GreenbackClient;
 import com.greenback.kit.client.GreenbackConstants;
 import com.greenback.kit.jackson.JacksonGreenbackCodec;
+import com.greenback.kit.model.Account;
+import com.greenback.kit.model.AccountQuery;
+import com.greenback.kit.model.AccountState;
 import com.greenback.kit.model.Connect;
+import com.greenback.kit.model.ConnectIntentAuthorize;
+import com.greenback.kit.model.ConnectIntentConfirm;
+import com.greenback.kit.model.ConnectIntentComplete;
+import com.greenback.kit.model.ConnectIntent;
 import com.greenback.kit.model.ConnectQuery;
+import com.greenback.kit.model.DocumentFlag;
 import com.greenback.kit.model.Message;
 import com.greenback.kit.model.MessageQuery;
 import com.greenback.kit.model.Paginated;
 import com.greenback.kit.model.Transaction;
 import com.greenback.kit.model.TransactionQuery;
+import com.greenback.kit.model.TransactionType;
 import com.greenback.kit.model.User;
 import com.greenback.kit.okhttp.OkHttpGreenbackClient;
 import com.greenback.kit.okhttp.OkHttpHelper;
+import java.time.Instant;
 import static java.util.Optional.ofNullable;
 import java.util.Properties;
+import java.util.UUID;
 import okhttp3.OkHttpClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,18 +53,39 @@ public class ApiDemo {
                 new JacksonGreenbackCodec(),
                 accessToken);
 
-            final Paginated<Connect> connects = client.getConnects(new ConnectQuery()
-                .setLimit(10));
             
-            for (Connect connect : connects) {
-                log.debug("Connect: id={}, name={}, type={}, state={}", connect.getId(), connect.getName(), connect.getType(), connect.getState());
-            }
-
+//            final Paginated<Connect> connects = client.getConnects(new ConnectQuery()
+//                .setExpands("card")
+//                .setLimit(2));
+//            
+//            for (Connect connect : connects) {
+//                log.debug("Connect: id={}, name={}, type={}, state={}", connect.getId(), connect.getName(), connect.getType(), connect.getState());
+//            }
+//            final ConnectIntent ci = client.beginConnectIntent("saw");
+//            
+//            client.authorizeConnectIntent(ci.getToken(), new ConnectIntentAuthorize()
+//                .addParameter("username", "hford")
+//                .addParameter("password", "test"));
+//            
+//            client.completeConnectIntent(ci.getToken(), new ConnectIntentComplete()
+////                .setAction(ConnectIntentConfirm.CONFIRM)
+//                );
+//            final ConnectIntent ci = client.beginConnectIntent("xero");
+//            
+//            client.authorizeConnectIntent(ci.getToken(), new ConnectIntentAuthorize()
+//                );
+//
+//            
+//            Thread.sleep(20000L);
+//
+//            
+//            client.completeConnectIntent(ci.getToken(), new ConnectIntentComplete()
+//                .addParameter("profile", "dfad74ac-8d43-4afe-92f9-b4c13d913e22")
+////                .setAction(ConnectIntentConfirm.CONFIRM)
+//                );
 //            User user = client.getUserById("me");
 //            
 //            log.debug("User: id={}, created={}", user.getId(), user.getCreatedAt());
-            
-            
 //            final Paginated<Account> accounts = client.getAccounts(new AccountQuery()
 //                .setExpands("connect", "syncs")
 //                .setLimit(1));
@@ -61,6 +93,19 @@ public class ApiDemo {
 //            for (Account account : accounts) {
 //                log.debug("Account: id={}, defaultName={}", account.getId(), account.getDefaultName());
 //            }
+
+
+            Connect shoeboxConnect = client.getConnectByLabel("amazon");
+
+            client.createAccount(new Account()
+                .setConnectId(shoeboxConnect.getId())
+                .setDefaultName("My Account"));
+
+
+            
+//            client.deleteAccountById("ZaWKjv0Gaz");
+            
+            
 //            final Paginated<Message> messages = client.getMessages(new MessageQuery()
 ////                .setExpands("links")
 //                .setLimit(2));
@@ -71,13 +116,22 @@ public class ApiDemo {
 //                log.debug("Message: id={}, posted={}", message.getId(), message.getPostedAt());
 //            }
 
+
 //            final Paginated<Transaction> transactions = client.getTransactions(new TransactionQuery()
+////                .setAccountIds("ZY3DKB7PnM")
+////                .setExpands("account")
+////                .setFlags(DocumentFlag.ARCHIVED)
+////                .setTypes(TransactionType.BILL)
+//                .setQuery("visa")
+////                .setMinTransactedAt(Instant.parse("2021-03-01T16:49:00.000Z"))
+////                .setMinUpdatedAt(Instant.parse("2021-04-07T16:49:00.000Z"))
+////                .setMaxUpdatedAt(Instant.parse("2021-04-07T16:49:00.000Z"))
 //                .setLimit(1));
 //            
 //            for (Transaction transaction : transactions) {
 //                log.debug("Transaction: id={}, transactedAt={}", transaction.getId(), transaction.getTransactedAt());
-//            }       
-            
+//            }
+
 //            Vision vision = client.createVision(new VisionRequest()
 ////                .setAsync(true)
 //                .setAsync(false)

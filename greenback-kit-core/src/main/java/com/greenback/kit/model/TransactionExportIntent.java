@@ -2,7 +2,7 @@ package com.greenback.kit.model;
 
 import java.util.List;
 
-public class TransactionExporter {
+public class TransactionExportIntent {
  
     private String targetId;
     private Form form;

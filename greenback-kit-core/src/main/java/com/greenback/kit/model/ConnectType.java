@@ -4,6 +4,7 @@ public enum ConnectType {
  
     MERCHANT,
     ACCOUNTING,
-    MAILBOX;
+    MAILBOX,
+    SHOEBOX;
     
 }
