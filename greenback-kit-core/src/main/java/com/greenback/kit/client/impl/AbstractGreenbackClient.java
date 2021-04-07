@@ -537,6 +537,7 @@ abstract public class AbstractGreenbackClient implements GreenbackClient {
             String url,
             TransactionExportIntentRequest transactionExporterRequest) throws IOException;
     
+    @Override
     public TransactionExport getTransactionExportById(
             String transactionExportId) throws IOException {
         
@@ -553,6 +554,7 @@ abstract public class AbstractGreenbackClient implements GreenbackClient {
     abstract protected TransactionExport getTransactionExportByUrl(
             String url) throws IOException;
     
+    @Override
     public TransactionExport deleteTransactionExportById(
             String transactionExportId,
             TransactionExportDeleteMode deleteMode) throws IOException {
