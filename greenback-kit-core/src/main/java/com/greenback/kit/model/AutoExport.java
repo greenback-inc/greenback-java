@@ -134,6 +134,7 @@ public class AutoExport {
             "  \"max_transacted_at\" : \"" + Instant.now() + "\",\n" +
             "  \"min_transacted_at\" : \"" + this.getCreatedAt().minus(7, ChronoUnit.DAYS) + "\",\n" + // TODO JB: Will probably have to read this in from the auto export object after that is completed, rather than starting at the time the auto export was created
             "  \"user_id\" : \"" + this.getUser_id()+ "\",\n" +
+            "  \"auto_export_id\" : \"" + this.getId()+ "\",\n" +
             "  \"accounting_account_id\" : \"" + this.getAccountingAccountId()+ "\"\n" +
             "}";
 
