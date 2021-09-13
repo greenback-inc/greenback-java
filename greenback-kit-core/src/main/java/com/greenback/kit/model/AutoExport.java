@@ -133,14 +133,14 @@ public class AutoExport {
             "  \"types\" : [ ],\n" +
             "  \"min_transacted_at\" : \"" + this.getCreatedAt().minus(7, ChronoUnit.DAYS) + "\",\n" + // TODO JB: Will probably have to read this in from the auto export object after that is completed, rather than starting at the time the auto export was created
             "  \"user_id\" : \"" + this.getUser_id()+ "\",\n" +
-            "  \"auto_export_id\" : \"" + this.getId()+ "\",\n" +
+            "  \"type_tag_id\" : \"" + this.getId()+ "\",\n" +
             "  \"accounting_account_id\" : \"" + this.getAccountingAccountId()+ "\"\n" +
             "}";
 
         // build property lambda request
         final String json = ""
             + "{\n"
-            + " \"type\": \"" + type + "\",\n" // TODO JB: Do we need to store the type on the export table in lens or will it always be EXPORT_RUN for auto export?
+            + " \"type\": \"" + type + "\",\n"
             + " \"triggered_by\": \"" + triggeredBy + "\",\n"
             + " \"parameters\": " + doc + "\n"
             + "}";
