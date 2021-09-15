@@ -7,34 +7,28 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-public class AutoExport {
-    private Long id;
-    private Long user_id;
+public class AutoExport extends GreenbackObject{
+    private Long userId;
     private String accountingAccountId;
-    private String request_doc;
+    private AutoExportRequest request;
     private AutoExportFrequency autoExportFrequency;
     private AutoExportState autoExportState;
-    private Boolean email_notification;
-    private List<AutoExportAccount> autoExportAccounts = new ArrayList<>();
-    private Instant nextExportAt;
+    private Boolean emailNotification;
     private Instant createdAt;
     private Instant updatedAt;
-    private Instant updatedNextExportAt;
 
-    public Long getId() {
-        return id;
+    // from expands
+    private Account accountingAccount;
+    private List<AutoExportAccount> autoExportAccounts = new ArrayList<>();
+    private Lambda lastLambda;
+    private Paginated<Lambda> allLambdaCompleted = new Paginated<>();
+
+    public Long getUserId() {
+        return userId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getUser_id() {
-        return user_id;
-    }
-
-    public void setUser_id(Long user_id) {
-        this.user_id = user_id;
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
     public String getAccountingAccountId() {
@@ -45,12 +39,12 @@ public class AutoExport {
         this.accountingAccountId = accountingAccountId;
     }
 
-    public String getRequest_doc() {
-        return request_doc;
+    public AutoExportRequest getRequest() {
+        return request;
     }
 
-    public void setRequest_doc(String request_doc) {
-        this.request_doc = request_doc;
+    public void setRequest(AutoExportRequest request) {
+        this.request = request;
     }
 
     public AutoExportFrequency getAutoExportFrequency() {
@@ -69,28 +63,12 @@ public class AutoExport {
         this.autoExportState = autoExportState;
     }
 
-    public Boolean getEmail_notification() {
-        return email_notification;
+    public Boolean isEmailNotification() {
+        return emailNotification;
     }
 
-    public void setEmail_notification(Boolean email_notification) {
-        this.email_notification = email_notification;
-    }
-
-    public List<AutoExportAccount> getAutoExportAccounts() {
-        return autoExportAccounts;
-    }
-
-    public void setAutoExportAccounts(List<AutoExportAccount> autoExportAccounts) {
-        this.autoExportAccounts = autoExportAccounts;
-    }
-
-    public Instant getNextExportAt() {
-        return nextExportAt;
-    }
-
-    public void setNextExportAt(Instant nextExportAt) {
-        this.nextExportAt = nextExportAt;
+    public void setEmailNotification(Boolean emailNotification) {
+        this.emailNotification = emailNotification;
     }
 
     public Instant getCreatedAt() {
@@ -109,56 +87,79 @@ public class AutoExport {
         this.updatedAt = updatedAt;
     }
 
-    public Instant getUpdatedNextExportAt() {
-        return updatedNextExportAt;
+    public Paginated<Lambda> getAllLambdaCompleted() {
+        return allLambdaCompleted;
     }
 
-    public void setUpdatedNextExportAt(Instant updatedNextExportAt) {
-        this.updatedNextExportAt = updatedNextExportAt;
+    public void setAllLambdaCompleted(Paginated<Lambda> allLambdaCompleted) {
+        this.allLambdaCompleted = allLambdaCompleted;
     }
 
-    public String getRequestJson(String type, String triggeredBy) {
+    public Integer getConsecutiveErrors() {
+        int errors = 0;
+        // these should always already be sorted by descending date, so we start at the beginning of the array and work our way backwards
+        if (!Objects.isNull(this.allLambdaCompleted)
+                && !Objects.isNull(this.allLambdaCompleted.getValues())
+                && this.allLambdaCompleted.getValues().size() > 0) {
+            for (Lambda l : this.allLambdaCompleted) {
+                if (l.getStatus() == ProcessingStatus.SUCCESS) {
+                    return errors;
+                }
 
-        if (Objects.isNull(this.getAutoExportAccounts())) {
-            throw new IllegalArgumentException("AutoExport has no associated accounts defined");
+                errors++;
+            }
         }
 
-        String accountIds = this.getAutoExportAccounts().stream().map(v2 -> v2.getAccount_id())
-            .map(v -> "\"" + v + "\"")
-            .collect(Collectors.joining(","));
+        // if we don't have the lambda data, we can't make any assumptions about consecutive errors
+        return null;
+    }
 
-        final String doc = "{\n" +
-            "  \"account_ids\" : [ " + accountIds + " ],\n" +
-            "  \"query\" : \"\",\n" +
-            "  \"types\" : [ ],\n" +
-            "  \"min_transacted_at\" : \"" + this.getCreatedAt().minus(7, ChronoUnit.DAYS) + "\",\n" + // TODO JB: Will probably have to read this in from the auto export object after that is completed, rather than starting at the time the auto export was created
-            "  \"user_id\" : \"" + this.getUser_id()+ "\",\n" +
-            "  \"type_tag_id\" : \"" + this.getId()+ "\",\n" +
-            "  \"accounting_account_id\" : \"" + this.getAccountingAccountId()+ "\"\n" +
-            "}";
+    public List<AutoExportAccount> getAutoExportAccounts() {
+        return autoExportAccounts;
+    }
 
-        // build property lambda request
-        final String json = ""
-            + "{\n"
-            + " \"type\": \"" + type + "\",\n"
-            + " \"triggered_by\": \"" + triggeredBy + "\",\n"
-            + " \"parameters\": " + doc + "\n"
-            + "}";
+    public void setAutoExportAccounts(List<AutoExportAccount> autoExportAccounts) {
+        this.autoExportAccounts = autoExportAccounts;
+    }
 
-        return json;
+    public Account getAccountingAccount() {
+        return accountingAccount;
+    }
+
+    public void setAccountingAccount(Account accountingAccount) {
+        this.accountingAccount = accountingAccount;
+    }
+
+    public Lambda getLastLambda() {
+        return lastLambda;
+    }
+
+    public void setLastLambda(Lambda lastLambda) {
+        this.lastLambda = lastLambda;
+    }
+
+    public boolean isLastLambdaPending() {
+        if (Objects.isNull(this.lastLambda)) {
+            return false;
+        }
+
+        if (Objects.isNull(this.lastLambda.getCompletedAt())) {
+            return false;
+        }
+
+        return true;
     }
 
     @Override
     public String toString() {
         return "AutoExport{" +
-            "userId=" + user_id +
+            "userId=" + userId +
             ", accountingAccountId=" + accountingAccountId +
-            ", request_doc='" + request_doc + '\'' +
+            ", request_doc='" + request + '\'' +
             ", frequency=" + autoExportFrequency +
             ", state=" + autoExportState +
-            ", email_notification=" + email_notification +
+            ", email_notification=" + emailNotification +
             ", autoExportAccounts=" + autoExportAccounts +
-            ", nextExportAt=" + nextExportAt +
             ", id='" + id + '\'' +
             ", createdAt=" + createdAt +
             ", updatedAt=" + updatedAt +

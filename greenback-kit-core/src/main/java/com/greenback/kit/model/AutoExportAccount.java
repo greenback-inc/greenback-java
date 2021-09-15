@@ -8,6 +8,9 @@ public class AutoExportAccount {
     private Instant created_at;
     private Instant updated_at;
 
+    // from expands
+    private Account account;
+
     public String getAccount_id() {
         return account_id;
     }
@@ -38,5 +41,13 @@ public class AutoExportAccount {
 
     public void setUpdated_at(Instant updated_at) {
         this.updated_at = updated_at;
+    }
+
+    public Account getAccount() {
+        return account;
+    }
+
+    public void setAccount(Account account) {
+        this.account = account;
     }
 }
