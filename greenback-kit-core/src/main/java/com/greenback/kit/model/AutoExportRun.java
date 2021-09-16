@@ -14,7 +14,7 @@ public class AutoExportRun extends GreenbackObject{
     private Instant completedAt;
     private Double progress;
     private String message;
-    private String parametersDoc;
+    private AutoExportRequest parameters;
     private String resultsDoc;
     private TriggeredBy triggeredBy;
 
@@ -106,12 +106,12 @@ public class AutoExportRun extends GreenbackObject{
         this.progress = progress;
     }
 
-    public String getParametersDoc() {
-        return parametersDoc;
+    public AutoExportRequest getParameters() {
+        return parameters;
     }
 
-    public void setParametersDoc(String parametersDoc) {
-        this.parametersDoc = parametersDoc;
+    public void setParameters(AutoExportRequest parameters) {
+        this.parameters = parameters;
     }
 
     public String getResultsDoc() {
@@ -147,7 +147,7 @@ public class AutoExportRun extends GreenbackObject{
             ", completedAt=" + completedAt +
             ", progress=" + progress +
             ", message='" + message + '\'' +
-            ", parametersDoc='" + parametersDoc + '\'' +
+            ", parameters='" + parameters + '\'' +
             ", resultsDoc='" + resultsDoc + '\'' +
             ", triggeredBy=" + triggeredBy +
             '}';

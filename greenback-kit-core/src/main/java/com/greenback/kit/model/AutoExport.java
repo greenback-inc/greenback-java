@@ -1,14 +1,12 @@
 package com.greenback.kit.model;
 
-import java.time.Instant;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 public class AutoExport extends GreenbackObject{
     private String userId;
     private String accountingAccountId;
-    private AutoExportRequest request;
+    private AutoExportRequest parameters;
     private AutoExportFrequency frequency;
     private AutoExportState state;
     private Boolean emailNotification;
@@ -17,7 +15,7 @@ public class AutoExport extends GreenbackObject{
     private Account accountingAccount;
     private List<Account> accounts;
     private AutoExportRun lastRun;
-    private Paginated<AutoExportRun> runs;
+    private List<AutoExportRun> runs;
 
     public String getUserId() {
         return userId;
@@ -35,12 +33,12 @@ public class AutoExport extends GreenbackObject{
         this.accountingAccountId = accountingAccountId;
     }
 
-    public AutoExportRequest getRequest() {
-        return request;
+    public AutoExportRequest getParameters() {
+        return parameters;
     }
 
-    public void setRequest(AutoExportRequest request) {
-        this.request = request;
+    public void setParameters(AutoExportRequest parameters) {
+        this.parameters = parameters;
     }
 
     public AutoExportFrequency getFrequency() {
@@ -75,11 +73,11 @@ public class AutoExport extends GreenbackObject{
         this.lastRun = lastRun;
     }
 
-    public Paginated<AutoExportRun> getRuns() {
+    public List<AutoExportRun> getRuns() {
         return runs;
     }
 
-    public void setAllCompletedRuns(Paginated<AutoExportRun> runs) {
+    public void setAllCompletedRuns(List<AutoExportRun> runs) {
         this.runs = runs;
     }
 
@@ -87,8 +85,8 @@ public class AutoExport extends GreenbackObject{
         int errors = 0;
         // these should always already be sorted by descending date, so we start at the beginning of the array and work our way backwards
         if (!Objects.isNull(this.runs)
-                && !Objects.isNull(this.runs.getValues())
-                && this.runs.getValues().size() > 0) {
+                && !Objects.isNull(this.runs)
+                && this.runs.size() > 0) {
             for (AutoExportRun l : this.runs) {
                 if (l.getStatus() == ProcessingStatus.SUCCESS) {
                     return errors;
@@ -138,7 +136,7 @@ public class AutoExport extends GreenbackObject{
             ", updatedAt=" + updatedAt +
             ", userId='" + userId + '\'' +
             ", accountingAccountId='" + accountingAccountId + '\'' +
-            ", request=" + request +
+            ", parameters=" + parameters +
             ", frequency=" + frequency +
             ", state=" + state +
             ", emailNotification=" + emailNotification +
