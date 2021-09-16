@@ -2,17 +2,14 @@ package com.greenback.kit.model;
 
 import java.time.Instant;
 
-public class Lambda {
-    private Long id;
+public class AutoExportRun extends GreenbackObject{
     private String referenceId;
-    private LambdaType type;
+    private AutoExportRunType type;
     private ProcessingStatus status;
     private String userId;
     private Long typeTagId;
     private String lockedBy;
     private String hostname;
-    private Instant createdAt;
-    private Instant updatedAt;
     private Instant killedAt;
     private Instant completedAt;
     private Double progress;
@@ -20,14 +17,6 @@ public class Lambda {
     private String parametersDoc;
     private String resultsDoc;
     private TriggeredBy triggeredBy;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getReferenceId() {
         return referenceId;
@@ -37,11 +26,11 @@ public class Lambda {
         this.referenceId = referenceId;
     }
 
-    public LambdaType getType() {
+    public AutoExportRunType getType() {
         return type;
     }
 
-    public void setType(LambdaType type) {
+    public void setType(AutoExportRunType type) {
         this.type = type;
     }
 
@@ -83,22 +72,6 @@ public class Lambda {
 
     public void setHostname(String hostname) {
         this.hostname = hostname;
-    }
-
-    public Instant getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(Instant createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public Instant getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(Instant updatedAt) {
-        this.updatedAt = updatedAt;
     }
 
     public Instant getCompletedAt() {
@@ -155,5 +128,28 @@ public class Lambda {
 
     public void setTriggeredBy(TriggeredBy triggeredBy) {
         this.triggeredBy = triggeredBy;
+    }
+
+    @Override
+    public String toString() {
+        return "AutoExportRun{" +
+            ", id='" + id + '\'' +
+            ", createdAt=" + createdAt +
+            ", updatedAt=" + updatedAt +
+            ", referenceId='" + referenceId + '\'' +
+            ", type=" + type +
+            ", status=" + status +
+            ", userId='" + userId + '\'' +
+            ", typeTagId=" + typeTagId +
+            ", lockedBy='" + lockedBy + '\'' +
+            ", hostname='" + hostname + '\'' +
+            ", killedAt=" + killedAt +
+            ", completedAt=" + completedAt +
+            ", progress=" + progress +
+            ", message='" + message + '\'' +
+            ", parametersDoc='" + parametersDoc + '\'' +
+            ", resultsDoc='" + resultsDoc + '\'' +
+            ", triggeredBy=" + triggeredBy +
+            '}';
     }
 }

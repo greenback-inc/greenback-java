@@ -1,46 +1,26 @@
 package com.greenback.kit.model;
 
-import java.time.Instant;
-
-public class AutoExportAccount {
-    private String account_id;
-    private Long auto_export_id;
-    private Instant created_at;
-    private Instant updated_at;
+public class AutoExportAccount extends GreenbackObject {
+    private String accountId;
+    private Long autoExportId;
 
     // from expands
     private Account account;
 
-    public String getAccount_id() {
-        return account_id;
+    public String getAccountId() {
+        return accountId;
     }
 
-    public void setAccount_id(String account_id) {
-        this.account_id = account_id;
+    public void setAccountId(String accountId) {
+        this.accountId = accountId;
     }
 
-    public Long getAuto_export_id() {
-        return auto_export_id;
+    public Long getAutoExportId() {
+        return autoExportId;
     }
 
-    public void setAuto_export_id(Long auto_export_id) {
-        this.auto_export_id = auto_export_id;
-    }
-
-    public Instant getCreated_at() {
-        return created_at;
-    }
-
-    public void setCreated_at(Instant created_at) {
-        this.created_at = created_at;
-    }
-
-    public Instant getUpdated_at() {
-        return updated_at;
-    }
-
-    public void setUpdated_at(Instant updated_at) {
-        this.updated_at = updated_at;
+    public void setAutoExportId(Long autoExportId) {
+        this.autoExportId = autoExportId;
     }
 
     public Account getAccount() {
@@ -49,5 +29,17 @@ public class AutoExportAccount {
 
     public void setAccount(Account account) {
         this.account = account;
+    }
+
+    @Override
+    public String toString() {
+        return "AutoExportAccount{" +
+            "accountId='" + accountId + '\'' +
+            ", autoExportId=" + autoExportId +
+            ", account=" + account +
+            ", id='" + id + '\'' +
+            ", createdAt=" + createdAt +
+            ", updatedAt=" + updatedAt +
+            '}';
     }
 }

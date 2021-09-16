@@ -8,7 +8,7 @@ public class AutoExportRequest {
     private List<TransactionType> types;
     private Instant minTransactedAt;
     private Instant maxTransactedAt;
-    private int limit;
+    private Integer limit;
 
     public String getQuery() {
         return query;
@@ -42,11 +42,11 @@ public class AutoExportRequest {
         this.maxTransactedAt = maxTransactedAt;
     }
 
-    public int getLimit() {
+    public Integer getLimit() {
         return limit;
     }
 
-    public void setLimit(int limit) {
+    public void setLimit(Integer limit) {
         this.limit = limit;
     }
 

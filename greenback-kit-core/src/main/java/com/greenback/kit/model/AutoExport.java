@@ -1,33 +1,29 @@
 package com.greenback.kit.model;
 
 import java.time.Instant;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 public class AutoExport extends GreenbackObject{
-    private Long userId;
+    private String userId;
     private String accountingAccountId;
     private AutoExportRequest request;
-    private AutoExportFrequency autoExportFrequency;
-    private AutoExportState autoExportState;
+    private AutoExportFrequency frequency;
+    private AutoExportState state;
     private Boolean emailNotification;
-    private Instant createdAt;
-    private Instant updatedAt;
 
     // from expands
     private Account accountingAccount;
-    private List<AutoExportAccount> autoExportAccounts = new ArrayList<>();
-    private Lambda lastLambda;
-    private Paginated<Lambda> allLambdaCompleted = new Paginated<>();
+    private List<AutoExportAccount> accounts = new ArrayList<>();
+    private AutoExportRun lastRun;
+    private Paginated<AutoExportRun> allCompletedRuns = new Paginated<>();
 
-    public Long getUserId() {
+    public String getUserId() {
         return userId;
     }
 
-    public void setUserId(Long userId) {
+    public void setUserId(String userId) {
         this.userId = userId;
     }
 
@@ -47,20 +43,20 @@ public class AutoExport extends GreenbackObject{
         this.request = request;
     }
 
-    public AutoExportFrequency getAutoExportFrequency() {
-        return autoExportFrequency;
+    public AutoExportFrequency getFrequency() {
+        return frequency;
     }
 
-    public void setAutoExportFrequency(AutoExportFrequency autoExportFrequency) {
-        this.autoExportFrequency = autoExportFrequency;
+    public void setFrequency(AutoExportFrequency frequency) {
+        this.frequency = frequency;
     }
 
-    public AutoExportState getAutoExportState() {
-        return autoExportState;
+    public AutoExportState getState() {
+        return state;
     }
 
-    public void setAutoExportState(AutoExportState autoExportState) {
-        this.autoExportState = autoExportState;
+    public void setState(AutoExportState state) {
+        this.state = state;
     }
 
     public Boolean isEmailNotification() {
@@ -71,37 +67,29 @@ public class AutoExport extends GreenbackObject{
         this.emailNotification = emailNotification;
     }
 
-    public Instant getCreatedAt() {
-        return createdAt;
+    public AutoExportRun getLastRun() {
+        return lastRun;
     }
 
-    public void setCreatedAt(Instant createdAt) {
-        this.createdAt = createdAt;
+    public void setLastRun(AutoExportRun lastRun) {
+        this.lastRun = lastRun;
     }
 
-    public Instant getUpdatedAt() {
-        return updatedAt;
+    public Paginated<AutoExportRun> getAllCompletedRuns() {
+        return allCompletedRuns;
     }
 
-    public void setUpdatedAt(Instant updatedAt) {
-        this.updatedAt = updatedAt;
-    }
-
-    public Paginated<Lambda> getAllLambdaCompleted() {
-        return allLambdaCompleted;
-    }
-
-    public void setAllLambdaCompleted(Paginated<Lambda> allLambdaCompleted) {
-        this.allLambdaCompleted = allLambdaCompleted;
+    public void setAllCompletedRuns(Paginated<AutoExportRun> allCompletedRuns) {
+        this.allCompletedRuns = allCompletedRuns;
     }
 
     public Integer getConsecutiveErrors() {
         int errors = 0;
         // these should always already be sorted by descending date, so we start at the beginning of the array and work our way backwards
-        if (!Objects.isNull(this.allLambdaCompleted)
-                && !Objects.isNull(this.allLambdaCompleted.getValues())
-                && this.allLambdaCompleted.getValues().size() > 0) {
-            for (Lambda l : this.allLambdaCompleted) {
+        if (!Objects.isNull(this.allCompletedRuns)
+                && !Objects.isNull(this.allCompletedRuns.getValues())
+                && this.allCompletedRuns.getValues().size() > 0) {
+            for (AutoExportRun l : this.allCompletedRuns) {
                 if (l.getStatus() == ProcessingStatus.SUCCESS) {
                     return errors;
                 }
@@ -114,12 +102,12 @@ public class AutoExport extends GreenbackObject{
         return null;
     }
 
-    public List<AutoExportAccount> getAutoExportAccounts() {
-        return autoExportAccounts;
+    public List<AutoExportAccount> getAccounts() {
+        return accounts;
     }
 
-    public void setAutoExportAccounts(List<AutoExportAccount> autoExportAccounts) {
-        this.autoExportAccounts = autoExportAccounts;
+    public void setAccounts(List<AutoExportAccount> accounts) {
+        this.accounts = accounts;
     }
 
     public Account getAccountingAccount() {
@@ -130,20 +118,12 @@ public class AutoExport extends GreenbackObject{
         this.accountingAccount = accountingAccount;
     }
 
-    public Lambda getLastLambda() {
-        return lastLambda;
-    }
-
-    public void setLastLambda(Lambda lastLambda) {
-        this.lastLambda = lastLambda;
-    }
-
-    public boolean isLastLambdaPending() {
-        if (Objects.isNull(this.lastLambda)) {
+    public boolean isLastRunPending() {
+        if (Objects.isNull(this.lastRun)) {
             return false;
         }
 
-        if (Objects.isNull(this.lastLambda.getCompletedAt())) {
+        if (Objects.isNull(this.lastRun.getCompletedAt())) {
             return false;
         }
 
@@ -153,16 +133,19 @@ public class AutoExport extends GreenbackObject{
     @Override
     public String toString() {
         return "AutoExport{" +
-            "userId=" + userId +
-            ", accountingAccountId=" + accountingAccountId +
-            ", request_doc='" + request + '\'' +
-            ", frequency=" + autoExportFrequency +
-            ", state=" + autoExportState +
-            ", email_notification=" + emailNotification +
-            ", autoExportAccounts=" + autoExportAccounts +
-            ", id='" + id + '\'' +
+            "id='" + id + '\'' +
             ", createdAt=" + createdAt +
             ", updatedAt=" + updatedAt +
+            ", userId='" + userId + '\'' +
+            ", accountingAccountId='" + accountingAccountId + '\'' +
+            ", request=" + request +
+            ", frequency=" + frequency +
+            ", state=" + state +
+            ", emailNotification=" + emailNotification +
+            ", accountingAccount=" + accountingAccount +
+            ", accounts=" + accounts +
+            ", lastRun=" + lastRun +
+            ", allCompletedRuns=" + allCompletedRuns +
             '}';
     }
 }

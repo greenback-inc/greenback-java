@@ -1,6 +1,6 @@
 package com.greenback.kit.model;
 
-public enum LambdaType {
+public enum AutoExportRunType {
     ALL,
     ECHO,
     EXPORT_RUN,
