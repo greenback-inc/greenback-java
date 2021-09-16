@@ -9,7 +9,6 @@ public class AutoExport extends GreenbackObject{
     private AutoExportRequest parameters;
     private AutoExportFrequency frequency;
     private AutoExportState state;
-    private Boolean emailNotification;
 
     // from expands
     private Account accountingAccount;
@@ -55,14 +54,6 @@ public class AutoExport extends GreenbackObject{
 
     public void setState(AutoExportState state) {
         this.state = state;
-    }
-
-    public Boolean isEmailNotification() {
-        return emailNotification;
-    }
-
-    public void setEmailNotification(Boolean emailNotification) {
-        this.emailNotification = emailNotification;
     }
 
     public AutoExportRun getLastRun() {
@@ -139,7 +130,6 @@ public class AutoExport extends GreenbackObject{
             ", parameters=" + parameters +
             ", frequency=" + frequency +
             ", state=" + state +
-            ", emailNotification=" + emailNotification +
             ", accountingAccount=" + accountingAccount +
             ", accounts=" + accounts +
             ", lastRun=" + lastRun +
