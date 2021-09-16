@@ -162,4 +162,23 @@ public class Account extends GreenbackObject {
         return this;
     }
 
+    @Override
+    public String toString() {
+        return "Account{" +
+            "userId='" + userId + '\'' +
+            ", connectId='" + connectId + '\'' +
+            ", referenceId='" + referenceId + '\'' +
+            ", type=" + type +
+            ", state=" + state +
+            ", connectionState=" + connectionState +
+            ", consecutiveErrors=" + consecutiveErrors +
+            ", defaultName='" + defaultName + '\'' +
+            ", overlayName='" + overlayName + '\'' +
+            ", connect=" + connect +
+            ", syncs=" + syncs +
+            ", id='" + id + '\'' +
+            ", createdAt=" + createdAt +
+            ", updatedAt=" + updatedAt +
+            '}';
+    }
 }

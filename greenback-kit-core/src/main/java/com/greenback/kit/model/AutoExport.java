@@ -15,9 +15,9 @@ public class AutoExport extends GreenbackObject{
 
     // from expands
     private Account accountingAccount;
-    private List<AutoExportAccount> accounts = new ArrayList<>();
+    private List<Account> accounts;
     private AutoExportRun lastRun;
-    private Paginated<AutoExportRun> allCompletedRuns = new Paginated<>();
+    private Paginated<AutoExportRun> runs;
 
     public String getUserId() {
         return userId;
@@ -75,21 +75,21 @@ public class AutoExport extends GreenbackObject{
         this.lastRun = lastRun;
     }
 
-    public Paginated<AutoExportRun> getAllCompletedRuns() {
-        return allCompletedRuns;
+    public Paginated<AutoExportRun> getRuns() {
+        return runs;
     }
 
-    public void setAllCompletedRuns(Paginated<AutoExportRun> allCompletedRuns) {
-        this.allCompletedRuns = allCompletedRuns;
+    public void setAllCompletedRuns(Paginated<AutoExportRun> runs) {
+        this.runs = runs;
     }
 
     public Integer getConsecutiveErrors() {
         int errors = 0;
         // these should always already be sorted by descending date, so we start at the beginning of the array and work our way backwards
-        if (!Objects.isNull(this.allCompletedRuns)
-                && !Objects.isNull(this.allCompletedRuns.getValues())
-                && this.allCompletedRuns.getValues().size() > 0) {
-            for (AutoExportRun l : this.allCompletedRuns) {
+        if (!Objects.isNull(this.runs)
+                && !Objects.isNull(this.runs.getValues())
+                && this.runs.getValues().size() > 0) {
+            for (AutoExportRun l : this.runs) {
                 if (l.getStatus() == ProcessingStatus.SUCCESS) {
                     return errors;
                 }
@@ -102,11 +102,11 @@ public class AutoExport extends GreenbackObject{
         return null;
     }
 
-    public List<AutoExportAccount> getAccounts() {
+    public List<Account> getAccounts() {
         return accounts;
     }
 
-    public void setAccounts(List<AutoExportAccount> accounts) {
+    public void setAccounts(List<Account> accounts) {
         this.accounts = accounts;
     }
 
@@ -145,7 +145,7 @@ public class AutoExport extends GreenbackObject{
             ", accountingAccount=" + accountingAccount +
             ", accounts=" + accounts +
             ", lastRun=" + lastRun +
-            ", allCompletedRuns=" + allCompletedRuns +
+            ", allCompletedRuns=" + runs +
             '}';
     }
 }
