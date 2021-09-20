@@ -14,7 +14,6 @@ public class AutoExport extends GreenbackObject{
     private Account accountingAccount;
     private List<Account> accounts;
     private AutoExportRun lastRun;
-    private List<AutoExportRun> runs;
 
     public String getUserId() {
         return userId;
@@ -64,33 +63,6 @@ public class AutoExport extends GreenbackObject{
         this.lastRun = lastRun;
     }
 
-    public List<AutoExportRun> getRuns() {
-        return runs;
-    }
-
-    public void setAllCompletedRuns(List<AutoExportRun> runs) {
-        this.runs = runs;
-    }
-
-    public Integer getConsecutiveErrors() {
-        int errors = 0;
-        // these should always already be sorted by descending date, so we start at the beginning of the array and work our way backwards
-        if (!Objects.isNull(this.runs)
-                && !Objects.isNull(this.runs)
-                && this.runs.size() > 0) {
-            for (AutoExportRun l : this.runs) {
-                if (l.getStatus() == ProcessingStatus.SUCCESS) {
-                    return errors;
-                }
-
-                errors++;
-            }
-        }
-
-        // if we don't have the lambda data, we can't make any assumptions about consecutive errors
-        return null;
-    }
-
     public List<Account> getAccounts() {
         return accounts;
     }
@@ -107,18 +79,6 @@ public class AutoExport extends GreenbackObject{
         this.accountingAccount = accountingAccount;
     }
 
-    public boolean isLastRunPending() {
-        if (Objects.isNull(this.lastRun)) {
-            return false;
-        }
-
-        if (Objects.isNull(this.lastRun.getCompletedAt())) {
-            return false;
-        }
-
-        return true;
-    }
-
     @Override
     public String toString() {
         return "AutoExport{" +
@@ -133,7 +93,6 @@ public class AutoExport extends GreenbackObject{
             ", accountingAccount=" + accountingAccount +
             ", accounts=" + accounts +
             ", lastRun=" + lastRun +
-            ", allCompletedRuns=" + runs +
             '}';
     }
 }

@@ -4,18 +4,14 @@ import java.time.Instant;
 
 public class AutoExportRun extends GreenbackObject{
     private String referenceId;
-    private AutoExportRunType type;
     private ProcessingStatus status;
     private String userId;
-    private Long typeTagId;
-    private String lockedBy;
-    private String hostname;
     private Instant killedAt;
     private Instant completedAt;
     private Double progress;
     private String message;
     private AutoExportRequest parameters;
-    private String resultsDoc;
+    private AutoExportResult results;
     private TriggeredBy triggeredBy;
 
     public String getReferenceId() {
@@ -24,14 +20,6 @@ public class AutoExportRun extends GreenbackObject{
 
     public void setReferenceId(String referenceId) {
         this.referenceId = referenceId;
-    }
-
-    public AutoExportRunType getType() {
-        return type;
-    }
-
-    public void setType(AutoExportRunType type) {
-        this.type = type;
     }
 
     public ProcessingStatus getStatus() {
@@ -48,30 +36,6 @@ public class AutoExportRun extends GreenbackObject{
 
     public void setUserId(String userId) {
         this.userId = userId;
-    }
-
-    public Long getTypeTagId() {
-        return typeTagId;
-    }
-
-    public void setTypeTagId(Long typeTagId) {
-        this.typeTagId = typeTagId;
-    }
-
-    public String getLockedBy() {
-        return lockedBy;
-    }
-
-    public void setLockedBy(String lockedBy) {
-        this.lockedBy = lockedBy;
-    }
-
-    public String getHostname() {
-        return hostname;
-    }
-
-    public void setHostname(String hostname) {
-        this.hostname = hostname;
     }
 
     public Instant getCompletedAt() {
@@ -114,12 +78,12 @@ public class AutoExportRun extends GreenbackObject{
         this.parameters = parameters;
     }
 
-    public String getResultsDoc() {
-        return resultsDoc;
+    public AutoExportResult getResults() {
+        return results;
     }
 
-    public void setResultsDoc(String resultsDoc) {
-        this.resultsDoc = resultsDoc;
+    public void setResults(AutoExportResult resultsDoc) {
+        this.results = resultsDoc;
     }
 
     public TriggeredBy getTriggeredBy() {
@@ -137,18 +101,14 @@ public class AutoExportRun extends GreenbackObject{
             ", createdAt=" + createdAt +
             ", updatedAt=" + updatedAt +
             ", referenceId='" + referenceId + '\'' +
-            ", type=" + type +
             ", status=" + status +
             ", userId='" + userId + '\'' +
-            ", typeTagId=" + typeTagId +
-            ", lockedBy='" + lockedBy + '\'' +
-            ", hostname='" + hostname + '\'' +
             ", killedAt=" + killedAt +
             ", completedAt=" + completedAt +
             ", progress=" + progress +
             ", message='" + message + '\'' +
             ", parameters='" + parameters + '\'' +
-            ", resultsDoc='" + resultsDoc + '\'' +
+            ", results='" + results + '\'' +
             ", triggeredBy=" + triggeredBy +
             '}';
     }

@@ -2,6 +2,7 @@ package com.greenback.kit.client.impl;
 
 import com.fizzed.crux.uri.MutableUri;
 import com.greenback.kit.client.GreenbackClient;
+import com.greenback.kit.client.GreenbackClientMixin;
 import com.greenback.kit.client.GreenbackCodec;
 import static com.greenback.kit.client.impl.ClientHelper.toExpandQueryParameter;
 import static com.greenback.kit.client.impl.ClientHelper.toInstantParameter;
@@ -29,14 +30,12 @@ import com.greenback.kit.model.User;
 import com.greenback.kit.model.Vision;
 import com.greenback.kit.model.VisionRequest;
 import com.greenback.kit.util.Bytes;
-import static com.greenback.kit.util.Utils.toStringList;
+
 import java.io.IOException;
-import java.util.LinkedHashMap;
-import java.util.Map;
 import java.util.Objects;
 import static java.util.Optional.ofNullable;
 
-abstract public class AbstractGreenbackClient implements GreenbackClient {
+abstract public class AbstractGreenbackClient implements GreenbackClient, GreenbackClientMixin {
     
     protected final String baseUrl;
     protected final GreenbackCodec codec;
@@ -74,25 +73,6 @@ abstract public class AbstractGreenbackClient implements GreenbackClient {
         return url;
     }
     
-    protected Map<String,String> toQueryMap(Object value) throws IOException {
-        final Map<String,String> map = new LinkedHashMap<>();
-     
-        if (value != null) {
-            final Map<String,Object> flattenedMap = this.codec.toFlattenedMap(value);
-            if (flattenedMap != null) {
-                flattenedMap.forEach((k,v) -> {
-                    if (v instanceof Iterable) {
-                        map.put(k, toStringList((Iterable)v));
-                    } else {
-                        map.put(k, Objects.toString(v, ""));
-                    }
-                });
-            }
-        }
-        
-        return map;
-    }
-
     //
     // Users
     //
@@ -126,7 +106,7 @@ abstract public class AbstractGreenbackClient implements GreenbackClient {
 
         final String url = this.buildBaseUrl()
             .path("v2/connects")
-            .query(this.toQueryMap(connectQuery))
+            .query(this.toQueryMap(connectQuery, this.getCodec()))
             .toString();
         
         return toStreamingPaginated(url, v -> this.getConnectsByUrl(v));
@@ -264,7 +244,7 @@ abstract public class AbstractGreenbackClient implements GreenbackClient {
 
         final String url = this.buildBaseUrl()
             .path("v2/accounts")
-            .query(this.toQueryMap(accountQuery))
+            .query(this.toQueryMap(accountQuery, this.getCodec()))
             .toString();
         
         return this.getAccountsByUrl(url);
@@ -366,7 +346,7 @@ abstract public class AbstractGreenbackClient implements GreenbackClient {
         
         final String url = this.buildBaseUrl()
             .path("v2/messages")
-            .query(this.toQueryMap(messageQuery))
+            .query(this.toQueryMap(messageQuery, this.getCodec()))
             .toString();
         
         return toStreamingPaginated(url, v -> this.getMessagesByUrl(v));
@@ -450,7 +430,7 @@ abstract public class AbstractGreenbackClient implements GreenbackClient {
         
         final String url = this.buildBaseUrl()
             .path("v2/transactions")
-            .query(this.toQueryMap(transactionQuery))
+            .query(this.toQueryMap(transactionQuery, this.getCodec()))
             .toString();
         
         return toStreamingPaginated(url, v -> this.getTransactionsByUrl(v));
