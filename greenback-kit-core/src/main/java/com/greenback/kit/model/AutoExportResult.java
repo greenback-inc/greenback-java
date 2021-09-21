@@ -4,6 +4,7 @@ public class AutoExportResult {
     private Integer total;
     private Integer created;
     private Integer updated;
+    private Integer unmapped;
     private Integer matched;
     private Integer failed;
 
@@ -47,12 +48,21 @@ public class AutoExportResult {
         this.failed = failed;
     }
 
+    public Integer getUnmapped() {
+        return unmapped;
+    }
+
+    public void setUnmapped(Integer unmapped) {
+        this.unmapped = unmapped;
+    }
+
     @Override
     public String toString() {
         return "AutoExportResult{" +
             "total=" + total +
             ", created=" + created +
             ", updated=" + updated +
+            ", unmapped=" + unmapped +
             ", matched=" + matched +
             ", failed=" + failed +
             '}';
