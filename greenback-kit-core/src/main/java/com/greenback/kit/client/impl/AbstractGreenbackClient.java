@@ -1,6 +1,7 @@
 package com.greenback.kit.client.impl;
 
 import com.fizzed.crux.uri.MutableUri;
+import com.greenback.kit.client.AutoExportQuery;
 import com.greenback.kit.client.GreenbackClient;
 import com.greenback.kit.client.GreenbackCodec;
 import static com.greenback.kit.client.impl.ClientHelper.toExpandQueryParameter;
@@ -8,32 +9,13 @@ import static com.greenback.kit.client.impl.ClientHelper.toInstantParameter;
 import static com.greenback.kit.client.impl.ClientHelper.toListQueryParameter;
 import static com.greenback.kit.client.impl.ClientHelper.toStreamingPaginated;
 import static com.greenback.kit.client.impl.ClientHelper.toValue;
-import com.greenback.kit.model.Account;
-import com.greenback.kit.model.AccountQuery;
-import com.greenback.kit.model.Connect;
-import com.greenback.kit.model.ConnectIntentAuthorize;
-import com.greenback.kit.model.ConnectIntentComplete;
-import com.greenback.kit.model.ConnectIntent;
-import com.greenback.kit.model.ConnectQuery;
-import com.greenback.kit.model.Message;
-import com.greenback.kit.model.MessageQuery;
-import com.greenback.kit.model.MessageRequest;
-import com.greenback.kit.model.Paginated;
-import com.greenback.kit.model.Transaction;
-import com.greenback.kit.model.TransactionExport;
-import com.greenback.kit.model.TransactionExportDeleteMode;
-import com.greenback.kit.model.TransactionExportIntent;
-import com.greenback.kit.model.TransactionExportIntentRequest;
-import com.greenback.kit.model.TransactionQuery;
-import com.greenback.kit.model.User;
-import com.greenback.kit.model.Vision;
-import com.greenback.kit.model.VisionRequest;
+import com.greenback.kit.model.*;
 import com.greenback.kit.util.Bytes;
-import static com.greenback.kit.util.Utils.toStringList;
 import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Objects;
+import static com.greenback.kit.util.Utils.toStringList;
 import static java.util.Optional.ofNullable;
 
 abstract public class AbstractGreenbackClient implements GreenbackClient {
@@ -73,10 +55,10 @@ abstract public class AbstractGreenbackClient implements GreenbackClient {
         url.fragment(null);
         return url;
     }
-    
+
     protected Map<String,String> toQueryMap(Object value) throws IOException {
         final Map<String,String> map = new LinkedHashMap<>();
-     
+
         if (value != null) {
             final Map<String,Object> flattenedMap = this.codec.toFlattenedMap(value);
             if (flattenedMap != null) {
@@ -89,10 +71,10 @@ abstract public class AbstractGreenbackClient implements GreenbackClient {
                 });
             }
         }
-        
+
         return map;
     }
-
+    
     //
     // Users
     //
@@ -572,5 +554,148 @@ abstract public class AbstractGreenbackClient implements GreenbackClient {
     
     abstract protected TransactionExport deleteTransactionExportByUrl(
             String url) throws IOException;
-    
+
+
+
+    //
+    // Auto Exports
+    //
+
+    @Override
+    public AutoExport createAutoExport(
+        AutoExport autoExport) throws IOException {
+
+        Objects.requireNonNull(autoExport, "autoExport was null");
+
+        final String url = this.buildBaseUrl()
+            .path("v2/auto_exports")
+            .toString();
+
+        return this.postAutoExportByUrl(url, autoExport);
+    }
+
+    @Override
+    public AutoExport updateAutoExport(
+        AutoExport autoExport) throws IOException {
+
+        Objects.requireNonNull(autoExport, "autoExport was null");
+        Objects.requireNonNull(autoExport.getId(), "autoExport id was null");
+
+        final String url = this.buildBaseUrl()
+            .path("v2/auto_exports")
+            .rel(autoExport.getId())
+            .toString();
+
+        return this.postAutoExportByUrl(url, autoExport);
+    }
+
+    @Override
+    public Paginated<AutoExport> getAutoExports(
+        AutoExportQuery autoExportQuery) throws IOException {
+
+        final String url = this.buildBaseUrl()
+            .path("v2/auto_exports")
+            .query(this.toQueryMap(autoExportQuery))
+            .toString();
+
+        return this.getAutoExportsByUrl(url);
+    }
+
+    @Override
+    public AutoExport getAutoExportById(
+        String autoExportId,
+        Iterable<String> expands) throws IOException {
+
+        Objects.requireNonNull(autoExportId, "autoExportId was null");
+
+        final String url = this.buildBaseUrl()
+            .path("v2/auto_exports")
+            .rel(autoExportId)
+            .queryIfPresent("expands", toExpandQueryParameter(expands))
+            .toString();
+
+        return toValue(() -> this.getAutoExportByUrl(url));
+    }
+
+    @Override
+    public AutoExport deleteAutoExportById(
+        String autoExportId) throws IOException {
+
+        Objects.requireNonNull(autoExportId, "autoExportId was null");
+
+        final String url = this.buildBaseUrl()
+            .path("v2/auto_exports")
+            .rel(autoExportId)
+            .toString();
+
+        return toValue(() -> this.deleteAutoExportByUrl(url));
+    }
+
+    abstract protected AutoExport postAutoExportByUrl(
+        String url,
+        Object request) throws IOException;
+
+    abstract protected Paginated<AutoExport> getAutoExportsByUrl(
+        String url) throws IOException;
+
+    abstract protected AutoExport getAutoExportByUrl(
+        String url) throws IOException;
+
+    abstract protected AutoExport deleteAutoExportByUrl(
+        String url) throws IOException;
+
+
+    //
+    // Auto Export Runs
+    //
+
+    @Override
+    public AutoExportRun createAutoExportRun(String autoExportId, AutoExportRun autoExportRun) throws IOException {
+        Objects.requireNonNull(autoExportRun, "autoExportRun was null");
+
+        final String url = this.buildBaseUrl()
+            .path("v2/auto_exports")
+            .rel(autoExportId, "runs")
+            .toString();
+
+        return this.postAutoExportRunByUrl(url, autoExportRun);
+    }
+
+    @Override
+    public AutoExportRun getAutoExportRunById(String autoExportRunId, Iterable<String> expands) throws IOException {
+        Objects.requireNonNull(autoExportRunId, "autoExportRunId was null");
+
+        //TODO JB: need to implement this route in lens
+        final String url = this.buildBaseUrl()
+            .path("v2/auto_exports")
+            .rel("runs", autoExportRunId)
+            .queryIfPresent("expands", toExpandQueryParameter(expands))
+            .toString();
+
+        return toValue(() -> this.getAutoExportRunByUrl(url));
+    }
+
+    @Override
+    public Paginated<AutoExportRun> getAutoExportRunsByAutoExportId(String autoExportId, Iterable<String> expands) throws IOException {
+        Objects.requireNonNull(autoExportId, "autoExportId was null");
+
+        final String url = this.buildBaseUrl()
+            .path("v2/auto_exports")
+            .rel(autoExportId, "runs")
+            .queryIfPresent("expands", toExpandQueryParameter(expands))
+            .toString();
+
+        return toValue(() -> this.getAutoExportRunsByUrl(url));
+    }
+
+    abstract protected AutoExportRun postAutoExportRunByUrl(
+        String url,
+        Object request) throws IOException;
+
+    abstract protected Paginated<AutoExportRun> getAutoExportRunsByUrl(
+        String url) throws IOException;
+
+    abstract protected AutoExportRun getAutoExportRunByUrl(
+        String url) throws IOException;
+
 }

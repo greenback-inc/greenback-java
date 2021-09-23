@@ -1,25 +1,7 @@
 package com.greenback.kit.client;
 
-import com.greenback.kit.model.Account;
-import com.greenback.kit.model.AccountQuery;
-import com.greenback.kit.model.Connect;
-import com.greenback.kit.model.ConnectQuery;
-import com.greenback.kit.model.ConnectIntentAuthorize;
-import com.greenback.kit.model.ConnectIntentComplete;
-import com.greenback.kit.model.ConnectIntent;
-import com.greenback.kit.model.Message;
-import com.greenback.kit.model.MessageQuery;
-import com.greenback.kit.model.MessageRequest;
-import com.greenback.kit.model.Paginated;
-import com.greenback.kit.model.Transaction;
-import com.greenback.kit.model.TransactionExport;
-import com.greenback.kit.model.TransactionExportDeleteMode;
-import com.greenback.kit.model.TransactionExportIntentRequest;
-import com.greenback.kit.model.TransactionExportIntent;
-import com.greenback.kit.model.TransactionQuery;
-import com.greenback.kit.model.User;
-import com.greenback.kit.model.Vision;
-import com.greenback.kit.model.VisionRequest;
+import com.greenback.kit.model.*;
+
 import java.io.IOException;
 
 public interface GreenbackClient {
@@ -139,5 +121,37 @@ public interface GreenbackClient {
     TransactionExport deleteTransactionExportById(
             String transactionExportId,
             TransactionExportDeleteMode deleteMode) throws IOException;
-    
+
+    // Auto Exports
+
+    AutoExport createAutoExport(AutoExport autoExport) throws IOException;
+
+    AutoExport updateAutoExport(AutoExport autoExport) throws IOException;
+
+    Paginated<AutoExport> getAutoExports(AutoExportQuery autoExportQuery) throws IOException;
+
+    default AutoExport getAutoExportById(String autoExportId) throws IOException {
+        return this.getAutoExportById(autoExportId, null);
+    }
+
+    AutoExport getAutoExportById(String autoExportId, Iterable<String> expands) throws IOException;
+
+    AutoExport deleteAutoExportById(String autoExportId) throws IOException;
+
+    // Auto Export Runs
+
+    AutoExportRun createAutoExportRun(String autoExportId, AutoExportRun autoExportRun) throws IOException;
+
+    default AutoExportRun getAutoExportRunById(String autoExportRunId) throws IOException {
+        return this.getAutoExportRunById(autoExportRunId, null);
+    }
+
+    AutoExportRun getAutoExportRunById(String autoExportRunId, Iterable<String> expands) throws IOException;
+
+    default Paginated<AutoExportRun> getAutoExportRunsByAutoExportId(String autoExportId) throws IOException {
+        return this.getAutoExportRunsByAutoExportId(autoExportId, null);
+    }
+
+    Paginated<AutoExportRun> getAutoExportRunsByAutoExportId(String autoExportId, Iterable<String> expands) throws IOException;
+
 }

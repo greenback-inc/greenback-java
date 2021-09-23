@@ -4,5 +4,6 @@ public class GreenbackConstants {
  
     static public final String ENDPOINT_PRODUCTION = "https://api.greenback.com";
     static public final String ENDPOINT_STAGING = "https://sandbox-api.greenback.com";
-    
+    static public final String ENDPOINT_LOCAL = "http://localhost:8080/api";
+
 }
