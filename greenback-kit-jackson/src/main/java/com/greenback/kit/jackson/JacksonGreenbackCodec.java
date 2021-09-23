@@ -12,20 +12,7 @@ import com.fizzed.crux.jackson.EnumDeserializeStrategy;
 import com.fizzed.crux.jackson.EnumSerializeStrategy;
 import com.fizzed.crux.jackson.EnumStrategyModule;
 import com.greenback.kit.client.GreenbackCodec;
-import com.greenback.kit.model.Account;
-import com.greenback.kit.model.Connect;
-import com.greenback.kit.model.ConnectIntent;
-import com.greenback.kit.model.GreenbackError;
-import com.greenback.kit.model.Paginated;
-import com.greenback.kit.model.Sync;
-import com.greenback.kit.model.Transaction;
-import com.greenback.kit.model.TransactionExport;
-import com.greenback.kit.model.TransactionExportIntent;
-import com.greenback.kit.model.User;
-import com.greenback.kit.model.Value;
-import com.greenback.kit.model.GreenbackException;
-import com.greenback.kit.model.Message;
-import com.greenback.kit.model.Vision;
+import com.greenback.kit.model.*;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
@@ -33,7 +20,7 @@ import java.util.Map;
 import java.util.TimeZone;
 
 public class JacksonGreenbackCodec implements GreenbackCodec {
-    
+
     protected final ObjectMapper objectMapper;
     
     public JacksonGreenbackCodec() {
@@ -70,7 +57,7 @@ public class JacksonGreenbackCodec implements GreenbackCodec {
             TypeReference<T> typeReference) throws IOException, GreenbackException {
         
         final JsonNode rootNode = this.objectMapper.readTree(input);
-        
+
         this.verifySuccess(rootNode);
         
         return this.objectMapper.convertValue(rootNode, typeReference);
@@ -112,6 +99,14 @@ public class JacksonGreenbackCodec implements GreenbackCodec {
         = new TypeReference<Value<TransactionExportIntent>>() {};
     static private final TypeReference<Value<TransactionExport>> TYPEREF_TRANSACTION_EXPORT
         = new TypeReference<Value<TransactionExport>>() {};
+    static private final TypeReference<Paginated<AutoExport>> TYPEREF_AUTO_EXPORTS
+        = new TypeReference<Paginated<AutoExport>>() {};
+    static private final TypeReference<Value<AutoExport>> TYPEREF_AUTO_EXPORT
+        = new TypeReference<Value<AutoExport>>() {};
+    static private final TypeReference<Paginated<AutoExportRun>> TYPEREF_AUTO_EXPORT_RUNS
+        = new TypeReference<Paginated<AutoExportRun>>() {};
+    static private final TypeReference<Value<AutoExportRun>> TYPEREF_AUTO_EXPORT_RUN
+        = new TypeReference<Value<AutoExportRun>>() {};
 
     @Override
     public String prettyPrint(Object value) throws IOException {
@@ -251,6 +246,34 @@ public class JacksonGreenbackCodec implements GreenbackCodec {
             InputStream input) throws IOException {
         
         return this.read(input, TYPEREF_TRANSACTION_EXPORT).getValue();
+    }
+
+    @Override
+    public Paginated<AutoExport> readAutoExports(
+        InputStream input) throws IOException {
+
+        return this.read(input, TYPEREF_AUTO_EXPORTS);
+    }
+
+    @Override
+    public AutoExport readAutoExport(
+        InputStream input) throws IOException {
+
+        return this.read(input, TYPEREF_AUTO_EXPORT).getValue();
+    }
+
+    @Override
+    public Paginated<AutoExportRun> readAutoExportRuns(
+        InputStream input) throws IOException {
+
+        return this.read(input, TYPEREF_AUTO_EXPORT_RUNS);
+    }
+
+    @Override
+    public AutoExportRun readAutoExportRun(
+        InputStream input) throws IOException {
+
+        return this.read(input, TYPEREF_AUTO_EXPORT_RUN).getValue();
     }
 
 }

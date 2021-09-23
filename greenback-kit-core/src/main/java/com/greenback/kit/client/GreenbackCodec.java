@@ -1,16 +1,7 @@
 package com.greenback.kit.client;
 
-import com.greenback.kit.model.Account;
-import com.greenback.kit.model.Connect;
-import com.greenback.kit.model.ConnectIntent;
-import com.greenback.kit.model.Message;
-import com.greenback.kit.model.Paginated;
-import com.greenback.kit.model.Sync;
-import com.greenback.kit.model.Transaction;
-import com.greenback.kit.model.TransactionExport;
-import com.greenback.kit.model.TransactionExportIntent;
-import com.greenback.kit.model.User;
-import com.greenback.kit.model.Vision;
+import com.greenback.kit.model.*;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map;
@@ -56,5 +47,13 @@ public interface GreenbackCodec {
     TransactionExport readTransactionExport(InputStream input) throws IOException;
 
     TransactionExportIntent readTransactionExporter(InputStream input) throws IOException;
+
+    AutoExport readAutoExport(InputStream input) throws IOException;
+
+    Paginated<AutoExport> readAutoExports(InputStream input) throws IOException;
+
+    AutoExportRun readAutoExportRun(InputStream input) throws IOException;
+
+    Paginated<AutoExportRun> readAutoExportRuns(InputStream input) throws IOException;
     
 }

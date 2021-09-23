@@ -1,19 +1,20 @@
 package com.greenback.kit.model;
 
 import java.util.List;
-import java.util.Objects;
 
-public class AutoExport extends GreenbackObject{
+public class AutoExport extends GreenbackObject {
     private String userId;
     private String accountingAccountId;
-    private AutoExportRequest parameters;
+    private AutoExportParameters parameters;
     private AutoExportFrequency frequency;
     private AutoExportState state;
+    private List<String> accountIds;
 
     // from expands
     private Account accountingAccount;
     private List<Account> accounts;
     private AutoExportRun lastRun;
+    private AutoExportRun pendingRun;
 
     public String getUserId() {
         return userId;
@@ -31,11 +32,11 @@ public class AutoExport extends GreenbackObject{
         this.accountingAccountId = accountingAccountId;
     }
 
-    public AutoExportRequest getParameters() {
+    public AutoExportParameters getParameters() {
         return parameters;
     }
 
-    public void setParameters(AutoExportRequest parameters) {
+    public void setParameters(AutoExportParameters parameters) {
         this.parameters = parameters;
     }
 
@@ -55,12 +56,28 @@ public class AutoExport extends GreenbackObject{
         this.state = state;
     }
 
+    public List<String> getAccountIds() {
+        return accountIds;
+    }
+
+    public void setAccountIds(List<String> accountIds) {
+        this.accountIds = accountIds;
+    }
+
     public AutoExportRun getLastRun() {
         return lastRun;
     }
 
     public void setLastRun(AutoExportRun lastRun) {
         this.lastRun = lastRun;
+    }
+
+    public AutoExportRun getPendingRun() {
+        return pendingRun;
+    }
+
+    public void setPendingRun(AutoExportRun pendingRun) {
+        this.pendingRun = pendingRun;
     }
 
     public List<Account> getAccounts() {
@@ -92,7 +109,9 @@ public class AutoExport extends GreenbackObject{
             ", state=" + state +
             ", accountingAccount=" + accountingAccount +
             ", accounts=" + accounts +
+            ", accountIds=" + accountIds +
             ", lastRun=" + lastRun +
+            ", pendingRun=" + lastRun +
             '}';
     }
 }

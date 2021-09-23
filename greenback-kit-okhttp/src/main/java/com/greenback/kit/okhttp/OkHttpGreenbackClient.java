@@ -2,17 +2,7 @@ package com.greenback.kit.okhttp;
 
 import com.greenback.kit.client.GreenbackCodec;
 import com.greenback.kit.client.impl.AbstractGreenbackClient;
-import com.greenback.kit.model.Account;
-import com.greenback.kit.model.Connect;
-import com.greenback.kit.model.ConnectIntent;
-import com.greenback.kit.model.Paginated;
-import com.greenback.kit.model.Message;
-import com.greenback.kit.model.Transaction;
-import com.greenback.kit.model.TransactionExport;
-import com.greenback.kit.model.TransactionExportIntent;
-import com.greenback.kit.model.TransactionExportIntentRequest;
-import com.greenback.kit.model.User;
-import com.greenback.kit.model.Vision;
+import com.greenback.kit.model.*;
 import com.greenback.kit.okhttp.impl.BaseOkHttpClient;
 import com.greenback.kit.util.Bytes;
 import java.io.IOException;
@@ -307,5 +297,89 @@ public class OkHttpGreenbackClient extends AbstractGreenbackClient implements Ba
         
         return this.execute(requestBuilder, this.codec::readTransactionExport);
     }
-    
+
+
+    //
+    // Auto Exports
+    //
+
+
+    @Override
+    protected Paginated<AutoExport> getAutoExportsByUrl(String url) throws IOException {
+
+        final Request.Builder requestBuilder = new Request.Builder()
+            .url(url);
+
+        return this.execute(requestBuilder, this.codec::readAutoExports);
+    }
+
+    @Override
+    protected AutoExport getAutoExportByUrl(String url) throws IOException {
+
+        final Request.Builder requestBuilder = new Request.Builder()
+            .url(url);
+
+        return this.execute(requestBuilder, this.codec::readAutoExport);
+    }
+
+    @Override
+    protected AutoExport deleteAutoExportByUrl(String url) throws IOException {
+
+        final Request.Builder requestBuilder = new Request.Builder()
+            .url(url)
+            .delete();
+
+        return this.execute(requestBuilder, this.codec::readAutoExport);
+    }
+
+    @Override
+    protected AutoExport postAutoExportByUrl(
+        String url,
+        Object request) throws IOException {
+
+        final byte[] body = this.codec.writeBytes(request);
+
+        final RequestBody requestBody = this.jsonRequestBody(body);
+
+        final Request.Builder requestBuilder = new Request.Builder()
+            .url(url)
+            .post(requestBody);
+
+        return this.execute(requestBuilder, this.codec::readAutoExport);
+    }
+
+    @Override
+    protected Paginated<AutoExportRun> getAutoExportRunsByUrl(String url) throws IOException {
+
+        final Request.Builder requestBuilder = new Request.Builder()
+            .url(url);
+
+        return this.execute(requestBuilder, this.codec::readAutoExportRuns);
+    }
+
+    @Override
+    protected AutoExportRun getAutoExportRunByUrl(String url) throws IOException {
+
+        final Request.Builder requestBuilder = new Request.Builder()
+            .url(url);
+
+        return this.execute(requestBuilder, this.codec::readAutoExportRun);
+    }
+
+    @Override
+    protected AutoExportRun postAutoExportRunByUrl(
+        String url,
+        Object request) throws IOException {
+
+        final byte[] body = this.codec.writeBytes(request);
+
+        final RequestBody requestBody = this.jsonRequestBody(body);
+
+        final Request.Builder requestBuilder = new Request.Builder()
+            .url(url)
+            .post(requestBody);
+
+        return this.execute(requestBuilder, this.codec::readAutoExportRun);
+    }
+
 }

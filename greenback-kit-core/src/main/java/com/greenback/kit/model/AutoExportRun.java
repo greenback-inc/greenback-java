@@ -2,15 +2,16 @@ package com.greenback.kit.model;
 
 import java.time.Instant;
 
-public class AutoExportRun extends GreenbackObject{
+public class AutoExportRun extends GreenbackObject {
     private String referenceId;
     private ProcessingStatus status;
     private String userId;
+    private Long typeTagId;
     private Instant killedAt;
     private Instant completedAt;
     private Double progress;
     private String message;
-    private AutoExportRequest parameters;
+    private AutoExportParameters parameters;
     private AutoExportResult results;
     private TriggeredBy triggeredBy;
 
@@ -36,6 +37,14 @@ public class AutoExportRun extends GreenbackObject{
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public Long getTypeTagId() {
+        return typeTagId;
+    }
+
+    public void setTypeTagId(Long typeTagId) {
+        this.typeTagId = typeTagId;
     }
 
     public Instant getCompletedAt() {
@@ -70,11 +79,11 @@ public class AutoExportRun extends GreenbackObject{
         this.progress = progress;
     }
 
-    public AutoExportRequest getParameters() {
+    public AutoExportParameters getParameters() {
         return parameters;
     }
 
-    public void setParameters(AutoExportRequest parameters) {
+    public void setParameters(AutoExportParameters parameters) {
         this.parameters = parameters;
     }
 
@@ -103,6 +112,7 @@ public class AutoExportRun extends GreenbackObject{
             ", referenceId='" + referenceId + '\'' +
             ", status=" + status +
             ", userId='" + userId + '\'' +
+            ", typeTagId='" + typeTagId + '\'' +
             ", killedAt=" + killedAt +
             ", completedAt=" + completedAt +
             ", progress=" + progress +
