@@ -1,7 +1,7 @@
 package com.greenback.kit.client.impl;
 
 import com.fizzed.crux.uri.MutableUri;
-import com.greenback.kit.client.AutoExportQuery;
+import com.greenback.kit.model.AutoExportQuery;
 import com.greenback.kit.client.GreenbackClient;
 import com.greenback.kit.client.GreenbackCodec;
 import static com.greenback.kit.client.impl.ClientHelper.toExpandQueryParameter;
