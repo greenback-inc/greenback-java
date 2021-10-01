@@ -42,4 +42,12 @@ public class Paginated<T> extends Response implements Iterable<T> {
         return this.getValues().iterator();
     }
     
+    
+    static public <T> long getTotalCount(Paginated<T> paginated) {
+        return ofNullable(paginated)
+            .map(v -> v.getPagination())
+            .map(v -> v.getTotalCount())
+            .orElse(0L);
+    }
+    
 }

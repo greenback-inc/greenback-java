@@ -1,17 +1,14 @@
 package com.greenback.kit.demo;
 
-import com.greenback.kit.client.AutoExportQuery;
 import com.greenback.kit.client.GreenbackClient;
 import com.greenback.kit.client.GreenbackConstants;
 import com.greenback.kit.jackson.JacksonGreenbackCodec;
-import com.greenback.kit.model.*;
 import com.greenback.kit.okhttp.OkHttpGreenbackClient;
 import com.greenback.kit.okhttp.OkHttpHelper;
 import okhttp3.OkHttpClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.util.Properties;
-import static java.util.Arrays.asList;
 import static java.util.Optional.ofNullable;
 
 // TODO JB: need to expand on the demo to test the runs end points. so far this only does the auto exports.
