@@ -29,7 +29,7 @@
         <slf4j.version>1.7.25</slf4j.version>
         <jackson.version>2.10.5</jackson.version>
         <okhttp.version>3.14.9</okhttp.version>
-        <crux.version>1.0.33</crux.version>
+        <crux.version>1.0.40</crux.version>
     </properties>
 
     <modules>
