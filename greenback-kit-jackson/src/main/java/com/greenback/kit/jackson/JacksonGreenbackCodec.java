@@ -25,7 +25,7 @@ public class JacksonGreenbackCodec implements GreenbackCodec {
     
     public JacksonGreenbackCodec() {
         this.objectMapper = new ObjectMapper()
-            .enable(SerializationFeature.INDENT_OUTPUT)
+//            .enable(SerializationFeature.INDENT_OUTPUT)
             .setSerializationInclusion(Include.NON_NULL)
             .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
             .setPropertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE)

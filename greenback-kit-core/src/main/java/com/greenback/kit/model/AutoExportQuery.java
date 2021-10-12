@@ -1,6 +1,4 @@
-package com.greenback.kit.client;
-
-import com.greenback.kit.model.Query;
+package com.greenback.kit.model;
 
 public class AutoExportQuery extends Query<AutoExportQuery> {
 
