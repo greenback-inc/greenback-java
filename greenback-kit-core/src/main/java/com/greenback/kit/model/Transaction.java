@@ -5,6 +5,7 @@ import java.util.List;
 
 public class Transaction extends Document {
  
+    private TransactionArchetype archetype;
     private TransactionType type;
     private String currencyCode;
     private String altReferenceId;
@@ -28,6 +29,14 @@ public class Transaction extends Document {
     private Account account;
     private Contact contact;
     private TransactionExport export;
+
+    public TransactionArchetype getArchetype() {
+        return archetype;
+    }
+
+    public void setArchetype(TransactionArchetype archetype) {
+        this.archetype = archetype;
+    }
 
     public TransactionType getType() {
         return type;
