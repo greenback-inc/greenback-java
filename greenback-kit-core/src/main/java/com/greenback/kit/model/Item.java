@@ -11,6 +11,7 @@ public class Item {
     private Double quantity;
     private Double unitPrice;
     private Double amount;
+    private String taxGrn;
 
     public String getGrn() {
         return grn;
@@ -72,6 +73,15 @@ public class Item {
 
     public Item setAmount(Double amount) {
         this.amount = amount;
+        return this;
+    }
+
+    public String getTaxGrn() {
+        return taxGrn;
+    }
+
+    public Item setTaxGrn(String taxGrn) {
+        this.taxGrn = taxGrn;
         return this;
     }
 

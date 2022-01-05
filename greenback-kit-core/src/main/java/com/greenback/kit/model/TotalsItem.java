@@ -5,6 +5,7 @@ public class TotalsItem {
     private TotalsItemType type;
     private String name;
     private Double amount;
+    private String taxGrn;
 
     public TotalsItemType getType() {
         return type;
@@ -33,4 +34,13 @@ public class TotalsItem {
         return this;
     }
 
+    public String getTaxGrn() {
+        return taxGrn;
+    }
+
+    public TotalsItem setTaxGrn(String taxGrn) {
+        this.taxGrn = taxGrn;
+        return this;
+    }
+    
 }
