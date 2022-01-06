@@ -249,6 +249,16 @@ public class OkHttpGreenbackClient extends AbstractGreenbackClient implements Ba
         
         return this.execute(requestBuilder, this.codec::readTransaction);
     }
+    
+    @Override
+    protected Transaction deleteTransactionByUrl(String url) throws IOException {
+        
+        final Request.Builder requestBuilder = new Request.Builder()
+            .delete()
+            .url(url);
+        
+        return this.execute(requestBuilder, this.codec::readTransaction);
+    }
 
     //
     // Exports

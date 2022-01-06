@@ -454,6 +454,20 @@ abstract public class AbstractGreenbackClient implements GreenbackClient {
         return toValue(() -> this.getTransactionByUrl(url));
     }
 
+    @Override
+    public Transaction deleteTransactionById(
+            String transactionId) throws IOException {
+
+        Objects.requireNonNull(transactionId, "transactionId was null");
+        
+        final String url = this.buildBaseUrl()
+            .path("v2/transactions")
+            .rel(transactionId)
+            .toString();
+        
+        return toValue(() -> this.deleteTransactionByUrl(url));
+    }
+    
     abstract protected Paginated<Transaction> getTransactionsByUrl(
             String url) throws IOException;
     
@@ -463,6 +477,9 @@ abstract public class AbstractGreenbackClient implements GreenbackClient {
     abstract protected Transaction postTransactionByUrl(
             String url,
             Object request) throws IOException;
+    
+    abstract protected Transaction deleteTransactionByUrl(
+            String url) throws IOException;
     
     @Override
     public TransactionExportIntent getTransactionExportIntent(
