@@ -1,6 +1,7 @@
 package com.greenback.kit.model;
 
 import java.time.Instant;
+import java.util.List;
 import java.util.Map;
 
 public class SyncRequest {
@@ -10,6 +11,10 @@ public class SyncRequest {
     private Integer limit;
     private Boolean reuseProfile;
     private Map<String,String> attributes;
+    private List<String> includeIds;
+    private List<String> excludeIds;
+    // read only
+    private Instant initial;
     // for previewing what the sync would do
     private Boolean preview;
     
@@ -56,6 +61,30 @@ public class SyncRequest {
     public SyncRequest setAttributes(Map<String, String> attributes) {
         this.attributes = attributes;
         return this;
+    }
+
+    public List<String> getIncludeIds() {
+        return includeIds;
+    }
+
+    public void setIncludeIds(List<String> includeIds) {
+        this.includeIds = includeIds;
+    }
+
+    public List<String> getExcludeIds() {
+        return excludeIds;
+    }
+
+    public void setExcludeIds(List<String> excludeIds) {
+        this.excludeIds = excludeIds;
+    }
+
+    public Instant getInitial() {
+        return initial;
+    }
+
+    public void setInitial(Instant initial) {
+        this.initial = initial;
     }
 
     public Boolean getPreview() {
