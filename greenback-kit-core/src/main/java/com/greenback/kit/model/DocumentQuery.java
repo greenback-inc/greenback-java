@@ -6,13 +6,24 @@ import java.time.Instant;
 
 public class DocumentQuery<T> extends Query<T> {
     
+    protected DocumentSourceKind sourceKind;
     protected Iterable<DocumentFlag> flags;
     protected Iterable<String> accountIds;
     protected Instant minCreatedAt;
     protected Instant maxCreatedAt;
     protected Instant minUpdatedAt;
     protected Instant maxUpdatedAt;
-    
+
+    public DocumentSourceKind getSourceKind() {
+        return sourceKind;
+    }
+
+    @SuppressWarnings("unchecked")
+    public T setSourceKind(DocumentSourceKind sourceKind) {
+        this.sourceKind = sourceKind;
+        return (T)this;
+    }
+
     public Iterable<DocumentFlag> getFlags() {
         return this.flags;
     }
