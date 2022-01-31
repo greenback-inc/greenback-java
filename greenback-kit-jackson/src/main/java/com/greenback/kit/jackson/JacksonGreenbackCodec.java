@@ -11,6 +11,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fizzed.crux.jackson.EnumDeserializeStrategy;
 import com.fizzed.crux.jackson.EnumSerializeStrategy;
 import com.fizzed.crux.jackson.EnumStrategyModule;
+import com.fizzed.crux.jackson.JavaTimePlusModule;
 import com.greenback.kit.client.GreenbackCodec;
 import com.greenback.kit.model.*;
 import java.io.IOException;
@@ -30,7 +31,9 @@ public class JacksonGreenbackCodec implements GreenbackCodec {
             .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
             .setPropertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE)
             .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
-            .registerModule(new JavaTimeModule())
+//            .registerModule(new JavaTimeModule())
+            // much more flexible JSR310 de(serializing)
+            .registerModule(JavaTimePlusModule.build(false))
             .registerModule(new EnumStrategyModule(EnumSerializeStrategy.LOWER_CASE, EnumDeserializeStrategy.IGNORE_CASE)
                 .setNullOnUnknown(true));
         

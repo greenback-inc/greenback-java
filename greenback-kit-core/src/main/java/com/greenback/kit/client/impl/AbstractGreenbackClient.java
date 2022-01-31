@@ -63,11 +63,7 @@ abstract public class AbstractGreenbackClient implements GreenbackClient {
             final Map<String,Object> flattenedMap = this.codec.toFlattenedMap(value);
             if (flattenedMap != null) {
                 flattenedMap.forEach((k,v) -> {
-                    if (v instanceof Iterable) {
-                        map.put(k, toStringList((Iterable)v));
-                    } else {
-                        map.put(k, Objects.toString(v, ""));
-                    }
+                    map.put(k, ClientHelper.toStringParameter(v));
                 });
             }
         }
