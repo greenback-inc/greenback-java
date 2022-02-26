@@ -15,7 +15,6 @@ import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Objects;
-import static com.greenback.kit.util.Utils.toStringList;
 import static java.util.Optional.ofNullable;
 
 abstract public class AbstractGreenbackClient implements GreenbackClient {
@@ -568,15 +567,104 @@ abstract public class AbstractGreenbackClient implements GreenbackClient {
     abstract protected TransactionExport deleteTransactionExportByUrl(
             String url) throws IOException;
 
+    //
+    // Transforms
+    //
 
+    @Override
+    public Paginated<Transform> getTransforms(
+            TransformQuery transformQuery) throws IOException {
 
+        final String url = this.buildBaseUrl()
+            .path("v2/transforms")
+            .query(this.toQueryMap(transformQuery))
+            .toString();
+
+        return this.getTransformsByUrl(url);
+    }
+    
+    @Override
+    public Transform createTransform(
+            Transform transform) throws IOException {
+
+        Objects.requireNonNull(transform, "transform was null");
+
+        final String url = this.buildBaseUrl()
+            .path("v2/transforms")
+            .toString();
+
+        return this.postTransformByUrl(url, transform);
+    }
+
+    @Override
+    public Transform updateTransform(
+            Transform transform) throws IOException {
+
+        Objects.requireNonNull(transform, "transform was null");
+        Objects.requireNonNull(transform.getId(), "transform id was null");
+
+        final String url = this.buildBaseUrl()
+            .path("v2/transforms")
+            .rel(transform.getId())
+            .toString();
+
+        transform.setId(null);
+        
+        return this.postTransformByUrl(url, transform);
+    }
+
+    @Override
+    public Transform getTransformById(
+            String transformId) throws IOException {
+
+        Objects.requireNonNull(transformId, "transformId was null");
+
+        final String url = this.buildBaseUrl()
+            .path("v2/transforms")
+            .rel(transformId)
+            //.queryIfPresent("expands", toExpandQueryParameter(expands))
+            .toString();
+
+        return toValue(() -> this.getTransformByUrl(url));
+    }
+
+    @Override
+    public Transform deleteTransformById(
+            String transformId,
+            DeleteMode deleteMode) throws IOException {
+
+        Objects.requireNonNull(transformId, "autoExportId was null");
+
+        final String url = this.buildBaseUrl()
+            .path("v2/transforms")
+            .rel(transformId)
+            .queryIfPresent("mode", ofNullable(deleteMode))
+            .toString();
+
+        return toValue(() -> this.deleteTransformByUrl(url));
+    }
+
+    
+    abstract protected Transform postTransformByUrl(
+        String url,
+        Object request) throws IOException;
+
+    abstract protected Paginated<Transform> getTransformsByUrl(
+        String url) throws IOException;
+
+    abstract protected Transform getTransformByUrl(
+        String url) throws IOException;
+    
+    abstract protected Transform deleteTransformByUrl(
+        String url) throws IOException;
+    
     //
     // Auto Exports
     //
 
     @Override
     public AutoExport createAutoExport(
-        AutoExport autoExport) throws IOException {
+            AutoExport autoExport) throws IOException {
 
         Objects.requireNonNull(autoExport, "autoExport was null");
 
@@ -589,7 +677,7 @@ abstract public class AbstractGreenbackClient implements GreenbackClient {
 
     @Override
     public AutoExport updateAutoExport(
-        AutoExport autoExport) throws IOException {
+            AutoExport autoExport) throws IOException {
 
         Objects.requireNonNull(autoExport, "autoExport was null");
         Objects.requireNonNull(autoExport.getId(), "autoExport id was null");
@@ -604,7 +692,7 @@ abstract public class AbstractGreenbackClient implements GreenbackClient {
 
     @Override
     public Paginated<AutoExport> getAutoExports(
-        AutoExportQuery autoExportQuery) throws IOException {
+            AutoExportQuery autoExportQuery) throws IOException {
 
         final String url = this.buildBaseUrl()
             .path("v2/auto_exports")

@@ -22,7 +22,7 @@ import java.util.TimeZone;
 
 public class JacksonGreenbackCodec implements GreenbackCodec {
 
-    protected final ObjectMapper objectMapper;
+    protected ObjectMapper objectMapper;
     
     public JacksonGreenbackCodec() {
         this.objectMapper = new ObjectMapper()
@@ -45,7 +45,11 @@ public class JacksonGreenbackCodec implements GreenbackCodec {
     public ObjectMapper getObjectMapper() {
         return objectMapper;
     }
-    
+
+    public void setObjectMapper(ObjectMapper objectMapper) {
+        this.objectMapper = objectMapper;
+    }
+
     protected void verifySuccess(JsonNode rootNode) throws IOException, GreenbackException {
         // has error?
         if (rootNode.has("error")) {
@@ -102,6 +106,10 @@ public class JacksonGreenbackCodec implements GreenbackCodec {
         = new TypeReference<Value<TransactionExportIntent>>() {};
     static private final TypeReference<Value<TransactionExport>> TYPEREF_TRANSACTION_EXPORT
         = new TypeReference<Value<TransactionExport>>() {};
+    static private final TypeReference<Paginated<Transform>> TYPEREF_TRANSFORMS
+        = new TypeReference<Paginated<Transform>>() {};
+    static private final TypeReference<Value<Transform>> TYPEREF_TRANSFORM
+        = new TypeReference<Value<Transform>>() {};
     static private final TypeReference<Paginated<AutoExport>> TYPEREF_AUTO_EXPORTS
         = new TypeReference<Paginated<AutoExport>>() {};
     static private final TypeReference<Value<AutoExport>> TYPEREF_AUTO_EXPORT
@@ -252,29 +260,43 @@ public class JacksonGreenbackCodec implements GreenbackCodec {
     }
 
     @Override
+    public Paginated<Transform> readTransforms(
+            InputStream input) throws IOException {
+
+        return this.read(input, TYPEREF_TRANSFORMS);
+    }
+
+    @Override
+    public Transform readTransform(
+            InputStream input) throws IOException {
+
+        return this.read(input, TYPEREF_TRANSFORM).getValue();
+    }
+    
+    @Override
     public Paginated<AutoExport> readAutoExports(
-        InputStream input) throws IOException {
+            InputStream input) throws IOException {
 
         return this.read(input, TYPEREF_AUTO_EXPORTS);
     }
 
     @Override
     public AutoExport readAutoExport(
-        InputStream input) throws IOException {
+            InputStream input) throws IOException {
 
         return this.read(input, TYPEREF_AUTO_EXPORT).getValue();
     }
 
     @Override
     public Paginated<AutoExportRun> readAutoExportRuns(
-        InputStream input) throws IOException {
+            InputStream input) throws IOException {
 
         return this.read(input, TYPEREF_AUTO_EXPORT_RUNS);
     }
 
     @Override
     public AutoExportRun readAutoExportRun(
-        InputStream input) throws IOException {
+            InputStream input) throws IOException {
 
         return this.read(input, TYPEREF_AUTO_EXPORT_RUN).getValue();
     }

@@ -125,6 +125,18 @@ public interface GreenbackClient {
             String transactionExportId,
             TransactionExportDeleteMode deleteMode) throws IOException;
 
+    // Transforms
+
+    Paginated<Transform> getTransforms(TransformQuery transformQuery) throws IOException;
+    
+    Transform createTransform(Transform transform) throws IOException;
+
+    Transform updateTransform(Transform transform) throws IOException;
+
+    Transform getTransformById(String transformId) throws IOException;
+    
+    Transform deleteTransformById(String transformId, DeleteMode deleteMode) throws IOException;
+    
     // Auto Exports
 
     AutoExport createAutoExport(AutoExport autoExport) throws IOException;
