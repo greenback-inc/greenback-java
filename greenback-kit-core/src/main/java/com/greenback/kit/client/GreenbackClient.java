@@ -155,13 +155,13 @@ public interface GreenbackClient {
 
     // Auto Export Runs
 
-    ExportRun createExportRun(String autoExportId, ExportRun ExportRun) throws IOException;
+    ExportRun createExportRun(String autoExportId, ExportRun exportRun) throws IOException;
 
-    default ExportRun getExportRunById(String ExportRunId) throws IOException {
-        return this.getExportRunById(ExportRunId, null);
+    default ExportRun getExportRunById(String exportRunId) throws IOException {
+        return this.getExportRunById(exportRunId, null);
     }
 
-    ExportRun getExportRunById(String ExportRunId, Iterable<String> expands) throws IOException;
+    ExportRun getExportRunById(String exportRunId, Iterable<String> expands) throws IOException;
 
     default Paginated<ExportRun> getExportRunsByAutoExportId(String autoExportId) throws IOException {
         return this.getExportRunsByAutoExportId(autoExportId, null);

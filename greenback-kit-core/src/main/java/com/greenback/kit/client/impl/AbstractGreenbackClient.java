@@ -751,25 +751,25 @@ abstract public class AbstractGreenbackClient implements GreenbackClient {
     //
 
     @Override
-    public ExportRun createExportRun(String autoExportId, ExportRun ExportRun) throws IOException {
-        Objects.requireNonNull(ExportRun, "ExportRun was null");
+    public ExportRun createExportRun(String autoExportId, ExportRun exportRun) throws IOException {
+        Objects.requireNonNull(exportRun, "ExportRun was null");
 
         final String url = this.buildBaseUrl()
             .path("v2/auto_exports")
             .rel(autoExportId, "runs")
             .toString();
 
-        return this.postExportRunByUrl(url, ExportRun);
+        return this.postExportRunByUrl(url, exportRun);
     }
 
     @Override
-    public ExportRun getExportRunById(String ExportRunId, Iterable<String> expands) throws IOException {
-        Objects.requireNonNull(ExportRunId, "ExportRunId was null");
+    public ExportRun getExportRunById(String exportRunId, Iterable<String> expands) throws IOException {
+        Objects.requireNonNull(exportRunId, "exportRunId was null");
 
         //TODO JB: need to implement this route in lens
         final String url = this.buildBaseUrl()
             .path("v2/auto_exports")
-            .rel("runs", ExportRunId)
+            .rel("runs", exportRunId)
             .queryIfPresent("expands", toExpandQueryParameter(expands))
             .toString();
 
