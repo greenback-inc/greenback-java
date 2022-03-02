@@ -155,18 +155,18 @@ public interface GreenbackClient {
 
     // Auto Export Runs
 
-    AutoExportRun createAutoExportRun(String autoExportId, AutoExportRun autoExportRun) throws IOException;
+    ExportRun createExportRun(String autoExportId, ExportRun ExportRun) throws IOException;
 
-    default AutoExportRun getAutoExportRunById(String autoExportRunId) throws IOException {
-        return this.getAutoExportRunById(autoExportRunId, null);
+    default ExportRun getExportRunById(String ExportRunId) throws IOException {
+        return this.getExportRunById(ExportRunId, null);
     }
 
-    AutoExportRun getAutoExportRunById(String autoExportRunId, Iterable<String> expands) throws IOException;
+    ExportRun getExportRunById(String ExportRunId, Iterable<String> expands) throws IOException;
 
-    default Paginated<AutoExportRun> getAutoExportRunsByAutoExportId(String autoExportId) throws IOException {
-        return this.getAutoExportRunsByAutoExportId(autoExportId, null);
+    default Paginated<ExportRun> getExportRunsByAutoExportId(String autoExportId) throws IOException {
+        return this.getExportRunsByAutoExportId(autoExportId, null);
     }
 
-    Paginated<AutoExportRun> getAutoExportRunsByAutoExportId(String autoExportId, Iterable<String> expands) throws IOException;
+    Paginated<ExportRun> getExportRunsByAutoExportId(String autoExportId, Iterable<String> expands) throws IOException;
 
 }

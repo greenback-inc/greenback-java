@@ -9,6 +9,7 @@ public class AutoExportParameters {
     private Instant minTransactedAt;
     private Instant maxTransactedAt;
     private Integer limit;
+    private Integer errorLimit;
 
     public String getQuery() {
         return query;
@@ -50,6 +51,14 @@ public class AutoExportParameters {
         this.limit = limit;
     }
 
+    public Integer getErrorLimit() {
+        return errorLimit;
+    }
+
+    public void setErrorLimit(Integer errorLimit) {
+        this.errorLimit = errorLimit;
+    }
+
     @Override
     public String toString() {
         return "AutoExportRequest{" +
@@ -58,6 +67,7 @@ public class AutoExportParameters {
             ", minTransactedAt=" + minTransactedAt +
             ", maxTransactedAt=" + maxTransactedAt +
             ", limit=" + limit +
+            ", errorLimit=" + errorLimit +
             '}';
     }
 }
