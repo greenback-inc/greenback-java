@@ -768,8 +768,8 @@ abstract public class AbstractGreenbackClient implements GreenbackClient {
 
         //TODO JB: need to implement this route in lens
         final String url = this.buildBaseUrl()
-            .path("v2/auto_exports")
-            .rel("runs", exportRunId)
+            .path("v2/export_runs")
+            .rel(exportRunId)
             .queryIfPresent("expands", toExpandQueryParameter(expands))
             .toString();
 
