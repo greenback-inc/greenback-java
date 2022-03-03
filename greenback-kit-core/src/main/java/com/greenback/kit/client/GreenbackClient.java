@@ -155,7 +155,7 @@ public interface GreenbackClient {
 
     // Auto Export Runs
 
-    ExportRun createExportRun(String autoExportId, ExportRun exportRun) throws IOException;
+    ExportRun createAutoExportRun(String autoExportId, ExportRun exportRun) throws IOException;
 
     default ExportRun getExportRunById(String exportRunId) throws IOException {
         return this.getExportRunById(exportRunId, null);

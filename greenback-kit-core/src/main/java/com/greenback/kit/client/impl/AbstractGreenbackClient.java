@@ -751,7 +751,7 @@ abstract public class AbstractGreenbackClient implements GreenbackClient {
     //
 
     @Override
-    public ExportRun createExportRun(String autoExportId, ExportRun exportRun) throws IOException {
+    public ExportRun createAutoExportRun(String autoExportId, ExportRun exportRun) throws IOException {
         Objects.requireNonNull(exportRun, "ExportRun was null");
 
         final String url = this.buildBaseUrl()
