@@ -2,7 +2,7 @@ package com.greenback.kit.model;
 
 import java.time.Instant;
 
-public class AutoExportRun extends GreenbackObject {
+public class ExportRun extends GreenbackObject {
     private String referenceId;
     private ProcessingStatus status;
     private String userId;
@@ -105,7 +105,7 @@ public class AutoExportRun extends GreenbackObject {
 
     @Override
     public String toString() {
-        return "AutoExportRun{" +
+        return "ExportRun{" +
             ", id='" + id + '\'' +
             ", createdAt=" + createdAt +
             ", updatedAt=" + updatedAt +

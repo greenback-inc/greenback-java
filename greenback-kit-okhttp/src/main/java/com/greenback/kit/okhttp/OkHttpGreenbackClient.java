@@ -401,25 +401,25 @@ public class OkHttpGreenbackClient extends AbstractGreenbackClient implements Ba
     }
 
     @Override
-    protected Paginated<AutoExportRun> getAutoExportRunsByUrl(String url) throws IOException {
+    protected Paginated<ExportRun> getExportRunsByUrl(String url) throws IOException {
 
         final Request.Builder requestBuilder = new Request.Builder()
             .url(url);
 
-        return this.execute(requestBuilder, this.codec::readAutoExportRuns);
+        return this.execute(requestBuilder, this.codec::readExportRuns);
     }
 
     @Override
-    protected AutoExportRun getAutoExportRunByUrl(String url) throws IOException {
+    protected ExportRun getExportRunByUrl(String url) throws IOException {
 
         final Request.Builder requestBuilder = new Request.Builder()
             .url(url);
 
-        return this.execute(requestBuilder, this.codec::readAutoExportRun);
+        return this.execute(requestBuilder, this.codec::readExportRun);
     }
 
     @Override
-    protected AutoExportRun postAutoExportRunByUrl(
+    protected ExportRun postExportRunByUrl(
         String url,
         Object request) throws IOException {
 
@@ -431,7 +431,7 @@ public class OkHttpGreenbackClient extends AbstractGreenbackClient implements Ba
             .url(url)
             .post(requestBody);
 
-        return this.execute(requestBuilder, this.codec::readAutoExportRun);
+        return this.execute(requestBuilder, this.codec::readExportRun);
     }
 
 }

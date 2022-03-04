@@ -13,8 +13,8 @@ public class AutoExport extends GreenbackObject {
     // from expands
     private Account accountingAccount;
     private List<Account> accounts;
-    private AutoExportRun lastRun;
-    private AutoExportRun pendingRun;
+    private ExportRun lastRun;
+    private ExportRun pendingRun;
 
     public String getUserId() {
         return userId;
@@ -64,19 +64,19 @@ public class AutoExport extends GreenbackObject {
         this.accountIds = accountIds;
     }
 
-    public AutoExportRun getLastRun() {
+    public ExportRun getLastRun() {
         return lastRun;
     }
 
-    public void setLastRun(AutoExportRun lastRun) {
+    public void setLastRun(ExportRun lastRun) {
         this.lastRun = lastRun;
     }
 
-    public AutoExportRun getPendingRun() {
+    public ExportRun getPendingRun() {
         return pendingRun;
     }
 
-    public void setPendingRun(AutoExportRun pendingRun) {
+    public void setPendingRun(ExportRun pendingRun) {
         this.pendingRun = pendingRun;
     }
 

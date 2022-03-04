@@ -56,8 +56,8 @@ public interface GreenbackCodec {
 
     Paginated<AutoExport> readAutoExports(InputStream input) throws IOException;
 
-    AutoExportRun readAutoExportRun(InputStream input) throws IOException;
+    ExportRun readExportRun(InputStream input) throws IOException;
 
-    Paginated<AutoExportRun> readAutoExportRuns(InputStream input) throws IOException;
+    Paginated<ExportRun> readExportRuns(InputStream input) throws IOException;
     
 }

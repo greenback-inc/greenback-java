@@ -114,10 +114,10 @@ public class JacksonGreenbackCodec implements GreenbackCodec {
         = new TypeReference<Paginated<AutoExport>>() {};
     static private final TypeReference<Value<AutoExport>> TYPEREF_AUTO_EXPORT
         = new TypeReference<Value<AutoExport>>() {};
-    static private final TypeReference<Paginated<AutoExportRun>> TYPEREF_AUTO_EXPORT_RUNS
-        = new TypeReference<Paginated<AutoExportRun>>() {};
-    static private final TypeReference<Value<AutoExportRun>> TYPEREF_AUTO_EXPORT_RUN
-        = new TypeReference<Value<AutoExportRun>>() {};
+    static private final TypeReference<Paginated<ExportRun>> TYPEREF_AUTO_EXPORT_RUNS
+        = new TypeReference<Paginated<ExportRun>>() {};
+    static private final TypeReference<Value<ExportRun>> TYPEREF_AUTO_EXPORT_RUN
+        = new TypeReference<Value<ExportRun>>() {};
 
     @Override
     public String prettyPrint(Object value) throws IOException {
@@ -288,14 +288,14 @@ public class JacksonGreenbackCodec implements GreenbackCodec {
     }
 
     @Override
-    public Paginated<AutoExportRun> readAutoExportRuns(
+    public Paginated<ExportRun> readExportRuns(
             InputStream input) throws IOException {
 
         return this.read(input, TYPEREF_AUTO_EXPORT_RUNS);
     }
 
     @Override
-    public AutoExportRun readAutoExportRun(
+    public ExportRun readExportRun(
             InputStream input) throws IOException {
 
         return this.read(input, TYPEREF_AUTO_EXPORT_RUN).getValue();

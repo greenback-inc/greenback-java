@@ -751,33 +751,33 @@ abstract public class AbstractGreenbackClient implements GreenbackClient {
     //
 
     @Override
-    public AutoExportRun createAutoExportRun(String autoExportId, AutoExportRun autoExportRun) throws IOException {
-        Objects.requireNonNull(autoExportRun, "autoExportRun was null");
+    public ExportRun createAutoExportRun(String autoExportId, ExportRun exportRun) throws IOException {
+        Objects.requireNonNull(exportRun, "ExportRun was null");
 
         final String url = this.buildBaseUrl()
             .path("v2/auto_exports")
             .rel(autoExportId, "runs")
             .toString();
 
-        return this.postAutoExportRunByUrl(url, autoExportRun);
+        return this.postExportRunByUrl(url, exportRun);
     }
 
     @Override
-    public AutoExportRun getAutoExportRunById(String autoExportRunId, Iterable<String> expands) throws IOException {
-        Objects.requireNonNull(autoExportRunId, "autoExportRunId was null");
+    public ExportRun getExportRunById(String exportRunId, Iterable<String> expands) throws IOException {
+        Objects.requireNonNull(exportRunId, "exportRunId was null");
 
         //TODO JB: need to implement this route in lens
         final String url = this.buildBaseUrl()
-            .path("v2/auto_exports")
-            .rel("runs", autoExportRunId)
+            .path("v2/export_runs")
+            .rel(exportRunId)
             .queryIfPresent("expands", toExpandQueryParameter(expands))
             .toString();
 
-        return toValue(() -> this.getAutoExportRunByUrl(url));
+        return toValue(() -> this.getExportRunByUrl(url));
     }
 
     @Override
-    public Paginated<AutoExportRun> getAutoExportRunsByAutoExportId(String autoExportId, Iterable<String> expands) throws IOException {
+    public Paginated<ExportRun> getExportRunsByAutoExportId(String autoExportId, Iterable<String> expands) throws IOException {
         Objects.requireNonNull(autoExportId, "autoExportId was null");
 
         final String url = this.buildBaseUrl()
@@ -786,17 +786,17 @@ abstract public class AbstractGreenbackClient implements GreenbackClient {
             .queryIfPresent("expands", toExpandQueryParameter(expands))
             .toString();
 
-        return toValue(() -> this.getAutoExportRunsByUrl(url));
+        return toValue(() -> this.getExportRunsByUrl(url));
     }
 
-    abstract protected AutoExportRun postAutoExportRunByUrl(
+    abstract protected ExportRun postExportRunByUrl(
         String url,
         Object request) throws IOException;
 
-    abstract protected Paginated<AutoExportRun> getAutoExportRunsByUrl(
+    abstract protected Paginated<ExportRun> getExportRunsByUrl(
         String url) throws IOException;
 
-    abstract protected AutoExportRun getAutoExportRunByUrl(
+    abstract protected ExportRun getExportRunByUrl(
         String url) throws IOException;
 
 }
