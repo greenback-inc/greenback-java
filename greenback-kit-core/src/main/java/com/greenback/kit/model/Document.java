@@ -6,6 +6,7 @@ import java.util.Set;
 public class Document extends GreenbackObject {
  
     protected String referenceId;
+    protected DocumentMeta meta;
     protected Set<DocumentFlag> flags;
     protected Map<String,String> attributes;
 
@@ -15,6 +16,14 @@ public class Document extends GreenbackObject {
 
     public void setReferenceId(String referenceId) {
         this.referenceId = referenceId;
+    }
+
+    public DocumentMeta getMeta() {
+        return meta;
+    }
+
+    public void setMeta(DocumentMeta meta) {
+        this.meta = meta;
     }
 
     public Set<DocumentFlag> getFlags() {
