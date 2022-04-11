@@ -9,6 +9,7 @@ public class Document extends GreenbackObject {
     protected DocumentMeta meta;
     protected Set<DocumentFlag> flags;
     protected Map<String,String> attributes;
+    protected String memo;
 
     public String getReferenceId() {
         return referenceId;
@@ -41,5 +42,12 @@ public class Document extends GreenbackObject {
     public void setAttributes(Map<String, String> attributes) {
         this.attributes = attributes;
     }
-    
+
+    public String getMemo() {
+        return memo;
+    }
+
+    public void setMemo(String memo) {
+        this.memo = memo;
+    }
 }
