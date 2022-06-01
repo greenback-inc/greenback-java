@@ -21,11 +21,6 @@ public class ConnectQuery extends Query<ConnectQuery> {
         this.labels = labels;
         return this;
     }
-
-    public ConnectQuery setLabels(String... labels) {
-        this.labels = toIterable(labels);
-        return this;
-    }
     
     public Iterable<ConnectState> getStates() {
         return states;
@@ -35,11 +30,6 @@ public class ConnectQuery extends Query<ConnectQuery> {
         this.states = states;
         return this;
     }
-    
-    public ConnectQuery setStates(ConnectState... states) {
-        this.states = toIterable(states);
-        return this;
-    }
 
     public Iterable<ConnectType> getTypes() {
         return types;
@@ -47,11 +37,6 @@ public class ConnectQuery extends Query<ConnectQuery> {
 
     public ConnectQuery setTypes(Iterable<ConnectType> types) {
         this.types = types;
-        return this;
-    }
-    
-    public ConnectQuery setTypes(ConnectType... types) {
-        this.types = toIterable(types);
         return this;
     }
 

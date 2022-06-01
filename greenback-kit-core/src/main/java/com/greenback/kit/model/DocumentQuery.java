@@ -33,12 +33,6 @@ public class DocumentQuery<T> extends Query<T> {
         this.flags = flags;
         return (T)this;
     }
-
-    @SuppressWarnings("unchecked")
-    public T setFlags(DocumentFlag... flags) {
-        this.flags = toIterable(flags);
-        return (T)this;
-    }
     
     public Iterable<String> getAccountIds() {
         return this.accountIds;
@@ -47,12 +41,6 @@ public class DocumentQuery<T> extends Query<T> {
     @SuppressWarnings("unchecked")
     public T setAccountIds(Iterable<String> accountIds) {
         this.accountIds = accountIds;
-        return (T)this;
-    }
-
-    @SuppressWarnings("unchecked")
-    public T setAccountIds(String... accountIds) {
-        this.accountIds = toIterable(accountIds);
         return (T)this;
     }
 

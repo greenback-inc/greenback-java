@@ -1,8 +1,10 @@
 package com.greenback.kit.model;
 
+import java.io.Serializable;
+
 import static com.greenback.kit.util.Utils.toIterable;
 
-public class Query<T> {
+public class Query<T> implements Serializable {
  
     protected Integer limit;
     protected Iterable<String> expands;
@@ -24,12 +26,6 @@ public class Query<T> {
     @SuppressWarnings("unchecked")
     public T setExpands(Iterable<String> expands) {
         this.expands = expands;
-        return (T)this;
-    }
-
-    @SuppressWarnings("unchecked")
-    public T setExpands(String... expands) {
-        this.expands = toIterable(expands);
         return (T)this;
     }
     

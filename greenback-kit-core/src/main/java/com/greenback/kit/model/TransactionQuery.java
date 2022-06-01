@@ -20,11 +20,6 @@ public class TransactionQuery extends DocumentQuery<TransactionQuery> {
         this.archetypes = archetypes;
         return this;
     }
-
-    public TransactionQuery setArchetypes(TransactionArchetype... archetypes) {
-        this.archetypes = toIterable(archetypes);
-        return this;
-    }
     
     public Iterable<TransactionType> getTypes() {
         return this.types;
@@ -32,11 +27,6 @@ public class TransactionQuery extends DocumentQuery<TransactionQuery> {
 
     public TransactionQuery setTypes(Iterable<TransactionType> types) {
         this.types = types;
-        return this;
-    }
-
-    public TransactionQuery setTypes(TransactionType... types) {
-        this.types = toIterable(types);
         return this;
     }
     
