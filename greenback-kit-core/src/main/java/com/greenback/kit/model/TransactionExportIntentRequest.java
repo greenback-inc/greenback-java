@@ -56,10 +56,5 @@ public class TransactionExportIntentRequest {
         this.expands = expands;
         return this;
     }
-
-    public TransactionExportIntentRequest setExpands(String... expands) {
-        this.expands = toIterable(expands);
-        return this;
-    }
     
 }

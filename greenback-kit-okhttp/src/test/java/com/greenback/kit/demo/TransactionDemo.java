@@ -95,7 +95,7 @@ public class TransactionDemo {
             final Instant verifiedBy = Instant.now();
 
             client.getTransactionExportIntent("e5waKyOnRv", "oxo1glP1Yy", new TransactionExportIntentRequest()
-                .setExpands("form", "account")
+                .setExpands(asList("form", "account"))
                 .setItemized(true)
                 .setVerifiedBy(verifiedBy));
 
