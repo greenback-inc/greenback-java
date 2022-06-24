@@ -7,7 +7,7 @@ import java.util.Objects;
 public class ConnectIntentComplete {
 
     private Map<String,String> parameters;
-    private ConnectIntentConfirm action;
+    private ConnectIntentCompleteAction action;
 
     public Map<String, String> getParameters() {
         return parameters;
@@ -18,11 +18,11 @@ public class ConnectIntentComplete {
         return this;
     }
     
-    public ConnectIntentConfirm getAction() {
+    public ConnectIntentCompleteAction getAction() {
         return action;
     }
 
-    public ConnectIntentComplete setAction(ConnectIntentConfirm action) {
+    public ConnectIntentComplete setAction(ConnectIntentCompleteAction action) {
         this.action = action;
         return this;
     }

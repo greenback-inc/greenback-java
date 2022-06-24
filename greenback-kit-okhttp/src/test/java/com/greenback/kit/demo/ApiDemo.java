@@ -1,34 +1,16 @@
 package com.greenback.kit.demo;
 
-import com.fizzed.crux.okhttp.OkHttpLoggingInterceptor;
-import com.fizzed.crux.okhttp.OkLoggingLevel;
-import com.fizzed.crux.util.MessageLevel;
 import com.greenback.kit.client.GreenbackClient;
 import com.greenback.kit.client.GreenbackConstants;
 import com.greenback.kit.jackson.JacksonGreenbackCodec;
 import com.greenback.kit.model.Account;
-import com.greenback.kit.model.AccountQuery;
-import com.greenback.kit.model.AccountState;
 import com.greenback.kit.model.Connect;
-import com.greenback.kit.model.ConnectIntentAuthorize;
-import com.greenback.kit.model.ConnectIntentConfirm;
-import com.greenback.kit.model.ConnectIntentComplete;
-import com.greenback.kit.model.ConnectIntent;
-import com.greenback.kit.model.ConnectQuery;
-import com.greenback.kit.model.DocumentFlag;
-import com.greenback.kit.model.Message;
-import com.greenback.kit.model.MessageQuery;
-import com.greenback.kit.model.Paginated;
-import com.greenback.kit.model.Transaction;
-import com.greenback.kit.model.TransactionQuery;
-import com.greenback.kit.model.TransactionType;
-import com.greenback.kit.model.User;
 import com.greenback.kit.okhttp.OkHttpGreenbackClient;
 import com.greenback.kit.okhttp.OkHttpHelper;
-import java.time.Instant;
+
 import static java.util.Optional.ofNullable;
 import java.util.Properties;
-import java.util.UUID;
+
 import okhttp3.OkHttpClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
