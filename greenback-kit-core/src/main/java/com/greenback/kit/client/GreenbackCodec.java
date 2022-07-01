@@ -17,7 +17,9 @@ public interface GreenbackCodec {
     User readUser(InputStream input) throws IOException;
     
     Paginated<User> readUsers(InputStream input) throws IOException;
-    
+
+    Entitlements readEntitlements(InputStream input) throws IOException;
+
     Connect readConnect(InputStream input) throws IOException;
     
     Paginated<Connect> readConnects(InputStream input) throws IOException;

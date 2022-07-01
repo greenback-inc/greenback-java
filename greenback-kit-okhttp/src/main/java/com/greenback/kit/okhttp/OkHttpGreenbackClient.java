@@ -45,7 +45,16 @@ public class OkHttpGreenbackClient extends AbstractGreenbackClient implements Ba
         
         return this.execute(requestBuilder, this.codec::readUser);
     }
-    
+
+    @Override
+    protected Entitlements getEntitlementsByUrl(String url) throws IOException {
+
+        final Request.Builder requestBuilder = new Request.Builder()
+            .url(url);
+
+        return this.execute(requestBuilder, this.codec::readEntitlements);
+    }
+
     @Override
     protected Paginated<Connect> getConnectsByUrl(String url) throws IOException {
         

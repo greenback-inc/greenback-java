@@ -92,7 +92,20 @@ abstract public class AbstractGreenbackClient implements GreenbackClient {
     
     abstract protected User getUserByUrl(
             String url) throws IOException;
-    
+
+    @Override
+    public Entitlements getEntitlements() throws IOException {
+
+        final String url = this.buildBaseUrl()
+            .path("v2/entitlements")
+            .toString();
+
+        return toValue(() -> this.getEntitlementsByUrl(url));
+    }
+
+    abstract protected Entitlements getEntitlementsByUrl(
+        String url) throws IOException;
+
     //
     // Connects
     //

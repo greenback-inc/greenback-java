@@ -18,6 +18,8 @@ public interface GreenbackClient {
     }
     
     User getUserById(String userId, Iterable<String> expands) throws IOException;
+
+    Entitlements getEntitlements() throws IOException;
     
     // Connects
     
