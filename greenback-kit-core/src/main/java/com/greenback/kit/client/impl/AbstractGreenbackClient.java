@@ -364,13 +364,23 @@ abstract public class AbstractGreenbackClient implements GreenbackClient {
 
     @Override
     public Message createMessage(
-            MessageRequest messageRequest) throws IOException {
-        
-        final String url = this.buildBaseUrl()
-            .path("v2/messages")
+            MessageRequest messageRequest,
+            String accountId) throws IOException {
+
+        // v2/messages if no account
+        // v2/accounts/<accountId>/message if account is provided
+        final MutableUri urlBuilder = this.buildBaseUrl()
+            .rel("v2");
+
+        if (accountId != null) {
+            urlBuilder.rel("accounts", accountId);
+        }
+
+        final String url = urlBuilder
+            .rel("messages")
             .queryIfPresent("async", ofNullable(messageRequest.getAsync()))
             .toString();
-        
+
         return toValue(() -> this.createMessageByUrl(
             url, messageRequest.getDocument()));
     }
