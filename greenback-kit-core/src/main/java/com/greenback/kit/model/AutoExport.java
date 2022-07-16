@@ -1,6 +1,7 @@
 package com.greenback.kit.model;
 
 import java.util.List;
+import java.time.Instant;
 
 public class AutoExport extends GreenbackObject {
     private String userId;
@@ -9,6 +10,7 @@ public class AutoExport extends GreenbackObject {
     private AutoExportFrequency frequency;
     private AutoExportState state;
     private List<String> accountIds;
+    private Instant lastRunAt;
 
     // from expands
     private Account accountingAccount;
@@ -96,12 +98,21 @@ public class AutoExport extends GreenbackObject {
         this.accountingAccount = accountingAccount;
     }
 
+    public Instant getLastRunAt() {
+        return this.lastRunAt;
+    }
+
+    public void setLastRunAt(Instant lastRunAt) {
+        this.lastRunAt = lastRunAt;
+    }
+
     @Override
     public String toString() {
         return "AutoExport{" +
             "id='" + id + '\'' +
             ", createdAt=" + createdAt +
             ", updatedAt=" + updatedAt +
+            ", lastRunAt=" + lastRunAt +
             ", userId='" + userId + '\'' +
             ", accountingAccountId='" + accountingAccountId + '\'' +
             ", parameters=" + parameters +
@@ -111,7 +122,7 @@ public class AutoExport extends GreenbackObject {
             ", accounts=" + accounts +
             ", accountIds=" + accountIds +
             ", lastRun=" + lastRun +
-            ", pendingRun=" + lastRun +
+            ", pendingRun=" + pendingRun +
             '}';
     }
 }
