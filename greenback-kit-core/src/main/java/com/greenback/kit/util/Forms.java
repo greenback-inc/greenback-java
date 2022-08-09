@@ -60,5 +60,31 @@ public class Forms {
         
         return true;
     }
+  
+    static public String unMappedValues(
+            Form form,
+            Map<String,String> values) {
+        
+        if (form == null || values == null) {
+            return "Unknown mapping error";
+        }
+        
+        for (Map.Entry<String,String> entry : values.entrySet()) {
+            final FormField field = findFieldByName(form, entry.getKey());
+            
+            if (field == null) {
+                return entry.getKey() + " is missing in form";
+            }
+            
+            // is it required?
+            if (field.getRequired() != null && field.getRequired()) {
+                if (entry.getValue() == null || entry.getValue().isEmpty() || entry.getValue().trim().isEmpty()) {
+                    return entry.getKey() + " is required and is missing";
+                }
+            }
+        }
+        
+        return "No errors";
+    }
     
 }
