@@ -79,7 +79,7 @@ public class Forms {
             // is it required?
             if (field.getRequired() != null && field.getRequired()) {
                 if (entry.getValue() == null || entry.getValue().isEmpty() || entry.getValue().trim().isEmpty()) {
-                    return entry.getKey() + " is required and is missing";
+                    return "'" + field.getLabel() + "' is required and is missing";
                 }
             }
         }
