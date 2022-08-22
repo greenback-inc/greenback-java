@@ -2,8 +2,11 @@ package com.greenback.kit.util;
 
 import com.greenback.kit.model.Form;
 import com.greenback.kit.model.FormField;
+
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.List;
 
 public class Forms {
  
@@ -61,30 +64,38 @@ public class Forms {
         return true;
     }
   
-    static public String unmappedMessages(
+    static public List<String> unmappedMessages(
             Form form,
             Map<String,String> values) {
+
+        final List<String> result = new ArrayList<>();
         
         if (form == null || values == null) {
-            return "Unknown mapping error";
+            result.add("Unknown mapping error");
+            return result;
         }
         
         for (Map.Entry<String,String> entry : values.entrySet()) {
             final FormField field = findFieldByName(form, entry.getKey());
             
             if (field == null) {
-                return entry.getKey() + " is missing in form";
+                result.add("'" + entry.getKey() + "'' is missing in form");
+                continue;
             }
             
             // is it required?
             if (field.getRequired() != null && field.getRequired()) {
                 if (entry.getValue() == null || entry.getValue().isEmpty() || entry.getValue().trim().isEmpty()) {
-                    return entry.getKey() + " is required and is missing";
+                    String msg = "'"+ field.getLabel() + "' is missing.";
+                    if (field.getHelp() != null) {
+                        msg = msg + " " + field.getHelp();
+                    }
+                    result.add(msg);
                 }
             }
         }
         
-        return "No errors";
+        return result;
     }
     
 }

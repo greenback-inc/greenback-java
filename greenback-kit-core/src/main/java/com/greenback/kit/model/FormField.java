@@ -11,6 +11,10 @@ public class FormField {
     private String value;
     private Boolean required;
     private List<FormSelectOption> options;
+    private String help;
+    private String error;
+    private String pattern;
+    private String patternMessage;
     
     public String getType() {
         return type;
@@ -58,6 +62,38 @@ public class FormField {
 
     public void setOptions(List<FormSelectOption> options) {
         this.options = options;
+    }
+
+    public String getHelp() {
+        return help;
+    }
+
+    public void setHelp(String help) {
+        this.help = help;
+    }
+
+    public String getError() {
+        return error;
+    }
+
+    public void setError(String error) {
+        this.error = error;
+    }
+
+    public String getPattern() {
+        return pattern;
+    }
+
+    public void setPattern(String pattern) {
+        this.pattern = pattern;
+    }
+
+    public String getPatternMessage() {
+        return patternMessage;
+    }
+
+    public void setPatternMessage(String patternMessage) {
+        this.patternMessage = patternMessage;
     }
  
     // helpers
