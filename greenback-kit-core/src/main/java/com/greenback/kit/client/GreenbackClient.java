@@ -20,7 +20,9 @@ public interface GreenbackClient {
     User getUserById(String userId, Iterable<String> expands) throws IOException;
 
     Entitlements getEntitlements() throws IOException;
-    
+
+    Paginated<TeamMember> getTeamMembersByTeamId(String teamId) throws IOException;
+
     // Connects
     
     Paginated<Connect> getConnects(ConnectQuery connectQuery) throws IOException;

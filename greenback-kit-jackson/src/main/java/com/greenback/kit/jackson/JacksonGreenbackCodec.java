@@ -76,6 +76,10 @@ public class JacksonGreenbackCodec implements GreenbackCodec {
         = new TypeReference<Paginated<User>>() {};
     static private final TypeReference<Value<User>> TYPEREF_USER
         = new TypeReference<Value<User>>() {};
+    static private final TypeReference<Paginated<TeamMember>> TYPEREF_TEAM_MEMBERS
+        = new TypeReference<Paginated<TeamMember>>() {};
+    static private final TypeReference<Value<TeamMember>> TYPEREF_TEAM_MEMBER
+        = new TypeReference<Value<TeamMember>>() {};
     static private final TypeReference<Value<Entitlements>> TYPEREF_ENTITLEMENTS
         = new TypeReference<Value<Entitlements>>() {};
     static private final TypeReference<Paginated<Connect>> TYPEREF_CONNECTS
@@ -154,6 +158,20 @@ public class JacksonGreenbackCodec implements GreenbackCodec {
             InputStream input) throws IOException {
         
         return this.read(input, TYPEREF_USER).getValue();
+    }
+
+    @Override
+    public Paginated<TeamMember> readTeamMembers(
+            InputStream input) throws IOException {
+
+        return this.read(input, TYPEREF_TEAM_MEMBERS);
+    }
+
+    @Override
+    public TeamMember readTeamMember(
+            InputStream input) throws IOException {
+
+        return this.read(input, TYPEREF_TEAM_MEMBER).getValue();
     }
 
     @Override

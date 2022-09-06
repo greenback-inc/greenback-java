@@ -94,6 +94,24 @@ abstract public class AbstractGreenbackClient implements GreenbackClient {
             String url) throws IOException;
 
     @Override
+    public Paginated<TeamMember> getTeamMembersByTeamId(
+            String teamId) throws IOException {
+
+        Objects.requireNonNull(teamId, "teamId was null");
+
+        final String url = this.buildBaseUrl()
+            .path("v2/teams")
+            .rel(teamId)
+            .rel("members")
+            .toString();
+
+        return toStreamingPaginated(url, v -> this.getTeamMembersByUrl(v));
+    }
+
+    abstract protected Paginated<TeamMember> getTeamMembersByUrl(
+        String url) throws IOException;
+
+    @Override
     public Entitlements getEntitlements() throws IOException {
 
         final String url = this.buildBaseUrl()

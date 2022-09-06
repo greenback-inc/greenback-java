@@ -47,6 +47,15 @@ public class OkHttpGreenbackClient extends AbstractGreenbackClient implements Ba
     }
 
     @Override
+    protected Paginated<TeamMember> getTeamMembersByUrl(String url) throws IOException {
+
+        final Request.Builder requestBuilder = new Request.Builder()
+            .url(url);
+
+        return this.execute(requestBuilder, this.codec::readTeamMembers);
+    }
+
+    @Override
     protected Entitlements getEntitlementsByUrl(String url) throws IOException {
 
         final Request.Builder requestBuilder = new Request.Builder()
