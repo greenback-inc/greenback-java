@@ -1,6 +1,7 @@
 package com.greenback.kit.model;
 
 import java.util.List;
+import java.util.Map;
 
 public class Item {
  
@@ -12,6 +13,7 @@ public class Item {
     private Double unitPrice;
     private Double amount;
     private String taxGrn;
+    protected Map<String,String> attributes;
 
     public String getGrn() {
         return grn;
@@ -85,4 +87,11 @@ public class Item {
         return this;
     }
 
+    public Map<String,String> getAttributes() {
+        return attributes;
+    }
+
+    public void setAttributes(Map<String,String> attributes) {
+        this.attributes = attributes;
+    }
 }
