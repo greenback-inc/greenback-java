@@ -11,6 +11,7 @@ public class TransactionQuery extends DocumentQuery<TransactionQuery> {
     protected Instant minTransactedAt;
     protected Instant maxTransactedAt;
     protected Boolean descending;
+    protected Iterable<String> rollupIds;
 
     public Iterable<TransactionArchetype> getArchetypes() {
         return archetypes;
@@ -27,6 +28,15 @@ public class TransactionQuery extends DocumentQuery<TransactionQuery> {
 
     public TransactionQuery setTypes(Iterable<TransactionType> types) {
         this.types = types;
+        return this;
+    }
+
+    public Iterable<String> getRollupIds() {
+        return rollupIds;
+    }
+
+    public TransactionQuery setRollupIds(Iterable<String> rollupIds) {
+        this.rollupIds = rollupIds;
         return this;
     }
     
