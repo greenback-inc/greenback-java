@@ -8,6 +8,7 @@ public class Query<T> implements Serializable {
  
     protected Integer limit;
     protected Iterable<String> expands;
+    protected String cursor;
 
     public Integer getLimit() {
         return limit;
@@ -28,5 +29,14 @@ public class Query<T> implements Serializable {
         this.expands = expands;
         return (T)this;
     }
-    
+
+    public String getCursor() {
+        return cursor;
+    }
+
+    public T setCursor(String cursor) {
+        this.cursor = cursor;
+        return (T)this;
+    }
+
 }
