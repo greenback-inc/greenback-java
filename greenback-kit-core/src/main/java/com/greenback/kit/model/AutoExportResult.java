@@ -6,6 +6,7 @@ public class AutoExportResult {
     private Integer updated;
     private Integer unmapped;
     private Integer matched;
+    private Integer skipped;
     private Integer failed;
 
     public Integer getTotal() {
@@ -40,6 +41,14 @@ public class AutoExportResult {
         this.matched = matched;
     }
 
+    public Integer getSkipped() {
+        return skipped;
+    }
+
+    public void setSkipped(Integer skipped) {
+        this.skipped = skipped;
+    }
+
     public Integer getFailed() {
         return failed;
     }
@@ -65,6 +74,7 @@ public class AutoExportResult {
             ", unmapped=" + unmapped +
             ", matched=" + matched +
             ", failed=" + failed +
+            ", skipped=" + skipped +
             '}';
     }
 }
