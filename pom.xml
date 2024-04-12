@@ -5,7 +5,7 @@
     <artifactId>greenback-java</artifactId>
     <name>greenback-java</name>
     <packaging>pom</packaging>
-    <version>1.0.36-SNAPSHOT</version>
+    <version>1.0.36</version>
 
     <organization>
         <name>Greenback, Inc</name>
@@ -21,7 +21,7 @@
     <scm>
         <url>https://github.com/greenback-inc/greenback-java</url>
         <connection>scm:git:git@github.com:greenback-inc/greenback-java.git</connection>
-        <tag>master</tag>
+        <tag>v1.0.36</tag>
     </scm>
 
     <properties>
