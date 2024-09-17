@@ -2,6 +2,7 @@ package com.greenback.kit.model;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.Map;
 
 public class Transaction extends Document {
  
@@ -24,6 +25,7 @@ public class Transaction extends Document {
     private TransactionTotals totals;
     private Instant transactedAt;
     private Instant dueAt;
+    private Map<String,Settlement> settlements;
     
     // expandable
     private Account account;
@@ -180,6 +182,15 @@ public class Transaction extends Document {
 
     public void setDueAt(Instant dueAt) {
         this.dueAt = dueAt;
+    }
+
+    public Map<String,Settlement> getSettlements() {
+        return settlements;
+    }
+
+    public Transaction setSettlements(Map<String,Settlement> settlements) {
+        this.settlements = settlements;
+        return this;
     }
 
     public Account getAccount() {
