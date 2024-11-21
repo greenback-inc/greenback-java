@@ -1,6 +1,5 @@
 package com.greenback.kit.client;
 
-import com.greenback.kit.model.AutoExportQuery;
 import com.greenback.kit.model.*;
 
 import java.io.IOException;
@@ -156,6 +155,8 @@ public interface GreenbackClient {
     default AutoExport getAutoExportById(String autoExportId) throws IOException {
         return this.getAutoExportById(autoExportId, null);
     }
+    
+    AutoExport autoExportCompleted(Long autoExportId) throws IOException;
 
     AutoExport getAutoExportById(String autoExportId, Iterable<String> expands) throws IOException;
 

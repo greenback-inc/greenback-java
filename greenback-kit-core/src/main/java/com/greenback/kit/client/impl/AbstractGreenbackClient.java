@@ -1,7 +1,6 @@
 package com.greenback.kit.client.impl;
 
 import com.fizzed.crux.uri.MutableUri;
-import com.greenback.kit.model.AutoExportQuery;
 import com.greenback.kit.client.GreenbackClient;
 import com.greenback.kit.client.GreenbackCodec;
 import static com.greenback.kit.client.impl.ClientHelper.toExpandQueryParameter;
@@ -771,6 +770,18 @@ abstract public class AbstractGreenbackClient implements GreenbackClient {
             .toString();
 
         return toValue(() -> this.deleteAutoExportByUrl(url));
+    }
+    
+    @Override
+    public AutoExport autoExportCompleted(Long autoExportId) throws IOException {
+      Objects.requireNonNull(autoExportId, "autoExport id was null");
+
+      final String url = this.buildBaseUrl()
+          .path("v2/auto_exports")
+          .rel(autoExportId, "complete")
+          .toString();
+
+      return this.postAutoExportByUrl(url, null);
     }
 
     abstract protected AutoExport postAutoExportByUrl(
