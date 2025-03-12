@@ -25,7 +25,7 @@ public class Transaction extends Document {
     private TransactionTotals totals;
     private Instant transactedAt;
     private Instant dueAt;
-    private Map<String,Settlement> settlements;
+    private List<Settlement> settlements;
     
     // expandable
     private Account account;
@@ -184,11 +184,11 @@ public class Transaction extends Document {
         this.dueAt = dueAt;
     }
 
-    public Map<String,Settlement> getSettlements() {
+    public List<Settlement> getSettlements() {
         return settlements;
     }
 
-    public Transaction setSettlements(Map<String,Settlement> settlements) {
+    public Transaction setSettlements(List<Settlement> settlements) {
         this.settlements = settlements;
         return this;
     }
