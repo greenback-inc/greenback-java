@@ -57,7 +57,7 @@ public class Settlement {
         if (!Objects.equals(this.amount, other.amount)) {
             return false;
         }
-        if (this.estimatedDepositAt != other.estimatedDepositAt) {
+        if (!Objects.equals(this.estimatedDepositAt, other.estimatedDepositAt)) {
             return false;
         }
         return true;
