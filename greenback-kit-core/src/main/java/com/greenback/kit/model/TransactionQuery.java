@@ -7,6 +7,7 @@ public class TransactionQuery extends DocumentQuery<TransactionQuery> {
     
     protected Iterable<TransactionArchetype> archetypes;
     protected Iterable<TransactionType> types;
+    protected Iterable<TransactionState> states;
     protected String query;
     protected Instant minTransactedAt;
     protected Instant maxTransactedAt;
@@ -28,6 +29,15 @@ public class TransactionQuery extends DocumentQuery<TransactionQuery> {
 
     public TransactionQuery setTypes(Iterable<TransactionType> types) {
         this.types = types;
+        return this;
+    }
+    
+    public Iterable<TransactionState> getStates() {
+        return this.states;
+    }
+
+    public TransactionQuery setStates(Iterable<TransactionState> states) {
+        this.states = states;
         return this;
     }
 
